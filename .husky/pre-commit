@@ -1,4 +1,11 @@
 #!/usr/bin/env sh
-. "$(dirname "$0")/_/husky.sh
-echo 'Running build before committing...'
+. "$(dirname "$0")/_/husky.sh"
+
+echo 'Running linting...'
+npm run lint
+
+echo 'Running type checking...'
+npx tsc --noEmit
+
+echo 'Running build...'
 npm run build 
