@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
+import NavbarWrapper from "@/components/NavbarWrapper";
+import FooterWrapper from "@/components/FooterWrapper";
+import AuthProvider from "@/utils/Auth/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Mealtracker",
   description: "Track your Daily Meal",
   icons: {
     icon: [
-      { url: 'favicon.ico' },
-      { url: 'favicon-32x32.png', type: 'image/png' },
+      { url: "favicon.ico" },
+      { url: "favicon-32x32.png", type: "image/png" },
     ],
-}
+  },
 };
 
 const fontSans = Inter({
@@ -19,13 +21,9 @@ const fontSans = Inter({
   subsets: ["latin"],
 });
 
-
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  
+}: Readonly<{ children: React.ReactNode }>) {
   //suppressHydrationWarning
   return (
     <html lang="en">
@@ -36,8 +34,11 @@ export default function RootLayout({
         className={`${fontSans.className}  antialiased`}
         suppressHydrationWarning
       >
-        <Navbar />
-        <main>{children}</main>
+        <AuthProvider>
+          <NavbarWrapper />
+          <main>{children}</main>
+          <FooterWrapper />
+        </AuthProvider>
       </body>
     </html>
   );

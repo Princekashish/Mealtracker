@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { AppShowcase } from "./app-showcase";
 import { CreationSection } from "./creation-section";
 import { FeatureSection } from "./feature-section";
@@ -7,8 +8,19 @@ import { FloatingIcons } from "./floting-icons";
 import { Testimonials } from "./testimonials";
 import { Button } from "./ui/Button";
 import { UserJourneys } from "./user-journeys";
+import { useRouter } from "next/navigation";
 
 export default function Section() {
+  const router = useRouter();
+  const { status } = useSession();
+
+  const handlecheck = () => {
+    if (status == "authenticated") {
+      router.push("/dashboard");
+    } else {
+      router.push("/auth/login");
+    }
+  };
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
@@ -47,6 +59,7 @@ export default function Section() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size={"lg"}
+                onClick={handlecheck}
                 className="bg-black hover:bg-gray-800 text-white rounded-full px-8"
               >
                 Get started
