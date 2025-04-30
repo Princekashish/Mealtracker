@@ -1,4 +1,5 @@
-import { Section } from "@/components/section-0";
+
+import Section from "@/components/section-0";
 import React from "react";
 
 function HomePage() {

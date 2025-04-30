@@ -2,7 +2,9 @@
 export const Section1 = () => {
   return (
     <div>
-      <h1>Dashboard</h1>
+      <h1>
+        Track Your Daily Meal
+      </h1>
     </div>
   );
 };
