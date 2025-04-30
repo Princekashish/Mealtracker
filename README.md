@@ -1,4 +1,4 @@
-# 🍽️ Mealtracker
+# Mealtracker
 
 **Mealtracker** is a smart meal-tracking web app that helps students and individuals manage tiffin service consumption. Users can track daily meals, avoid overpaying, analyze patterns, and calculate monthly expenses — all in one place.
 
