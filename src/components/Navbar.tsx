@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import {  LogOut, Menu, X } from "lucide-react";
 import { Button } from "./ui/Button";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -10,16 +10,29 @@ import Image from "next/image";
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session, status } = useSession();
+  const [userdropdown, setUserDropDown] = useState(false);
+
   if (status === "loading") {
     return (
-      <div className="w-full py-4 flex justify-center items-center bg-white border-b">
-        <p className="text-gray-600 animate-pulse">Loading...</p>
+      <div className="space-y-8  py-5 animate-pulse backdrop-blur-md sticky top-0 z-50 p-10 w-full  border-gray-200">
+        <div className="flex justify-around items-center ">
+          <div className="h-4 bg-gray-200 rounded-3xl w-24" />
+          <div className="flex justify-center items-center gap-4">
+            <div className="h-4 bg-gray-200 rounded-3xl w-24" />
+            <div className="h-4 bg-gray-200 rounded-3xl w-24" />
+            <div className="h-4 bg-gray-200 rounded-3xl w-24" />
+          </div>
+          <div className="flex justify-center items-center gap-5">
+            <div className="h-4 bg-gray-200 rounded-3xl w-24" />
+            <div className="h-9 bg-gray-200  rounded-full w-9" />
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <header className="border-b border-gray-100 bg-white/80 backdrop-blur-md sticky top-0 z-50 p-2">
+    <header className=" border-gray-100 bg-white/80 backdrop-blur-md sticky top-0 z-50 p-2 duration-500 transition ease-in-out">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
@@ -74,32 +87,55 @@ export function Navbar() {
             </Link>
           </nav>
 
-          {status === "authenticated" ? (
-            <div onClick={() => signOut()}>
-              <Image
-                src={
-                  session.user?.image ||
-                  "https://avatar.iran.liara.run/public/boy"
-                }
-                alt="User avatar"
-                className="h-[35px] w-[35px] rounded-full"
-              />
-            </div>
-          ) : (
-            <div className="hidden md:flex items-center gap-4">
-              <Link href="/auth/login" className=" cursor-pointer ">
-                <Button variant="outline" size="sm" className="rounded-full">
-                  Log in
-                </Button>
-              </Link>
-              <Button
-                size="sm"
-                className="bg-black hover:bg-gray-800 text-white rounded-full"
+          <div className="flex justify-center items-center relative">
+            {status === "authenticated" ? (
+              <div
+                onClick={() => setUserDropDown((pre) => !pre)}
+                className={`flex justify-center items-center gap-2 cursor-pointer border rounded-3xl  p-2`}
               >
-                Sign up
-              </Button>
+                <h1 className="font-medium">{session?.user?.name}</h1>
+                <Image
+                  src={
+                    session.user?.image ||
+                    "https://avatar.iran.liara.run/public/boy"
+                  }
+                  alt="User avatar"
+                  className=" rounded-full"
+                  width={30}
+                  height={30}
+                />
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center gap-4">
+                <Link href="/auth/login" className=" cursor-pointer ">
+                  <Button variant="outline" size="sm" className="rounded-full">
+                    Log in
+                  </Button>
+                </Link>
+                <Button
+                  size="sm"
+                  className="bg-black hover:bg-gray-800 text-white rounded-full"
+                >
+                  Sign up
+                </Button>
+              </div>
+            )}
+
+            <div className="absolute top-full w-full mt-3">
+              {userdropdown && (
+                <div
+                  onClick={() => signOut()}
+                  className="flex flex-col justify-start items-start p-1  bg-[#f6f6f6] rounded-full cursor-pointer"
+                >
+
+                  <Button className="flex justify-center text-red-600 items-center gap-2 cursor-pointer">
+                    {" "}
+                    <LogOut /> Logout
+                  </Button>
+                </div>
+              )}
             </div>
-          )}
+          </div>
 
           <button
             className="md:hidden"

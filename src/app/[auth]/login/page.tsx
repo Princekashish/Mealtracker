@@ -10,8 +10,9 @@ export default function WelcomeBack() {
   const router = useRouter();
   const { status } = useSession();
 
+
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === "loading") {
       router.push("/");
     }
   }, [status]);
