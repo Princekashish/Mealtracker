@@ -3,16 +3,18 @@ import Image from "next/image"
 export function AppShowcase() {
   return (
     <section className="container mx-auto px-4 py-12">
-      <div className="relative max-w-5xl mx-auto">
+      <div className="relative max-w-5xl mx-auto ">
         {/* Device frame */}
-        <div className="relative rounded-3xl overflow-hidden border border-gray-200 shadow-2xl">
-          <Image
-            src="https://images.unsplash.com/photo-1598167912234-02576c0c5f16?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="Mealtracker Dashboard"
-            width={1200}
-            height={800}
-            className="w-full h-[60vh] object-cover"
-          />
+        <div className="relative rounded-3xl bg-[url('https://images.pexels.com/photos/20395301/pexels-photo-20395301.jpeg')] bg-cover bg-center h-[50vh] md:h-[70vh] overflow-hidden border border-gray-200 shadow-2xl ">
+          <div className="p-4 md:p-0 h-[50vh] md:h-[70vh] flex justify-center items-center">
+            <Image
+              src="/Desktopview.png"
+              alt="Mealtracker Dashboard"
+              width={650}
+              height={550}
+              className=" relative z-10  object-cover"
+            />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
 
           {/* Overlay content */}
@@ -25,7 +27,7 @@ export function AppShowcase() {
         </div>
 
         {/* Dashboard content */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        {/* <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-lg max-w-md">
             <h3 className="text-lg font-semibold mb-2">Track your tiffin meals</h3>
             <p className="text-sm text-gray-600 mb-4">
@@ -46,7 +48,7 @@ export function AppShowcase() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   )

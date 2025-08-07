@@ -9,7 +9,7 @@ const FooterWrapper = () => {
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
 
   // Define routes where Navbar should be hidden
-  const hiddenNavbarRoutes = ["/auth"];
+  const hiddenNavbarRoutes = ["/auth","/dashboard"];
 
   useEffect(() => {
     const shouldHideNavbar = hiddenNavbarRoutes.some((route) =>

@@ -1,120 +1,273 @@
 "use client";
-
-import { useSession } from "next-auth/react";
 import { AppShowcase } from "./app-showcase";
 import { CreationSection } from "./creation-section";
 import { FeatureSection } from "./feature-section";
 import { FloatingIcons } from "./floting-icons";
 import { Testimonials } from "./testimonials";
-import { Button } from "./ui/Button";
 import { UserJourneys } from "./user-journeys";
-import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import Hero from "./hero-section";
+
 
 export default function Section() {
-  const router = useRouter();
-  const { status } = useSession();
+  const mainRef = useRef<HTMLDivElement>(null);
 
-  const handlecheck = () => {
-    if (status == "authenticated") {
-      router.push("/dashboard");
-    } else {
-      router.push("/auth/login");
+
+  useEffect(() => {
+    // Hero section entrance animations
+    const tl = gsap.timeline();
+
+    tl.fromTo(
+      ".hero-icon",
+      {
+        y: 50,
+        opacity: 0,
+        rotation: -10
+      },
+      {
+        y: 0,
+        opacity: 1,
+        rotation: 0,
+        duration: 1,
+        ease: "power3.out",
+        delay: 0.2
+      }
+    )
+      .fromTo(
+        ".hero-title",
+        {
+          y: 100,
+          opacity: 0
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.2,
+          ease: "power3.out"
+        },
+        "-=0.8"
+      )
+      .fromTo(
+        ".hero-description",
+        {
+          y: 50,
+          opacity: 0
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out"
+        },
+        "-=0.8"
+      )
+      .fromTo(
+        ".hero-buttons",
+        {
+          y: 50,
+          opacity: 0
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          stagger: 0.2
+        },
+        "-=0.6"
+      )
+      .fromTo(
+        ".hero-badge",
+        {
+          scale: 0.8,
+          opacity: 0
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.8,
+          ease: "back.out(1.7)"
+        },
+        "-=0.4"
+      );
+
+    // Intersection Observer for scroll-triggered animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -100px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+
+          // Different animation based on element class
+          if (element.classList.contains("animate-on-scroll")) {
+            gsap.fromTo(
+              element,
+              {
+                y: 100,
+                opacity: 0,
+                scale: 0.95
+              },
+              {
+                y: 0,
+                opacity: 1,
+                scale: 1,
+                duration: 1,
+                ease: "power3.out"
+              }
+            );
+          }
+
+          if (element.classList.contains("feature-card")) {
+            gsap.fromTo(
+              element,
+              {
+                y: 60,
+                opacity: 0,
+                rotationY: 15
+              },
+              {
+                y: 0,
+                opacity: 1,
+                rotationY: 0,
+                duration: 0.8,
+                ease: "power3.out"
+              }
+            );
+          }
+
+          if (element.classList.contains("testimonial-item")) {
+            gsap.fromTo(
+              element,
+              {
+                x: 100,
+                opacity: 0,
+                scale: 0.9
+              },
+              {
+                x: 0,
+                opacity: 1,
+                scale: 1,
+                duration: 0.8,
+                ease: "power3.out"
+              }
+            );
+          }
+
+          if (element.classList.contains("floating-icons")) {
+            gsap.fromTo(
+              element,
+              {
+                y: 50,
+                opacity: 0,
+                scale: 0.8
+              },
+              {
+                y: 0,
+                opacity: 1,
+                scale: 1,
+                duration: 1.2,
+                ease: "elastic.out(1, 0.3)"
+              }
+            );
+          }
+
+          // Stop observing after animation
+          observer.unobserve(element);
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animated elements
+    const animatedElements = document.querySelectorAll(
+      ".animate-on-scroll, .feature-card, .testimonial-item, .floating-icons"
+    );
+    animatedElements.forEach((el) => observer.observe(el));
+
+    // Parallax effect for floating icons using scroll event
+    const handleScroll = () => {
+      const scrolled = window.pageYOffset;
+      const parallaxElements = document.querySelectorAll(".floating-icons");
+
+      parallaxElements.forEach((element) => {
+        const speed = 0.3;
+        const yPos = -(scrolled * speed);
+        gsap.set(element, { y: yPos });
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Smooth scroll behavior for anchor links
+    const smoothScrollTo = (target: string) => {
+      const element = document.querySelector(target);
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    };
+
+    // Add smooth scroll to "How it works" button
+    const howItWorksBtn = document.querySelector('.how-it-works-btn');
+    if (howItWorksBtn) {
+      howItWorksBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        smoothScrollTo('.feature-section');
+      });
     }
-  };
-  return (
-    <div className="flex min-h-screen flex-col">
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="container mx-auto px-4 pt-20 pb-16 md:pt-32 md:pb-24">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="inline-block mb-6">
-              <div className="flex items-center justify-center w-12 h-12 bg-amber-500 rounded-xl">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-white"
-                >
-                  <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-                  <path d="M7 2v20" />
-                  <path d="M21 15V2" />
-                  <path d="M18 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-                  <path d="M18 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-                </svg>
-              </div>
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              Track your meals with real-time insights.
-            </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-lg mx-auto tracking-tight">
-              Never overpay for your tiffin services again. Track, manage, and
-              optimize your meal expenses.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size={"lg"}
-                onClick={handlecheck}
-                className="bg-black hover:bg-gray-800 text-white rounded-full px-8"
-              >
-                Get started
-              </Button>
-              <Button
-                variant="outline"
-                size={"lg"}
-                className="rounded-full px-8"
-              >
-                How it works →
-              </Button>
-            </div>
-            <div className="mt-6">
-              <button className="bg-green-50 text-green-700 border-green-200 text-sm px-2 py-1 border-dashed border-[1px] rounded-full">
-                {" "}
-                ✓ Free for students!
-              </button>
-            </div>
-          </div>
-        </section>
 
-        {/* App Showcase Section */}
-        <AppShowcase />
+    // Cleanup function
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+      tl.kill();
+    };
+  }, []);
+  // bg-[#F9FAFB]
+  return (
+    <div ref={mainRef} className="flex min-h-screen flex-col ">
+      <main className="">
+
+        <Hero />
+
 
         {/* Floating Icons with Counter */}
-        <FloatingIcons />
+        <div className="floating-icons gsap-animated hidden md:block">
+          <FloatingIcons />
+        </div>
 
-        {/* Feature Section */}
-        <FeatureSection />
+        {/* App Showcase */}
+        <div className="animate-on-scroll gsap-animated">
+          <AppShowcase />
+        </div>
 
-        {/* User Journeys Section */}
-        <UserJourneys />
+        {/* Features */}
+        <div className="feature-section animate-on-scroll gsap-animated">
+          <FeatureSection />
+        </div>
 
         {/* Creation Section */}
-        <CreationSection />
+        <div className="animate-on-scroll gsap-animated">
+          <CreationSection />
+        </div>
 
-        {/* Testimonials Section */}
-        <Testimonials />
+        {/* User Journeys */}
+        <div className="animate-on-scroll gsap-animated">
+          <UserJourneys />
+        </div>
 
-        {/* Final CTA */}
-        <section className="container mx-auto px-4 py-20 text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Never overpay for meals again.
-          </h2>
-          <p className="text-lg text-gray-600 mb-8">
-            Start tracking your meals today.{" "}
-            <span className="font-semibold text-green-600">
-              Always free for students!
-            </span>
-          </p>
-          <Button className="bg-black hover:bg-gray-800 text-white rounded-full px-8">
-            Start tracking
-          </Button>
-        </section>
+        {/* Testimonials */}
+        <div className="testimonials animate-on-scroll gsap-animated">
+          <Testimonials />
+        </div>
       </main>
     </div>
   );
 }
+{/*  */ }

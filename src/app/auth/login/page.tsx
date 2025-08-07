@@ -1,21 +1,29 @@
 "use client";
 import { CircleArrowLeft } from "lucide-react";
-import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/utils/Auth/AuthProvider";
 
 export default function WelcomeBack() {
   const [email, setEmail] = useState("");
   const router = useRouter();
-  const { status } = useSession();
+  const { user, loading, signInWithGoogle } = useAuth();
 
-
+  // Redirect to dashboard if user is already authenticated
   useEffect(() => {
-    if (status === "loading") {
-      router.push("/");
+    if (user && !loading) {
+      router.push("/dashboard");
     }
-  }, [status]);
+  }, [user, loading, router]);
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black  text-white p-4 relative">
@@ -50,7 +58,7 @@ export default function WelcomeBack() {
 
         {/* Google Login Button */}
         <button
-          onClick={() => signIn("google")}
+          onClick={handleGoogleSignIn}
           className="flex items-center justify-center w-full p-3 mb-4 border border-gray-700 rounded-full hover:bg-white/10 transition-colors"
         >
           <svg className="mr-2" width="20" height="20" viewBox="0 0 24 24">

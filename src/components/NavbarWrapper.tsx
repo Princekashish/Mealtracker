@@ -3,23 +3,22 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Navbar } from "./navbar";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/utils/Auth/AuthProvider";
 
 const NavbarWrapper = () => {
   const pathname = usePathname();
-  const { status } = useSession();
+  const { loading } = useAuth();
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
 
   // Define routes where Navbar should be hidden
   const hiddenNavbarRoutes = ["/auth"];
 
   useEffect(() => {
-    if (status === "loading") return; 
-    const shouldHideNavbar = hiddenNavbarRoutes.some((route) =>
-      pathname.startsWith(route)
-    );
+    // Hide navbar during loading state or on auth routes
+    const shouldHideNavbar = hiddenNavbarRoutes.some((route) => pathname.startsWith(route));
+
     setIsNavbarVisible(!shouldHideNavbar);
-  }, [pathname]);
+  }, [pathname, loading]);
 
   return isNavbarVisible ? <Navbar /> : null;
 };

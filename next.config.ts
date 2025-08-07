@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       "avatar.iran.liara.run",
       "plus.unsplash.com",
       "lh3.googleusercontent.com",
+      "images.pexels.com"
     ],
   },
 };

@@ -13,20 +13,20 @@ export function FloatingIcons() {
   if (!mounted) return null
 
   const icons = [
-    { color: "bg-amber-500", top: "10%", left: "10%" },
-    { color: "bg-green-500", top: "20%", right: "15%" },
-    { color: "bg-blue-500", bottom: "30%", left: "20%" },
-    { color: "bg-purple-500", bottom: "20%", right: "25%" },
-    { color: "bg-red-500", top: "40%", left: "30%" },
-    { color: "bg-yellow-500", bottom: "40%", right: "10%" },
-  ]
+    { color: "bg-amber-500", top: "10%", left: "10%", hideOnMobile: false },
+    { color: "bg-green-500", top: "20%", right: "15%", hideOnMobile: false },
+    { color: "bg-blue-500", bottom: "30%", left: "20%", hideOnMobile: true },
+    { color: "bg-purple-500", bottom: "20%", right: "25%", hideOnMobile: true },
+    { color: "bg-red-500", top: "40%", left: "30%", hideOnMobile: true },
+    { color: "bg-yellow-500", bottom: "40%", right: "10%", hideOnMobile: true },
+  ];
 
   return (
-    <section className="container mx-auto px-4 py-20 text-center relative">
+    <section className="container mx-auto px-4 py-20 text-center relative min-h-[200px] flex flex-col items-center justify-center">
       {icons.map((icon, index) => (
         <motion.div
           key={index}
-          className={`absolute w-10 h-10 ${icon.color} rounded-full flex items-center justify-center shadow-lg`}
+          className={`absolute ${icon.hideOnMobile ? 'hidden sm:flex' : 'flex'} w-6 h-6 sm:w-10 sm:h-10 ${icon.color} rounded-full items-center justify-center shadow-lg`}
           style={{
             top: icon.top,
             left: icon.left,
@@ -44,15 +44,13 @@ export function FloatingIcons() {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
+            width="16" height="16" className="sm:w-5 sm:h-5 text-white"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-white"
           >
             <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
             <path d="M7 2v20" />
@@ -64,12 +62,12 @@ export function FloatingIcons() {
       ))}
 
       <motion.div
-        className="text-5xl md:text-6xl font-bold"
+        className="text-3xl sm:text-5xl md:text-6xl font-bold z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.5 }}
       >
-        1,000+ users
+        1+ users
       </motion.div>
     </section>
   )
