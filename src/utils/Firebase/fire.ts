@@ -3,12 +3,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA6T_sYn798AmsTOIx3ow3lgxCLzwtM5Rc",
-  authDomain: "mealtracker-df890.firebaseapp.com",
-  projectId: "mealtracker-df890",
-  storageBucket: "mealtracker-df890.firebasestorage.app",
-  messagingSenderId: "1089795478289",
-  appId: "1:1089795478289:web:522ab940835fc7e8fd32b0"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
