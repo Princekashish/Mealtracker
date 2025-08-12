@@ -9,7 +9,7 @@ import { useAuth } from "@/utils/Auth/AuthProvider";
 import Image from "next/image";
 import { HiArrowLongRight } from "react-icons/hi2";
 
-export default function Navbar() {
+export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, signOut } = useAuth();
   const [userdropdown, setUserDropDown] = useState(false);

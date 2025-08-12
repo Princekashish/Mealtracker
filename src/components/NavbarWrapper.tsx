@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/utils/Auth/AuthProvider";
-import Navbar from "@/components/navbar";
+import { Navbar } from "@/components/navbar";
 
 const NavbarWrapper = () => {
   const pathname = usePathname();
