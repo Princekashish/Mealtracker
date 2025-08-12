@@ -9,7 +9,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
-const [userdropdown, setUserDropDown] = useState(false);
+  const [userdropdown, setUserDropDown] = useState(false);
   const { user, loading, signOut } = useAuth();
 
   // useEffect(() => {
@@ -21,7 +21,7 @@ const [userdropdown, setUserDropDown] = useState(false);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-[80vh]">
         <div className=""><LoaderCircle className="animate-spin" /></div>
       </div>
     );
@@ -43,11 +43,27 @@ const [userdropdown, setUserDropDown] = useState(false);
         <DashboardSidebar />
         <div className="flex flex-col overflow-hidden w-full min-h-screen ">
           <div className="hidden md:block sticky top-0 border-b-[1px] z-10 p-[16px] ">
-            <div className="flex justify-end items-center gap-5  w-full">
-              <div className="md:border md:border-gray-200 h-9 w-10 flex justify-center items-center rounded-xl ">
-                <Bell size={25} className="font-light" />
+            <div className="flex justify-between items-center gap-5  w-full ">
+              <div>
+                {
+                  user?.displayName ? (
+                    <div>
+                      <h1 className="font-semibold text-2xl ">Hi, {user.displayName}</h1>
+                      <p className=" text-gray-600">Let's take a look at your meals today</p>
+                    </div>
+                  ) : (
+                    <div>
+
+                    </div>
+                  )
+                }
               </div>
-              <div >
+
+              <div className="flex justify-center items-center gap-4" >
+                <div className="md:border md:border-gray-200 h-9 w-10 flex justify-center items-center rounded-xl ">
+                  <Bell size={25} className="font-light" />
+                </div>
+
                 {user ? (
                   <div
                     onClick={() => setUserDropDown((pre) => !pre)}

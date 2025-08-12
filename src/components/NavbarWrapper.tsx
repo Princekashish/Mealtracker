@@ -11,7 +11,7 @@ const NavbarWrapper = () => {
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
 
   // Define routes where Navbar should be hidden
-  const hiddenNavbarRoutes = ["/auth"];
+  const hiddenNavbarRoutes = ["/auth","/dashboard"];
 
   useEffect(() => {
     // Hide navbar during loading state or on auth routes

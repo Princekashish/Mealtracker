@@ -12,12 +12,11 @@
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@radix-ui/react-progress": "^1.1.7",
-    "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "firebase": "^11.6.1",
-    "framer-motion": "^12.9.2",
+    "framer-motion": "^12.23.12",
     "gsap": "^3.13.0",
     "lucide-react": "^0.503.0",
     "next": "15.3.1",

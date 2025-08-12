@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 
-export function FloatingIcons() {
+ function FloatingIcons() {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -72,3 +72,4 @@ export function FloatingIcons() {
     </section>
   )
 }
+export default FloatingIcons;

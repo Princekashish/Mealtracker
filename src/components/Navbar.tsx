@@ -7,6 +7,7 @@ import { LogOut, Menu, X, } from "lucide-react";
 import { Button } from "./ui/Button";
 import { useAuth } from "@/utils/Auth/AuthProvider";
 import Image from "next/image";
+import { HiArrowLongRight } from "react-icons/hi2";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -144,9 +145,9 @@ export function Navbar() {
                   <Button
                     size="sm"
                     variant="link"
-                    className="bg-black hover:bg-gray-800 text-white rounded-full"
+                    className="bg-black hover:bg-gray-800 text-white rounded-full flex justify-center items-center gap-2"
                   >
-                    Get start
+                    Get start  <HiArrowLongRight size={15}/>
                   </Button>
                 </Link>
               </div>

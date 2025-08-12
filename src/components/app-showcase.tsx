@@ -1,11 +1,11 @@
 import Image from "next/image"
 
-export function AppShowcase() {
+function AppShowcase() {
   return (
     <section className="container mx-auto px-4 py-12">
       <div className="relative max-w-5xl mx-auto ">
         {/* Device frame */}
-        <div className="relative rounded-3xl bg-[url('https://images.pexels.com/photos/20395301/pexels-photo-20395301.jpeg')] bg-cover bg-center h-[50vh] md:h-[70vh] overflow-hidden border border-gray-200 shadow-2xl ">
+        <div className="relative rounded-3xl bg-[url('https://images.pexels.com/photos/20395301/pexels-photo-20395301.jpeg?auto=compress&cs=tinysrgb&w=1200')] bg-cover bg-center h-[50vh] md:h-[70vh] overflow-hidden border border-gray-200 shadow-2xl ">
           <div className="p-4 md:p-0 h-[50vh] md:h-[70vh] flex justify-center items-center">
             <Image
               src="/Desktopview.png"
@@ -53,3 +53,4 @@ export function AppShowcase() {
     </section>
   )
 }
+export default AppShowcase

@@ -62,6 +62,8 @@ export function Testimonials() {
                   width={40}
                   height={40}
                   className="rounded-full"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div>
                   <h4 className="font-medium">{testimonial.name}</h4>

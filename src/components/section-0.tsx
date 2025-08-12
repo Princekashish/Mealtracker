@@ -1,19 +1,17 @@
 "use client";
-import { AppShowcase } from "./app-showcase";
 import { CreationSection } from "./creation-section";
 import { FeatureSection } from "./feature-section";
-import { FloatingIcons } from "./floting-icons";
 import { Testimonials } from "./testimonials";
 import { UserJourneys } from "./user-journeys";
-import { useEffect, useRef } from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import Hero from "./hero-section";
+const AppShowcase = React.lazy(() => import("./app-showcase"));
+const FloatingIcons = React.lazy(() => import("./floting-icons"))
 
 
 export default function Section() {
   const mainRef = useRef<HTMLDivElement>(null);
-
-
   useEffect(() => {
     // Hero section entrance animations
     const tl = gsap.timeline();
@@ -233,18 +231,21 @@ export default function Section() {
   return (
     <div ref={mainRef} className="flex min-h-screen flex-col ">
       <main className="">
-
         <Hero />
-
-
         {/* Floating Icons with Counter */}
         <div className="floating-icons gsap-animated hidden md:block">
+
           <FloatingIcons />
+
         </div>
 
         {/* App Showcase */}
         <div className="animate-on-scroll gsap-animated">
-          <AppShowcase />
+          <Suspense fallback={<div>
+            <div className="h-[40vh] bg-red-300 " />
+          </div>}>
+            <AppShowcase />
+          </Suspense>
         </div>
 
         {/* Features */}

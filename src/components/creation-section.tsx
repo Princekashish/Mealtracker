@@ -4,7 +4,7 @@ export function CreationSection() {
   return (
     <section className="container mx-auto px-4 py-20">
       <div className="max-w-3xl mx-auto text-center mb-16">
-        <h2 className="text-3xl   md:text-[2.2em] font-bold mb-4">From tracking to  <br className="md:hidden"/> <span className="text-amber-300 ">savings</span></h2>
+        <h2 className="text-3xl   md:text-[2.2em] font-bold mb-4">From tracking to  <br className="md:hidden" /> <span className="text-amber-300 ">savings</span></h2>
         <p className="text-gray-600 text-sm tracking-tight">
           See how Mealtracker helps you save money on your daily meals.
         </p>
@@ -17,6 +17,8 @@ export function CreationSection() {
               src="https://plus.unsplash.com/premium_photo-1681487874673-976050b1dcab?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Track Daily Meals"
               fill
+              loading="lazy"
+              decoding="async"
               className="object-cover"
             />
           </div>
@@ -26,7 +28,7 @@ export function CreationSection() {
           </p>
         </div>
 
-        
+
 
         <div className="bg-white rounded-xl p-6 shadow-md">
           <div className="aspect-video relative mb-4 rounded-lg overflow-hidden bg-gray-100">
@@ -34,6 +36,8 @@ export function CreationSection() {
               src="https://plus.unsplash.com/premium_photo-1681487810054-4bced4f73e24?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Analyze Patterns"
               fill
+              loading="lazy"
+              decoding="async"
               className="object-cover"
             />
           </div>
@@ -49,6 +53,8 @@ export function CreationSection() {
               src="https://images.unsplash.com/photo-1622186477895-f2af6a0f5a97?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Optimize Expenses"
               fill
+              loading="lazy"
+              decoding="async"
               className="object-cover"
             />
           </div>
