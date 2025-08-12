@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import Footer from "./footer";
+import Footer from "@/components/footer";
 
-const FooterWrapper = () => {
+const FooterWrapper:React.FC = () => {
   const pathname = usePathname();
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
 

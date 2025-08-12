@@ -1,18 +1,15 @@
-
-import { LoaderCircle } from "lucide-react";
-import React, { Suspense } from "react";
-const Section = React.lazy(() => import("@/components/section-0"))
+"use client"
+import dynamic from "next/dynamic";
+import React from "react";
+const Section = dynamic(() => import("@/components/section-0"), {
+  loading: () => <p>Loading...</p>,
+})
 function HomePage() {
 
 
   return (
     <div>
-      <Suspense fallback={<div className="flex justify-center items-center h-[80vh]">
-        <div className=""><LoaderCircle className="animate-spin" /></div>
-      </div>}>
-        <Section />
-
-      </Suspense>
+      <Section />
     </div>
   );
 }
