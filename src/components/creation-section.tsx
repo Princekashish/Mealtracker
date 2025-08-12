@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export function CreationSection() {
+export default function CreationSection() {
   return (
     <section className="container mx-auto px-4 py-20">
       <div className="max-w-3xl mx-auto text-center mb-16">

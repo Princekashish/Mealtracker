@@ -1,11 +1,11 @@
 "use client";
-import { CreationSection } from "./creation-section";
-import { FeatureSection } from "./feature-section";
 import { Testimonials } from "./testimonials";
 import { UserJourneys } from "./user-journeys";
 import React, { Suspense, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import Hero from "./hero-section";
+import FeatureSection from "./feature-section";
+import CreationSection from "./creation-section";
 const AppShowcase = React.lazy(() => import("./app-showcase"));
 const FloatingIcons = React.lazy(() => import("./floting-icons"))
 

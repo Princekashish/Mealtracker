@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { Navbar } from "./navbar";
 import { useAuth } from "@/utils/Auth/AuthProvider";
+import Navbar from "./navbar";
 
 const NavbarWrapper = () => {
   const pathname = usePathname();

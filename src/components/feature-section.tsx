@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export function FeatureSection() {
+export default function FeatureSection() {
   // Array of random food and tracking related images
   const featureImages = [
     "/featurs-mobile.png",

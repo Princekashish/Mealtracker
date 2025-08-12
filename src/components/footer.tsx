@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export function Footer() {
+export default function Footer() {
   return (
     <footer className="flex flex-col md:flex-row justify-around items-center p-4 mb-4 gap-4 md:gap-0 ">
       <div className="flex items-center">
