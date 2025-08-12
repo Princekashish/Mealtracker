@@ -8,7 +8,7 @@ import { FileDown } from "lucide-react";
 
 const COLORS = ['#10B981', '#F97316', '#3B82F6', '#6366f1', '#ec4899', '#f59e0b', '#F4F4F5'];
 
-export function ExpenseBreakdown() {
+export default function ExpenseBreakdown() {
 
   const mealLogs = useStore((state) => state.mealLogs)
   const currentMonth = useStore((state) => state.currentMonth)

@@ -1,14 +1,53 @@
 "use client";
 
-import Aianalysis from "@/components/dashboard/aianalysis";
-import { ExpenseBreakdown } from "@/components/dashboard/expense-break-down";
-import MealCalendar from "@/components/dashboard/meal-calendar";
-import MealTracker from "@/components/dashboard/meal-onboarding";
-import { MealTrends } from "@/components/dashboard/meal-trends";
-import { MealMetrics } from "@/components/dashboard/meals-matrics";
-import OnboardingDialog from "@/components/dashboard/on-boarding";
-import { RecentActivity } from "@/components/dashboard/recent-activity";
-import { VendorOverview } from "@/components/dashboard/vendor-overview";
+import dynamic from 'next/dynamic';
+
+// Dynamic imports with SSR disabled and loading fallback
+const Aianalysis = dynamic(() => import('@/components/dashboard/aianalysis'), {
+  ssr: false,
+  loading: () => <p>Loading AI Analysis...</p>,
+});
+
+const ExpenseBreakdown = dynamic(() => import('@/components/dashboard/expense-break-down'), {
+  ssr: false,
+  loading: () => <p>Loading Expense Breakdown...</p>,
+});
+
+const MealCalendar = dynamic(() => import('@/components/dashboard/meal-calendar'), {
+  ssr: false,
+  loading: () => <p>Loading Meal Calendar...</p>,
+});
+
+const MealTracker = dynamic(() => import('@/components/dashboard/meal-onboarding'), {
+  ssr: false,
+  loading: () => <p>Loading Meal Tracker...</p>,
+});
+
+const MealTrends = dynamic(() => import('@/components/dashboard/meal-trends'), {
+  ssr: false,
+  loading: () => <p>Loading Meal Trends...</p>,
+});
+
+const MealMetrics = dynamic(() => import('@/components/dashboard/meals-matrics'), {
+  ssr: false,
+  loading: () => <p>Loading Meal Metrics...</p>,
+});
+
+const OnboardingDialog = dynamic(() => import('@/components/dashboard/on-boarding'), {
+  ssr: false,
+  loading: () => <p>Loading Onboarding Dialog...</p>,
+});
+
+const RecentActivity = dynamic(() => import('@/components/dashboard/recent-activity'), {
+  ssr: false,
+  loading: () => <p>Loading Recent Activity...</p>,
+});
+
+const VendorOverview = dynamic(() => import('@/components/dashboard/vendor-overview'), {
+  ssr: false,
+  loading: () => <p>Loading Vendor Overview...</p>,
+});
+
 import { Button } from "@/components/ui/Button";
 import { useStore } from "@/lib/store";
 import { useAuth } from "@/utils/Auth/AuthProvider";
@@ -50,7 +89,7 @@ export default function DashboardPage() {
 
 
   const handelclose = () => {
-    setIsHiding(true); 
+    setIsHiding(true);
     setTimeout(() => {
       setShowAnalysis(false);
 

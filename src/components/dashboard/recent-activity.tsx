@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { BadgeCheck, PlusCircle, Trash2, Users, Utensils, X } from "lucide-react"
 
-export function RecentActivity() {
+export default function RecentActivity() {
   const recentActivity = useStore((state) => state.activities);
 
   // const activities = [

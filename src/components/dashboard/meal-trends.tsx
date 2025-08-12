@@ -246,7 +246,7 @@ const NavigationControls = ({
 );
 
 // Main Component
-export function MealTrends() {
+export default function MealTrends() {
   const [trendView, setTrendView] = useState<TrendView>('daily');
 
   const currentMonth = useStore((state) => state.currentMonth);

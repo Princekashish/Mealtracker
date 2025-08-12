@@ -26,7 +26,7 @@ type Metric = {
 };
 
 
-export function MealMetrics() {
+export default function MealMetrics() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const mealLogs = useStore((state) => state.mealLogs)

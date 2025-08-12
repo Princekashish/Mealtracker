@@ -7,7 +7,7 @@ import { useStore } from "@/lib/store"
 import { Progress } from "../ui/process"
 import { isSameMonth, parseISO } from "date-fns"
 
-export function VendorOverview() {
+export default function VendorOverview() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 

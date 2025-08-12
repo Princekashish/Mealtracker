@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Navbar } from "@/components/navbar";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/utils/Auth/AuthProvider";
+import Navbar from "./Navbar";
+
 
 const NavbarWrapper: React.FC = () => {
   const pathname = usePathname();
