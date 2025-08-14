@@ -28,7 +28,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      <meta name="apple-mobile-web-app-title" content="Meal Track" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
       </head>
       <body
         className={`${fontSans.className}  antialiased`}
