@@ -163,25 +163,34 @@ export default function MealMetrics() {
   const MetricCard = ({ metric, index }: { metric: Metric; index: number }) => {
     const IconComponent = getIcon(metric.icon);
     return (
-      <div className={`p-5 rounded-3xl  md:border md:border-gray-200 ${index === 0 ? "bg-[#ECEFF4] md:bg-[#ffffff]" : ""} ${index === 1 ? "bg-[#F3F4EC] md:bg-[#ffffff]" : ""} ${index === 2 ? "bg-[#EDF4EF] md:bg-[#ffffff]" : ""} ${index === 3 ? "bg-[#F4ECF3] md:hidden" : ""} `}>
+      <div className={`
+          p-5 rounded-3xl md:border md:border-gray-200 dark:border-none
+          ${index === 0 ? "bg-[#ECEFF4] dark:bg-[#1C1C24] md:bg-white dark:md:bg-zinc-900" : ""}
+          ${index === 1 ? "bg-[#F3F4EC] dark:bg-[#3D3F34] md:bg-white dark:md:bg-zinc-900" : ""}
+          ${index === 2 ? "bg-[#EDF4EF] dark:bg-[#34413A] md:bg-white dark:md:bg-zinc-900" : ""}
+          ${index === 3 ? "bg-[#F4ECF3] dark:bg-[#41353A] md:hidden" : ""}
+        `}>
         <div className="flex flex-row items-center justify-between space-y-0 pb-2 gap-5 h-[60px] lg:h-[60px]">
-          <div className={`text-lg font-medium  md:font-medium  tracking-tight flex-wrap hidden  md:block`}>{metric.title}</div>
+          <div className="text-lg font-medium tracking-tight flex-wrap hidden md:block text-gray-800 dark:text-gray-100">{metric.title}</div>
 
-          <div className="md:bg-[#F2F2F2] md:px-2 md:py-2 md:rounded-full">
-            <IconComponent size={20} className="h-7 w-7" />
+          <div className="md:bg-[#F2F2F2] dark:md:bg-[#2D2D2D] md:px-2 md:py-2 md:rounded-full">
+            <IconComponent size={20} className="h-7 w-7 text-gray-800 dark:text-gray-100" />
           </div>
         </div>
         <div className="">
           <div className="flex flex-col justify-center items-start gap-1">
-            <div className={`text-sm  text-[#67686A] font-medium  md:font-medium md:hidden  tracking-tight flex-wrap `}>{metric.title}</div>
-            <h1 className={`md:text-[3em] text-[1.6em] font-bold text-[#000000] flex items-center gap-2`}>{metric.value} <span className="text-xs  md:hidden">{metric.short}</span></h1>
+            <p className={`text-sm  text-[#67686A] font-medium  md:font-medium md:hidden  tracking-tight flex-wrap dark:font-semibold`}>{metric.title}</p>
+            <h1 className="md:text-[3em] text-[1.6em] font-bold text-black dark:text-white flex items-center gap-2">
+              {metric.value} <span className="text-xs md:hidden">{metric.short}</span>
+            </h1>
+
           </div>
         </div>
         <div className="hidden md:block">
 
-          <div className={` flex justify-start items-center mt-5 bg-[#F2F2F2] rounded-full px-4 py-2`}>
+          <div className={` flex justify-start items-center mt-5 bg-[#F2F2F2] dark:bg-black/30 rounded-full px-4 py-2`}>
             {metric.currentDay && metric.currentMonth ? (
-              <p className="text-sm font-medium flex justify-center items-center gap-2">
+              <p className="text-sm font-medium flex justify-center items-center gap-2  ">
                 <span className="text-xl">{metric.currentDay}</span> {metric.currentMonth}
               </p>
             ) : (
@@ -233,12 +242,13 @@ export default function MealMetrics() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full transition-colors duration-300">
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
         {metrics.map((metric, index) => (
           <MetricCard key={index} metric={metric} index={index} />
         ))}
       </div>
     </div>
+
   );
 }

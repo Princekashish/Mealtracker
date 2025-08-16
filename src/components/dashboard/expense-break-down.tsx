@@ -56,7 +56,7 @@ export default function ExpenseBreakdown() {
   }, [mealLogs, currentMonth]);
 
   return (
-    <div className="col-span-3 p-5 md:border md:border-gray-200 bg-[#F5F5F5] rounded-3xl h-full ">
+    <div className="col-span-3 p-5 md:border md:border-gray-200 bg-[#F5F5F5] rounded-3xl h-full dark:bg-[#161616] dark:border-none">
       <div>
         <h1 className="lg:text-2xl text-lg font-bold tracking-tight ">
           Expense Breakdown

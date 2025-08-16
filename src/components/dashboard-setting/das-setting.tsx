@@ -1,138 +1,273 @@
 "use client"
-import React, { useState } from "react";
 
-export default function DasbSetting() {
-  const [user, setUser] = useState({
-    name: "Rahul Sharma",
-    email: "rahul.sharma@example.com",
-    phone: "+91 98765 43210",
-  });
-  const [notifications, setNotifications] = useState({
-    email: true,
-    push: false,
-    meal: false,
-    payment: false,
-    monthly: false,
-  });
+import { useRef, useState } from "react"
+import { ImageIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "../ui/Button"
+import { useAuth } from "@/utils/Auth/AuthProvider"
+import Image from "next/image"
+import { Switch } from "../ui/switch"
+console.log("Switch component:", Switch)
 
-  const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-  };
+type TabType = "profile" | "preferences" | "security"
 
-  const handleNotifChange = (key: string) => {
-    setNotifications((prev) => ({ ...prev, [key]: !prev[key as keyof typeof prev] }));
-  };
+
+export function SettingsTabs() {
+  const [activeTab, setActiveTab] = useState<TabType>("profile")
+
+  // Profile state
+  const { user } = useAuth();
+  const [userDetail, setUserDetail] = useState({
+    profile: user?.photoURL || "",
+    name: user?.displayName || "",
+    email: user?.email || "",
+    phone: "",
+  })
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Preferences state
+  const [currency, setCurrency] = useState("INR")
+  // const [timezone, setTimezone] = useState("GMT+5:30")
+  const [mealNotifications, setMealNotifications] = useState(true)
+  const [vendorUpdates, setVendorUpdates] = useState(false)
+  const [recommendations, setRecommendations] = useState(true)
+
+  // Security state
+  const [twoFactorAuth, setTwoFactorAuth] = useState(true)
+  const [currentPassword, setCurrentPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+
+
+  const tabs = [
+    { id: "profile" as TabType, label: "Edit Profile" },
+    { id: "preferences" as TabType, label: "Preferences" },
+    { id: "security" as TabType, label: "Security" },
+  ]
+
+  const handleSave = () => {
+    alert("Settings saved successfully!")
+
+  }
+  //User Profile 
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const result = e.target?.result as string
+        setUserDetail((prev) => ({ ...prev, profile: result }))
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+  const triggerFileInput = () => {
+    fileInputRef.current?.click()
+  }
+
+  //user name
+  const handleChanges: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { id, value } = e.target;
+    setUserDetail((pre) => ({ ...pre, [id]: value }))
+
+  }
 
   return (
-    <div className="p-5 ">
-      <h1 className="text-2xl font-bold mb-1">Settings</h1>
-      <p className="text-muted-foreground mb-6">Manage your account settings and preferences.</p>
-
-      {/* User Settings */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
-        <h2 className="text-xl font-semibold mb-1">User Settings</h2>
-        <p className="text-muted-foreground mb-4">Manage your account information and preferences.</p>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Full Name</label>
-            <input
-              className="w-full border rounded px-3 py-2"
-              name="name"
-              value={user.name}
-              onChange={handleUserChange}
-              type="text"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
-            <input
-              className="w-full border rounded px-3 py-2"
-              name="email"
-              value={user.email}
-              onChange={handleUserChange}
-              type="email"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Phone</label>
-            <input
-              className="w-full border rounded px-3 py-2"
-              name="phone"
-              value={user.phone}
-              onChange={handleUserChange}
-              type="tel"
-            />
-          </div>
-          <button className="bg-[#FE9900] hover:bg-amber-600 text-white px-6 py-2 rounded font-medium mt-2">
-            Save Changes
+    <div className="max-w-4xl mx-auto px-4">
+      {/* Tabs */}
+      <div className="flex border-b border-gray-200 mb-8">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              "px-6 py-3 text-sm font-medium border-b-2 transition-colors",
+              activeTab === tab.id
+                ? "border-[#F59E0B] text-[#F59E0B] " : "border-transparent text-gray-500 hover:text-gray-700"
+            )}
+          >
+            {tab.label}
           </button>
-        </div>
+        ))}
       </div>
 
-      {/* Notification Settings */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold mb-1">Notification Settings</h2>
-        <p className="text-muted-foreground mb-4">Manage your notification preferences.</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-          <div className="space-y-4">
+      {/* === PROFILE TAB === */}
+      {activeTab === "profile" && (
+        <div className="space-y-8 p-5 ">
+          <div className="space-y-6">
+            {/* Profile Picture */}
+            <div className="mt-5">
+              <div className="flex items-center gap-4  justify-start">
+                <div className=" rounded-full bg-red-300">
+                  <Image src={userDetail.profile || "/default-profile.png"} loading="lazy" width={80} height={80} alt={userDetail.name} className="rounded-full h-20 w-20 object-cover" />
+                </div>
+                <div className="flex justify-start items-center flex-col ">
+                  <Button
+                    variant="outline"
+                    onClick={triggerFileInput}
+                    className="flex items-center gap-2 bg-background border-border hover:bg-accent"
+                  >
+                    <ImageIcon className="h-4 w-4" />
+                    Change Picture
+                  </Button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Full Name */}
             <div>
-              <div className="font-medium">Email Notifications</div>
-              <div className="text-muted-foreground text-sm">Receive notifications via email</div>
+              <label htmlFor="fullName" className="text-base font-medium text-gray-900">
+                Full Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                value={userDetail.name}
+                onChange={handleChanges}
+                className="mt-2 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
+              />
+            </div>
+
+            {/* Phone Number */}
+            <div>
+              <label htmlFor="Email" className="text-base font-medium text-gray-900">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={userDetail.email}
+                onChange={handleChanges}
+                disabled
+                className="mt-2 w-full px-4 py-2 bg-[#f2f2f2] border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
+              />
             </div>
             <div>
-              <div className="font-medium">Push Notifications</div>
-              <div className="text-muted-foreground text-sm">Receive notifications on your device</div>
-            </div>
-            <div>
-              <div className="font-medium">Meal Reminders</div>
-              <div className="text-muted-foreground text-sm">Get reminders for upcoming meals</div>
-            </div>
-            <div>
-              <div className="font-medium">Payment Reminders</div>
-              <div className="text-muted-foreground text-sm">Get reminders for upcoming payments</div>
-            </div>
-            <div>
-              <div className="font-medium">Monthly Reports</div>
-              <div className="text-muted-foreground text-sm">Receive monthly expense reports</div>
+              <label htmlFor="phoneNumber" className="text-base font-medium text-gray-900">
+                Phone Number
+              </label>
+              <input
+                id="phone"
+                type="text"
+                placeholder="Enter your phone number"
+                value={userDetail.phone}
+                onChange={handleChanges}
+                className="mt-2 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
+              />
             </div>
           </div>
-          <div className="flex flex-col gap-6 items-end">
-            <label className="inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only" checked={notifications.email} onChange={() => handleNotifChange('email')} />
-              <span className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-amber-300 dark:peer-focus:ring-amber-800 transition-all duration-300 relative">
-                <span className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 ${notifications.email ? 'translate-x-5' : ''}`}></span>
-              </span>
-            </label>
-            <label className="inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only" checked={notifications.push} onChange={() => handleNotifChange('push')} />
-              <span className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-amber-300 dark:peer-focus:ring-amber-800 transition-all duration-300 relative">
-                <span className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 ${notifications.push ? 'translate-x-5' : ''}`}></span>
-              </span>
-            </label>
-            <label className="inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only" checked={notifications.meal} onChange={() => handleNotifChange('meal')} />
-              <span className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-amber-300 dark:peer-focus:ring-amber-800 transition-all duration-300 relative">
-                <span className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 ${notifications.meal ? 'translate-x-5' : ''}`}></span>
-              </span>
-            </label>
-            <label className="inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only" checked={notifications.payment} onChange={() => handleNotifChange('payment')} />
-              <span className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-amber-300 dark:peer-focus:ring-amber-800 transition-all duration-300 relative">
-                <span className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 ${notifications.payment ? 'translate-x-5' : ''}`}></span>
-              </span>
-            </label>
-            <label className="inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only" checked={notifications.monthly} onChange={() => handleNotifChange('monthly')} />
-              <span className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-amber-300 dark:peer-focus:ring-amber-800 transition-all duration-300 relative">
-                <span className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 ${notifications.monthly ? 'translate-x-5' : ''}`}></span>
-              </span>
-            </label>
+
+          <div className="flex justify-end">
+            <Button onClick={handleSave} variant="default" className="px-8">
+              Save Changes
+            </Button>
           </div>
         </div>
-        <button className="bg-[#FE9900] hover:bg-amber-600 text-white px-6 py-2 rounded font-medium mt-6">
-          Save Changes
-        </button>
-      </div>
+      )}
+
+      {/* === PREFERENCES TAB === */}
+      {activeTab === "preferences" && (
+        <div className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Currency */}
+            <div className="">
+              <label className="text-base font-medium text-gray-900 ">Currency</label>
+              <select
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
+                className="mt-2 w-full px-4 py-2 border rounded-md focus:outline-none"
+              >
+                <option value="INR">INR</option>
+                <option value="USD">USD</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Notifications */}
+          <div>
+            <label className="text-base font-medium text-gray-900 mb-4 block">Notifications</label>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">I send or receive meal payments</span>
+                <Switch checked={mealNotifications} onCheckedChange={setMealNotifications} />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">I receive vendor updates</span>
+                <Switch checked={vendorUpdates} onCheckedChange={setVendorUpdates} />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">There are recommendations for my meal plan</span>
+                <Switch checked={recommendations} onCheckedChange={setRecommendations} />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end">
+            <Button onClick={handleSave} variant="default" className="px-8">
+              Save Changes
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* === SECURITY TAB === */}
+      {activeTab === "security" && (
+        <div className="space-y-8">
+          {/* Two-factor Auth */}
+          <div>
+            <label className="text-base font-medium text-gray-900 mb-4 block">Two-factor Authentication</label>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-700">Enable or disable two-factor authentication</span>
+              <Switch checked={twoFactorAuth} onCheckedChange={setTwoFactorAuth} />
+            </div>
+          </div>
+
+          {/* Password Change */}
+          <div>
+            <label className="text-base font-medium text-gray-900 mb-4 block">Change Password</label>
+            <div className="space-y-4 max-w-md">
+              <div>
+                <label htmlFor="currentPassword" className="text-sm text-gray-700">
+                  Current Password
+                </label>
+                <input
+                  id="currentPassword"
+                  type="password"
+                  placeholder="**********"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
+                />
+              </div>
+              <div>
+                <label htmlFor="newPassword" className="text-sm text-gray-700">
+                  New Password
+                </label>
+                <input
+                  id="newPassword"
+                  type="password"
+                  placeholder="**********"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end">
+            <Button onClick={handleSave} variant="default" className="px-8">
+              Save Changes
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
-  );
+  )
 }

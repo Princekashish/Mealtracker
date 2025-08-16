@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { LogOut, Menu, X, } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Button } from "./ui/Button";
 import { useAuth } from "@/utils/Auth/AuthProvider";
 import Image from "next/image";
@@ -40,24 +40,14 @@ export default function Navbar() {
   // }
 
   return (
-    <header className={`border-gray-100  bg-white/80 backdrop-blur-md sticky top-0 z-50 p-2 duration-500 transition ease-in-out ${pathname === "/dashboard" ? "md:hidden" : ""}`}>
+    <header className={`border-gray-100  bg-white/80 backdrop-blur-md sticky top-0 z-50 p-2 duration-500 transition ease-in-out ${pathname === "/dashboard" ? "md:hidden " : ""}`}>
       <div className="container mx-auto px-4 ">
         <div className="flex h-16 items-center justify-between">
-          {/* Mobile Menu Button - Left */}
-          <button
-            className="md:hidden"
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-menu"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} className={`${pathname === "/dashboard" ? "opacity-0" : "opacity-100"}`} />}
-          </button>
 
           {/* Logo - Center */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2 font-semibold">
-              <div className={`${pathname === "/dashboard" || pathname === "/" ? "hidden md:block" : " block"} `} >
+              <div className={`${pathname === "/dashboard" || pathname === "/" ? " md:block" : " block"} `} >
                 <div className=" flex items-center justify-center w-8 h-8 bg-amber-500 rounded-lg">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

@@ -4,6 +4,7 @@ import "./globals.css";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import FooterWrapper from "@/components/FooterWrapper";
 import AuthProvider from "@/utils/Auth/AuthProvider";
+import { ThemeProvider } from "@/utils/Themes/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Mealtracker",
@@ -28,18 +29,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-      <meta name="apple-mobile-web-app-title" content="Meal Track" />
+        <meta name="apple-mobile-web-app-title" content="Meal Track" />
         <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
       </head>
       <body
         className={`${fontSans.className}  antialiased`}
         suppressHydrationWarning
       >
-        <AuthProvider>
-          <NavbarWrapper />
-          <main>{children}</main>
-          <FooterWrapper />
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <NavbarWrapper />
+            <main>{children}</main>
+            <FooterWrapper />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

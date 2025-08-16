@@ -22,6 +22,11 @@ const config = {
         "sharp-groteskb20": ["Sharp Grotesk Book 20", "sans-serif"],
         "user-medium": ["User Medium", "sans-serif"],
       },
+       colors: {
+        // Define your custom themes
+        "custom-dark": "#18181b", // zinc-900 or your own
+        "custom-light": "#ffffff",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

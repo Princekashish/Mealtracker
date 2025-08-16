@@ -62,7 +62,7 @@ export default function MealCalendar({ onAddMeal }: MealCalendarProps) {
   };
 
   return (
-    <div className='p-3 sm:p-5 border border-gray-200 rounded-3xl h-full'>
+    <div className='p-3 sm:p-5 border border-gray-200 rounded-3xl h-full dark:bg-zinc-900 dark:border-none'>
       <div>
         <div className="flex items-center justify-between">
           <div>

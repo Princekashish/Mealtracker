@@ -1,12 +1,14 @@
 "use client";
 
 import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
+import ThemeToggleButton from "@/components/themeToggle";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/utils/Auth/AuthProvider";
 import { Bell, LoaderCircle, LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const [userdropdown, setUserDropDown] = useState(false);
@@ -43,8 +45,8 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
         <DashboardSidebar />
         <div className="flex flex-col overflow-hidden w-full min-h-screen ">
           <div className="hidden md:block sticky top-0 border-b-[1px] z-10 p-[16px] ">
-            <div className="flex justify-between items-center gap-5  w-full ">
-              <div>
+            <div className="flex justify-end items-center gap-5  w-full ">
+              {/* <div>
                 {
                   user?.displayName ? (
                     <div>
@@ -57,9 +59,12 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                     </div>
                   )
                 }
-              </div>
+              </div> */}
 
               <div className="flex justify-center items-center gap-4" >
+                <div>
+                  <ThemeToggleButton />
+                </div>
                 <div className="md:border md:border-gray-200 h-9 w-10 flex justify-center items-center rounded-xl ">
                   <Bell size={25} className="font-light" />
                 </div>

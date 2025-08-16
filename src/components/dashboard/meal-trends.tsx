@@ -196,12 +196,12 @@ const ViewToggle = ({
   onViewChange: (view: TrendView) => void;
 }) => (
   <div className="hidden md:block">
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center dark:gap-1">
       <button
         onClick={() => onViewChange('daily')}
         className={`p-1 px-2 py-1 rounded-full duration-500 ${trendView === "daily"
-          ? "bg-white text-black shadow"
-          : "bg-[#f2f2f2]"
+          ? "bg-white text-black shadow dark:bg-zinc-700 dark:shadow-md dark:text-white"
+          : "bg-[#f2f2f2]  dark:bg-transparent"
           }`}
       >
         Daily
@@ -209,8 +209,8 @@ const ViewToggle = ({
       <button
         onClick={() => onViewChange('weekly')}
         className={`p-1 px-2 py-1 rounded-full duration-500 ${trendView === "weekly"
-          ? "bg-white text-black shadow"
-          : "bg-[#f2f2f2]"
+          ? "bg-white text-black shadow dark:bg-zinc-700 dark:shadow-md dark:text-white"
+          : "bg-[#f2f2f2] dark:bg-transparent "
           }`}
       >
         Weekly
@@ -313,10 +313,10 @@ export default function MealTrends() {
   }, [mealLogs, currentMonth, trendView]);
 
   return (
-    <div className="col-span-4 md:border md:border-gray-200 bg-[#FBFBFB] rounded-3xl p-5">
+    <div className="col-span-4 md:border md:border-gray-200 bg-[#FBFBFB] dark:bg-zinc-900 dark:border-none rounded-3xl p-5">
       <div className="flex md:flex-row justify-between md:items-center">
         <div>
-          <h1 className="md:text-2xl text-lg font-bold tracking-tight">
+          <h1 className="md:text-2xl text-lg font-bold tracking-tight ">
             Meal Trends
           </h1>
           <p className="md:text-sm text-xs tracking-tight text-[#8C97A9]">
@@ -324,7 +324,7 @@ export default function MealTrends() {
           </p>
         </div>
 
-        <div className="mb-4 flex justify-start items-center gap-2 p-2 bg-[#f2f2f2] w-fit rounded-full">
+        <div className="mb-4 flex justify-start items-center gap-2 p-2 bg-[#f2f2f2] dark:md:bg-zinc-900 dark:shadow-md w-fit rounded-full">
           <ViewToggle
             trendView={trendView}
             onViewChange={setTrendView}

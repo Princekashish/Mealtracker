@@ -72,7 +72,7 @@ export default function RecentActivity() {
   };
 
   return (
-    <div className="p-5 border border-gray-200 rounded-3xl   ">
+    <div className="p-5 border border-gray-200 rounded-3xl  dark:md:bg-[#161616] dark:bg-zinc-900 dark:border-none ">
       <div>
         <h1 className="md:text-2xl text-lg font-bold tracking-tight ">Recent Activity</h1>
         <p className="text-xs tracking-tight  text-[#8C97A9] ">Your latest meal tracking activities.</p>
