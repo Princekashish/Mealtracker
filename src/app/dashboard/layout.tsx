@@ -1,6 +1,7 @@
 "use client";
 
 import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
+import { MobileSidebar } from "@/components/mobilenavbar";
 import ThemeToggleButton from "@/components/themeToggle";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/utils/Auth/AuthProvider";
@@ -46,21 +47,6 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
         <div className="flex flex-col overflow-hidden w-full min-h-screen ">
           <div className="hidden md:block sticky top-0 border-b-[1px] z-10 p-[16px] ">
             <div className="flex justify-end items-center gap-5  w-full ">
-              {/* <div>
-                {
-                  user?.displayName ? (
-                    <div>
-                      <h1 className="font-semibold text-2xl ">Hi, {user.displayName}</h1>
-                      <p className=" text-gray-600">Let's take a look at your meals today</p>
-                    </div>
-                  ) : (
-                    <div>
-
-                    </div>
-                  )
-                }
-              </div> */}
-
               <div className="flex justify-center items-center gap-4" >
                 <div>
                   <ThemeToggleButton />
@@ -119,8 +105,9 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
             </div>
 
           </div>
-          <div className="scrollbar-hide overflow-y-scroll p-3 md:p-5 pt-0">{children}</div>
+          <div className="scrollbar-hide overflow-y-scroll p-3 md:p-5 pt-0 mb-20 md:mb-0">{children}</div>
         </div>
+        <MobileSidebar />
       </div>
     </div>
   );

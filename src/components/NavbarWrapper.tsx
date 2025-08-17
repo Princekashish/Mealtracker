@@ -5,23 +5,30 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/utils/Auth/AuthProvider";
 import Navbar from "./Navbar";
 
-
 const NavbarWrapper: React.FC = () => {
   const pathname = usePathname();
   const { loading } = useAuth();
-  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
-
-  // Define routes where Navbar should be hidden
-  const hiddenNavbarRoutes = ["/auth", "/dashboard"];
+  const [hideCompletely, setHideCompletely] = useState(false);
+  const [hideOnDesktopOnly, setHideOnDesktopOnly] = useState(false);
 
   useEffect(() => {
-    // Hide navbar during loading state or on auth routes
-    const shouldHideNavbar = hiddenNavbarRoutes.some((route) => pathname.startsWith(route));
+    const isAuthRoute = pathname.startsWith("/auth");
+    const isDashboardRoot = pathname.startsWith("/dashboard");
 
-    setIsNavbarVisible(!shouldHideNavbar);
-  }, [pathname, loading]);
+    // Hide completely on /auth routes
+    setHideCompletely(isAuthRoute);
 
-  return isNavbarVisible ? <Navbar /> : null;
+    // Hide only on desktop for /dashboard
+    setHideOnDesktopOnly(isDashboardRoot);
+  }, [pathname]);
+
+  if (loading || hideCompletely) return null;
+
+  return (
+    <div className={hideOnDesktopOnly ? "md:hidden" : ""}>
+      <Navbar />
+    </div>
+  );
 };
 
 export default NavbarWrapper;

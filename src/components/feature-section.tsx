@@ -23,7 +23,7 @@ export default function FeatureSection() {
       <div>
         {/* Mobile: show only the first image */}
         <div className="block md:hidden">
-          <div className="rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+          <div className="rounded-xl overflow-hidden border border-gray-100  shadow-sm hover:shadow-md transition-shadow">
             <Image
               src={featureImages[1] || "/placeholder.svg"}
               alt="Feature 1"
@@ -40,7 +40,7 @@ export default function FeatureSection() {
           {featureImages.map((image, index) => (
             <div
               key={index}
-              className="rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+              className="rounded-xl overflow-hidden border border-gray-100 dark:border-none shadow-sm hover:shadow-md transition-shadow"
             >
               <Image
                 src={image || "/placeholder.svg"}

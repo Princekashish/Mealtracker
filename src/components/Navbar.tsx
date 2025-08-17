@@ -40,14 +40,14 @@ export default function Navbar() {
   // }
 
   return (
-    <header className={`border-gray-100  bg-white/80 backdrop-blur-md sticky top-0 z-50 p-2 duration-500 transition ease-in-out ${pathname === "/dashboard" ? "md:hidden " : ""}`}>
-      <div className="container mx-auto px-4 ">
-        <div className="flex h-16 items-center justify-between">
+    <header className={`border-gray-100  bg-white/80 dark:bg-black backdrop-blur-md sticky  top-0 z-50 p-2 duration-500 transition ease-in-out ${pathname === "/dashboard" ? "md:hidden " : ""}`}>
+      <div className="container mx-auto px-4  ">
+        <div className="flex h-16 items-center justify-between  ">
 
           {/* Logo - Center */}
-          <div className="flex items-center">
+          <div className="flex items-center ">
             <Link href="/" className="flex items-center gap-2 font-semibold">
-              <div className={`${pathname === "/dashboard" || pathname === "/" ? " md:block" : " block"} `} >
+              <div  >
                 <div className=" flex items-center justify-center w-8 h-8 bg-amber-500 rounded-lg">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -125,19 +125,19 @@ export default function Navbar() {
                 />
               </div>
             ) : (
-              <div className="hidden md:flex items-center gap-4 ">
-                <Link href="/auth/login" className=" cursor-pointer ">
-                  <Button variant="link" size="sm" className="rounded-full">
+              <div className=" md:flex items-center gap-4 ">
+                <Link href="/auth/login" className={`${pathname.startsWith("/dashboard") ? "" : "hidden"}`}>
+                  <Button variant="link" size="sm" className="rounded-full dark:bg-zinc-800">
                     Log in
                   </Button>
                 </Link>
-                <Link href={"/dashboard"} className="">
+                <Link href={"/dashboard"} className={`${pathname == "/" ? " block" : "hidden"}`}>
                   <Button
                     size="sm"
                     variant="link"
-                    className="bg-black hover:bg-gray-800 text-white rounded-full flex justify-center items-center gap-2"
+                    className="bg-black hover:bg-gray-800 text-white rounded-full flex justify-center items-center gap-2 dark:bg-zinc-800"
                   >
-                    Get start  <HiArrowLongRight size={15}/>
+                    Get start  <HiArrowLongRight size={15} />
                   </Button>
                 </Link>
               </div>
@@ -147,7 +147,7 @@ export default function Navbar() {
               {userdropdown && (
 
                 <div>
-                  
+
 
                   <Button
                     onClick={handlesignout}

@@ -1,6 +1,4 @@
 "use client";
-import { CircleArrowLeft } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/utils/Auth/AuthProvider";
@@ -27,9 +25,6 @@ export default function WelcomeBack() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black  text-white p-4 relative">
-      <Link href="/" className="absolute top-10 left-10">
-        <CircleArrowLeft size={30} />
-      </Link>
       <div className="flex flex-col items-center justify-center w-full max-w-md">
         {/* Logo */}
         <div className="flex items-center justify-center w-12 h-12 bg-amber-500 rounded-xl mb-4">
@@ -113,7 +108,7 @@ export default function WelcomeBack() {
 
         {/* Terms and Privacy */}
         <p className="mt-6 text-xs text-gray-400">
-          By continuing, you agree to Mobbin's{" "}
+          By continuing, you agree to Mealtracker{" "}
           <a href="#" className="underline">
             Terms of Service
           </a>{" "}

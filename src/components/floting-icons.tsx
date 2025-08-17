@@ -67,7 +67,7 @@ import { motion } from "framer-motion"
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.5 }}
       >
-        1+ users
+        Meal Tracker
       </motion.div>
     </section>
   )

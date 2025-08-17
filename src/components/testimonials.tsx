@@ -54,7 +54,7 @@ export function Testimonials() {
       >
         {testimonials.map((testimonial, index) => (
           <SwiperSlide key={index}>
-            <div className="bg-white rounded-xl p-6 border border-gray-100 h-[23vh] flex flex-col">
+            <div className="bg-white dark:bg-zinc-900 dark:border-none rounded-xl p-6 border border-gray-100 h-[23vh] flex flex-col">
               <div className="flex items-start gap-4 mb-4">
                 <Image
                   src={testimonial.avatar || "/placeholder.svg"}

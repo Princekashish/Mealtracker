@@ -11,8 +11,8 @@ export default function CreationSection() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        <div className="bg-white rounded-xl p-6 shadow-md">
-          <div className="aspect-video relative mb-4 rounded-lg overflow-hidden bg-gray-100">
+        <div className="bg-white rounded-xl p-6 shadow-md dark:bg-zinc-900">
+          <div className="aspect-video relative mb-4 rounded-lg overflow-hidden bg-gray-100 ">
             <Image
               src="https://plus.unsplash.com/premium_photo-1681487874673-976050b1dcab?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Track Daily Meals"
@@ -30,7 +30,7 @@ export default function CreationSection() {
 
 
 
-        <div className="bg-white rounded-xl p-6 shadow-md">
+        <div className="bg-white rounded-xl p-6 shadow-md dark:bg-zinc-900">
           <div className="aspect-video relative mb-4 rounded-lg overflow-hidden bg-gray-100">
             <Image
               src="https://plus.unsplash.com/premium_photo-1681487810054-4bced4f73e24?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -47,7 +47,7 @@ export default function CreationSection() {
           </p>
         </div>
 
-        <div className="bg-white rounded-xl p-6 shadow-md">
+        <div className="bg-white rounded-xl p-6 shadow-md dark:bg-zinc-900">
           <div className="aspect-video relative mb-4 rounded-lg overflow-hidden bg-gray-100">
             <Image
               src="https://images.unsplash.com/photo-1622186477895-f2af6a0f5a97?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

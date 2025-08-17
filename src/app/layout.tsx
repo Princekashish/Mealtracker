@@ -5,6 +5,7 @@ import NavbarWrapper from "@/components/NavbarWrapper";
 import FooterWrapper from "@/components/FooterWrapper";
 import AuthProvider from "@/utils/Auth/AuthProvider";
 import { ThemeProvider } from "@/utils/Themes/ThemeProvider";
+import { AuthGuard } from "@/utils/Auth/AuthGard";
 
 export const metadata: Metadata = {
   title: "Mealtracker",
@@ -38,9 +39,11 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <AuthProvider>
-            <NavbarWrapper />
-            <main>{children}</main>
-            <FooterWrapper />
+            <AuthGuard>
+              <NavbarWrapper />
+              <main>{children}</main>
+              <FooterWrapper />
+            </AuthGuard>
           </AuthProvider>
         </ThemeProvider>
       </body>
