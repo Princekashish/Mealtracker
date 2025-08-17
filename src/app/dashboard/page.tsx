@@ -5,17 +5,27 @@ import dynamic from 'next/dynamic';
 // Dynamic imports with SSR disabled and loading fallback
 const Aianalysis = dynamic(() => import('@/components/dashboard/aianalysis'), {
   ssr: false,
-  loading: () => <p>Loading AI Analysis...</p>,
+  loading: () => <div className="w-full mt-5">
+    <div className="">
+      {Array(1).fill(0).map((_, index) => (
+        <div key={index}>
+          <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <Skeleton className="h-10 w-full" />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>,
 });
 
 const ExpenseBreakdown = dynamic(() => import('@/components/dashboard/expense-break-down'), {
   ssr: false,
-  loading: () => <p>Loading Expense Breakdown...</p>,
+  loading: () => <ExpenseBreakdownSkeleton />,
 });
 
 const MealCalendar = dynamic(() => import('@/components/dashboard/meal-calendar'), {
   ssr: false,
-  loading: () => <p>Loading Meal Calendar...</p>,
+  loading: () => <MealCalendarSkeleton />,
 });
 
 const MealTracker = dynamic(() => import('@/components/dashboard/meal-onboarding'), {
@@ -25,12 +35,12 @@ const MealTracker = dynamic(() => import('@/components/dashboard/meal-onboarding
 
 const MealTrends = dynamic(() => import('@/components/dashboard/meal-trends'), {
   ssr: false,
-  loading: () => <p>Loading Meal Trends...</p>,
+  loading: () => <MealTrendsSkeleton />,
 });
 
 const MealMetrics = dynamic(() => import('@/components/dashboard/meals-matrics'), {
   ssr: false,
-  loading: () => <p>Loading Meal Metrics...</p>,
+  loading: () => <MealMetricsSkeleton />
 });
 
 const OnboardingDialog = dynamic(() => import('@/components/dashboard/on-boarding'), {
@@ -40,12 +50,12 @@ const OnboardingDialog = dynamic(() => import('@/components/dashboard/on-boardin
 
 const RecentActivity = dynamic(() => import('@/components/dashboard/recent-activity'), {
   ssr: false,
-  loading: () => <p>Loading Recent Activity...</p>,
+  loading: () => <RecentActivitySkeleton/>,
 });
 
 const VendorOverview = dynamic(() => import('@/components/dashboard/vendor-overview'), {
   ssr: false,
-  loading: () => <p>Loading Vendor Overview...</p>,
+  loading: () => <VendorOverviewSkeleton />,
 });
 
 import { Button } from "@/components/ui/Button";
@@ -55,6 +65,13 @@ import { isSameDay, parseISO } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Toaster, toast } from 'sonner'
+import { Skeleton } from '@/components/ui/Skeleton';
+import MealTrendsSkeleton from '@/components/ui/MealTrendsSkeleton';
+import MealMetricsSkeleton from '@/components/ui/MealMetricsSkeleton';
+import ExpenseBreakdownSkeleton from '@/components/ui/ExpenseBreakdownSkeleton';
+import MealCalendarSkeleton from '@/components/ui/MealCalendarSkeleton';
+import VendorOverviewSkeleton from '@/components/ui/VendorOverviewSkeleton';
+import RecentActivitySkeleton from '@/components/ui/RecentActivitySkeleton';
 
 
 export default function DashboardPage() {

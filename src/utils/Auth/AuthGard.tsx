@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/utils/Auth/AuthProvider";
+import { LoaderCircle } from "lucide-react";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
     const { user, loading } = useAuth();
@@ -19,8 +20,8 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen">
-                <p>Checking authentication...</p>
+            <div className="flex justify-center items-center min-h-screen ">
+                <div className=""><LoaderCircle className="animate-spin" /></div>
             </div>
         );
     }

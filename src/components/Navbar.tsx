@@ -40,7 +40,7 @@ export default function Navbar() {
   // }
 
   return (
-    <header className={`border-gray-100  bg-white/80 dark:bg-black backdrop-blur-md sticky  top-0 z-50 p-2 duration-500 transition ease-in-out ${pathname === "/dashboard" ? "md:hidden " : ""}`}>
+    <header className={`border-gray-100  bg-white/80 dark:bg-zinc-900 backdrop-blur-md sticky  top-0 z-50 p-2 duration-500 transition ease-in-out ${pathname === "/dashboard" ? "md:hidden " : ""}`}>
       <div className="container mx-auto px-4  ">
         <div className="flex h-16 items-center justify-between  ">
 

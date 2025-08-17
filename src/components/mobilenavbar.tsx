@@ -53,16 +53,16 @@ export function MobileSidebar() {
           <Link
             key={route.href}
             href={route.href}
-            className="flex flex-col items-center text-xs group"
+            className="flex flex-col items-center text-xs group "
           >
             <route.icon
               className={`h-6 w-6 mb-1 transition-colors ${
-                isActive ? "text-amber-600" : "text-black group-hover:text-amber-500"
+                isActive ? "text-amber-600" : "text-black dark:text-white group-hover:text-amber-500"
               }`}
             />
             <span
               className={`${
-                isActive ? "text-amber-600 font-semibold" : "text-black group-hover:text-amber-500"
+                isActive ? "text-amber-600 font-semibold" : "text-black dark:text-white group-hover:text-amber-500"
               }`}
             >
               {route.label}

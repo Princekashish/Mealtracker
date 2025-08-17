@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { useMemo } from "react";
 import { useStore } from "@/lib/store";
 import { isSameMonth, parseISO, endOfMonth, differenceInDays, format, } from "date-fns";
-import { Skeleton } from "../ui/Skeleton";
 
 type Metric = {
   title: string;
@@ -27,7 +26,6 @@ type Metric = {
 
 
 export default function MealMetrics() {
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const mealLogs = useStore((state) => state.mealLogs)
   const currentMonth = useStore((state) => state.currentMonth)
@@ -39,14 +37,11 @@ export default function MealMetrics() {
   useEffect(() => {
     async function loadMetrics() {
       try {
-        setLoading(true);
         setError(null);
       } catch (err) {
         console.error("Failed to load metrics:", err);
         setError("Failed to load metrics. Please try again.");
-      } finally {
-        setLoading(false);
-      }
+      } 
     }
 
     loadMetrics();
@@ -216,31 +211,6 @@ export default function MealMetrics() {
       </div>
     );
   }
-
-  if (loading) {
-    return (
-      <div className="w-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Array(3).fill(0).map((_, index) => (
-            <div key={index}>
-              <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-4 rounded-full" />
-              </div>
-              <div>
-                <Skeleton className="h-8 w-16 mb-1" />
-                <Skeleton className="h-4 w-32" />
-              </div>
-              <div>
-                <Skeleton className="h-4 w-20" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full transition-colors duration-300">
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">

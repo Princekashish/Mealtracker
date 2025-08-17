@@ -1,8 +1,12 @@
 "use client"
+import { LoaderCircle } from "lucide-react";
+import { Analytics } from "@vercel/analytics/next"
 import dynamic from "next/dynamic";
 import React from "react";
 const Section = dynamic(() => import("@/components/section-0"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <div className="flex justify-center items-center h-[80vh] ">
+    <div className=""><LoaderCircle className="animate-spin" /></div>
+  </div>,
 })
 function HomePage() {
 
@@ -10,6 +14,7 @@ function HomePage() {
   return (
     <div>
       <Section />
+      <Analytics />
     </div>
   );
 }

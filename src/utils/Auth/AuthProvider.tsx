@@ -38,7 +38,7 @@ export default function AuthProvider({ children }: Readonly<{ children: React.Re
 
     return () => unsubscribe();
   }, []);
-
+  
   const signInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
