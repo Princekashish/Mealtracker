@@ -6,6 +6,7 @@ import FooterWrapper from "@/components/FooterWrapper";
 import AuthProvider from "@/utils/Auth/AuthProvider";
 import { ThemeProvider } from "@/utils/Themes/ThemeProvider";
 import { AuthGuard } from "@/utils/Auth/AuthGard";
+import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
   title: "Mealtracker",
@@ -46,6 +47,8 @@ export default function RootLayout({
             </AuthGuard>
           </AuthProvider>
         </ThemeProvider>
+
+        <Analytics />
       </body>
     </html>
   );
