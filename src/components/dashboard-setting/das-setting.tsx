@@ -7,7 +7,6 @@ import { Button } from "../ui/Button"
 import { useAuth } from "@/utils/Auth/AuthProvider"
 import Image from "next/image"
 import { Switch } from "../ui/switch"
-console.log("Switch component:", Switch)
 
 type TabType = "profile" | "preferences" | "security"
 

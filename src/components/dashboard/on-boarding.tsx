@@ -6,11 +6,12 @@ import React, { useEffect, useState } from 'react'
 import { toast, Toaster } from 'sonner';
 
 interface OnboardingDialogProps {
-  isOpen: boolean;
+  isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
+  initialVendorCount?: number;
 }
 
-export default function OnboardingDialog({ isOpen, onOpenChange }: OnboardingDialogProps) {
+export default function OnboardingDialog({ isOpen, onOpenChange,initialVendorCount }: OnboardingDialogProps) {
   const [step, setStep] = useState(1);
   const [localVendors, setLocalVendors] = useState<Vendor[]>([]);
   const { addVendor, setOnboardingCompleted } = useStore();
@@ -31,7 +32,7 @@ export default function OnboardingDialog({ isOpen, onOpenChange }: OnboardingDia
         },
       }]);
     }
-  }, [isOpen, localVendors.length]);
+  }, [isOpen, localVendors.length,initialVendorCount]);
 
 
   const defaultMeal: Meal = { offered: false, price: 0 };

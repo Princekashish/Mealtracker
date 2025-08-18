@@ -247,9 +247,6 @@ export default function DashboardPage() {
       )}
 
       <OnboardingDialog isOpen={isOnboardingOpen} onOpenChange={setIsOnboardingOpen} />
-
-      {/* onOpenChange={setIsOnboardingOpen} */}
-
     </>
   );
 }

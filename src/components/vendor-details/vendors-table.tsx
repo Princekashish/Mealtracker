@@ -1,81 +1,60 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Pencil, Trash2, PlusCircle } from "lucide-react";
+import { useStore } from "@/lib/store";
+import VendorAdding from "./Vendor-adding";
 
-const mockVendors = [
-  {
-    name: "Annapurna Tiffin Service",
-    mealType: "Lunch",
-    price: "60",
-    contact: "+91 98765 43210",
-    status: "Active",
-  },
-  {
-    name: "Homely Meals",
-    mealType: "Dinner",
-    price: "50",
-    contact: "+91 87654 32109",
-    status: "Active",
-  },
-  {
-    name: "Morning Delight",
-    mealType: "Breakfast",
-    price: "40",
-    contact: "+91 76543 21098",
-    status: "Active",
-  },
-  {
-    name: "Spice Box",
-    mealType: "Lunch",
-    price: "65",
-    contact: "+91 65432 10987",
-    status: "Inactive",
-  },
-  {
-    name: "Fresh Tiffin",
-    mealType: "Breakfast, Lunch",
-    price: "40-60",
-    contact: "+91 54321 09876",
-    status: "Inactive",
-  },
-];
+export default function VendorsTable() {
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const { vendors } = useStore();
 
-export function VendorsTable() {
+
+  const handleAddVendorClick = () => {
+    setDialogOpen(true);
+
+
+  }
+
   return (
-    <div className="p-6">
+    <div className="p-6 ">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold">Vendors</h1>
           <p className="text-muted-foreground">Manage your tiffin vendors and their services.</p>
         </div>
-        <Button className="bg-amber-400 hover:bg-amber-500 text-white flex items-center gap-2">
+        <Button onClick={handleAddVendorClick} className="bg-amber-500 hover:bg-amber-600 text-white flex items-center gap-2">
           <PlusCircle className="w-5 h-5" /> Add Vendor
         </Button>
       </div>
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 p-6 dark:border-none">
         <h2 className="text-xl font-semibold mb-2">Vendor List</h2>
         <p className="text-muted-foreground mb-4">Manage your tiffin service providers.</p>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
             <thead>
               <tr>
-                <th className="px-4 py-2 text-left font-medium text-gray-700">Name</th>
-                <th className="px-4 py-2 text-left font-medium text-gray-700">Meal Type</th>
-                <th className="px-4 py-2 text-left font-medium text-gray-700">Price (₹)</th>
-                <th className="px-4 py-2 text-left font-medium text-gray-700">Contact</th>
-                <th className="px-4 py-2 text-left font-medium text-gray-700">Status</th>
-                <th className="px-4 py-2 text-left font-medium text-gray-700">Actions</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-700 dark:text-[#f2f2f2]">Name</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-700 dark:text-[#f2f2f2]">Meal Type</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-700 dark:text-[#f2f2f2]">Price (₹)</th>
+                {/* <th className="px-4 py-2 text-left font-medium text-gray-700 dark:text-[#f2f2f2]">Contact</th> */}
+                <th className="px-4 py-2 text-left font-medium text-gray-700 dark:text-[#f2f2f2]">Status</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-700 dark:text-[#f2f2f2]">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
-              {mockVendors.map((vendor, idx) => (
-                <tr key={idx} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 whitespace-nowrap">{vendor.name}</td>
-                  <td className="px-4 py-3 whitespace-nowrap">{vendor.mealType}</td>
-                  <td className="px-4 py-3 whitespace-nowrap">{vendor.price}</td>
-                  <td className="px-4 py-3 whitespace-nowrap">{vendor.contact}</td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${vendor.status === "Active" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
+            <tbody className="divide-y dark:divide-zinc-700 divide-gray-100">
+              {vendors.map((vendor) => (
+                <tr key={vendor.id} className="hover:bg-gray-50 dark:hover:bg-[#303030] duration-300">
+                  <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300 capitalize">{vendor.name}</td>
+                  <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300 capitalize">{
+                    Object.entries(vendor.meals).filter(([, details]) => details.offered).map(([meals]) => meals).join(', ')
+                  }</td>
+                  <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300">{
+                    Object.entries(vendor.meals).filter(([, details]) => details.price > 0).map(([, meals]) => meals.price).join(', ')
+                  }</td>
+                  {/* <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300">{vendor.contact}</td> */}
+                  <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300">
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${vendor.status === "active" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
                       {vendor.status}
                     </span>
                   </td>
@@ -93,6 +72,7 @@ export function VendorsTable() {
           </table>
         </div>
       </div>
+      <VendorAdding isOpen={dialogOpen} onOpenChange={setDialogOpen} initialVendorCount={vendors.length} />
     </div>
   );
 } 
