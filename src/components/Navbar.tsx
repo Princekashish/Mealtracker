@@ -110,7 +110,7 @@ export default function Navbar() {
                 onClick={() => setUserDropDown((pre) => !pre)}
                 className={`flex justify-center items-center gap-2 cursor-pointer md:border py-1 md:border-gray-200 rounded-3xl  p-2`}
               >
-                <h1 className="hidden md:block font-medium text-gray-600 ">
+                <h1 className="hidden md:block font-medium text-gray-600 dark:text-[#f2f2f2]">
                   {user.displayName}
                 </h1>
                 <Image

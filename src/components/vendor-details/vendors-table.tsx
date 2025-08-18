@@ -4,16 +4,26 @@ import { Button } from "@/components/ui/Button";
 import { Pencil, Trash2, PlusCircle } from "lucide-react";
 import { useStore } from "@/lib/store";
 import VendorAdding from "./Vendor-adding";
+import { Vendor } from "@/lib/types";
 
 export default function VendorsTable() {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const { vendors } = useStore();
+  const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null);
+  const { vendors, deleteVendor } = useStore();
 
 
   const handleAddVendorClick = () => {
+    setSelectedVendor(null); // Adding new
     setDialogOpen(true);
 
 
+  }
+  const handleDeleteVendor = (id: string) => {
+    deleteVendor(id)
+  }
+  const handleUpdateVendor = (vendor: Vendor) => {
+    setSelectedVendor(vendor); // Editing existing
+    setDialogOpen(true);
   }
 
   return (
@@ -60,10 +70,10 @@ export default function VendorsTable() {
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap flex gap-2">
                     <button className="text-gray-500 hover:text-amber-500">
-                      <Pencil className="w-4 h-4" />
+                      <Pencil onClick={() => handleUpdateVendor(vendor)} className="w-4 h-4" />
                     </button>
                     <button className="text-gray-500 hover:text-red-500">
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 onClick={() => handleDeleteVendor(vendor.id)} className="w-4 h-4" />
                     </button>
                   </td>
                 </tr>
@@ -72,7 +82,7 @@ export default function VendorsTable() {
           </table>
         </div>
       </div>
-      <VendorAdding isOpen={dialogOpen} onOpenChange={setDialogOpen} initialVendorCount={vendors.length} />
+      <VendorAdding isOpen={dialogOpen} onOpenChange={setDialogOpen} vendorToEdit={selectedVendor} />
     </div>
   );
 } 
