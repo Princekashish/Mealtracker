@@ -78,16 +78,16 @@ export default function VendorAdding({ isOpen, onOpenChange, vendorToEdit }: Onb
     if (!isOpen) return null;
     return (
         <div className='fixed inset-0  z-50 bg-black/80 flex justify-center items-center p-3 '>
-            <div className=' relative  grid w-full max-w-lg gap-4 border bg-background p-6 shadow-lg  sm:rounded-lg rounded-xl'>
-                <div className="absolute right-4 top-4  rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-                    <X onClick={() => onOpenChange?.(false)} className='cursor-pointer' />
+            <div className=' relative  grid w-full max-w-lg gap-4 border bg-background p-6 shadow-lg  sm:rounded-lg rounded-xl '>
+                <div onClick={() => onOpenChange?.(false)} className="absolute right-4 top-4 z-10 p-[2px] opacity-70 border rounded-full ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                    <X className='cursor-pointer' />
                 </div>
 
                 <div>
-                    <div className='flex flex-col gap-2'>
+                    <div className='flex flex-col gap-2 '>
                         <div className=' relative '>
-                            <div className='hidden md:block'>
-                                <Button variant="outline" onClick={handleAddLocalVendor} className="mt-4 flex justify-center items-center   right-0 rounded-xl border border-gray-200" >
+                            <div className=''>
+                                <Button variant="outline" onClick={handleAddLocalVendor} className="md:mt-4 flex justify-center items-center    right-0 rounded-xl border border-gray-200" >
                                     <PlusCircle className="mr-2 h-4 w-4" /> Add Vendor
                                 </Button>
                             </div>
@@ -101,7 +101,7 @@ export default function VendorAdding({ isOpen, onOpenChange, vendorToEdit }: Onb
                                     {addvendors.map((vendor,) => (
                                         <div key={vendor.id} className="space-y-4 rounded-3xl border p-4 ">
                                             <div className="flex items-center justify-between relative">
-                                                <label className='text-base font-medium'>Vendor Name</label>
+                                                <label className='text-base  font-medium'>Vendor Name</label>
                                                 {vendors.length > 0 &&
                                                     <Button variant="ghost" className='absolute right-0 top-0' size="icon" onClick={() => removeLocalVendor(vendor.id)}>
                                                         <Trash2 className="h-4 w-4 text-destructive" />

@@ -27,19 +27,19 @@ export default function VendorsTable() {
   }
 
   return (
-    <div className="p-6 ">
+    <div className="md:p-6 mt-5 p-3 ">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Vendors</h1>
-          <p className="text-muted-foreground">Manage your tiffin vendors and their services.</p>
+          <h1 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight">Vendors</h1>
+          <p className="text-muted-foreground tracking-tighter text-sm md:text-base">Manage your tiffin vendors and their services.</p>
         </div>
-        <Button onClick={handleAddVendorClick} className="bg-amber-500 hover:bg-amber-600 text-white flex items-center gap-2">
-          <PlusCircle className="w-5 h-5" /> Add Vendor
+        <Button onClick={handleAddVendorClick} className="md:bg-amber-500 md:hover:bg-amber-600 md:text-white flex items-center md:gap-2">
+          <PlusCircle className="md:w-5 md:h-5" /> <span className="hidden md:block">Add Vendor</span>
         </Button>
       </div>
-      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 p-6 dark:border-none">
-        <h2 className="text-xl font-semibold mb-2">Vendor List</h2>
-        <p className="text-muted-foreground mb-4">Manage your tiffin service providers.</p>
+      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 p-6 dark:border-none ">
+        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight">Vendor List</h2>
+        <p className="text-muted-foreground mb-4 text-sm md:text-base tracking-tighter">Manage your tiffin service providers.</p>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
             <thead>

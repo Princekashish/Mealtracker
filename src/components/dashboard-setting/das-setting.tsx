@@ -91,12 +91,12 @@ export function SettingsTabs() {
 
       {/* === PROFILE TAB === */}
       {activeTab === "profile" && (
-        <div className="space-y-8 p-5 ">
+        <div className="space-y-8 p-5 ">  
           <div className="space-y-6">
             {/* Profile Picture */}
             <div className="mt-5">
               <div className="flex items-center gap-4  justify-start">
-                <div className=" rounded-full bg-red-300">
+                <div className=" rounded-full ">
                   <Image src={userDetail.profile || "/default-profile.png"} loading="lazy" width={80} height={80} alt={userDetail.name} className="rounded-full h-20 w-20 object-cover" />
                 </div>
                 <div className="flex justify-start items-center flex-col ">

@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useMemo } from "react";
 import { useStore } from "@/lib/store";
 import { isSameMonth, parseISO, endOfMonth, differenceInDays, format, } from "date-fns";
+import Link from "next/link";
 
 type Metric = {
   title: string;
@@ -22,6 +23,7 @@ type Metric = {
   currentMonth?: string;
   description?: string;
   short?: string;
+  link?: string;
 };
 
 
@@ -41,7 +43,7 @@ export default function MealMetrics() {
       } catch (err) {
         console.error("Failed to load metrics:", err);
         setError("Failed to load metrics. Please try again.");
-      } 
+      }
     }
 
     loadMetrics();
@@ -115,7 +117,8 @@ export default function MealMetrics() {
       trend: "up",
       change: "+12% from last month",
       description: "Lunch",
-      short: "Tiffins taken"
+      short: "Tiffins taken",
+      link: "/dashboard/meals"
     },
     {
       title: "Active Vendors",
@@ -124,7 +127,8 @@ export default function MealMetrics() {
       trend: "up",
       change: "+2 from last month",
       description: "Antu anty",
-      short: "Vendors"
+      short: "Vendors",
+      link:"/dashboard/vendors"
     },
     {
       title: "Meals Remaining",
@@ -215,7 +219,13 @@ export default function MealMetrics() {
     <div className="w-full transition-colors duration-300">
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
         {metrics.map((metric, index) => (
-          <MetricCard key={index} metric={metric} index={index} />
+          metric.link ? (
+            <Link href={metric.link} key={index}>
+              <MetricCard key={index} metric={metric} index={index} />
+            </Link>
+          ) : (
+            <MetricCard key={index} metric={metric} index={index} />
+          )
         ))}
       </div>
     </div>
