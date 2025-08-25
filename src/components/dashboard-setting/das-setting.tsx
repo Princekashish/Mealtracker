@@ -41,7 +41,7 @@ export function SettingsTabs() {
 
 
   const tabs = [
-    { id: "profile" as TabType, label: "Edit Profile" },
+    { id: "profile" as TabType, label: "Edit" },
     { id: "preferences" as TabType, label: "Preferences" },
     { id: "security" as TabType, label: "Security" },
   ]
@@ -81,15 +81,15 @@ export function SettingsTabs() {
   return (
     <div className="max-w-4xl mx-auto px-4">
       {/* Tabs */}
-      <div className="flex border-b border-gray-200 mb-8">
+      <div className="flex border-b border-gray-200 mb-8 justify-center items-center">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              "px-6 py-3 text-sm font-medium border-b-2 tracking-tighter transition-colors",
+              "px-6 py-3 text-sm  font-medium border-b-2 tracking-tighter transition-colors",
               activeTab === tab.id
-                ? "border-[#F59E0B] text-[#F59E0B] " : "border-transparent text-gray-500 hover:text-gray-700"
+                ? " text-white " : "border-transparent text-gray-500 hover:text-gray-700"
             )}
           >
             {tab.label}
