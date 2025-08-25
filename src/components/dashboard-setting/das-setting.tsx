@@ -7,12 +7,15 @@ import { Button } from "../ui/Button"
 import { useAuth } from "@/utils/Auth/AuthProvider"
 import Image from "next/image"
 import { Switch } from "../ui/switch"
+import { useStore } from "@/lib/store"
+import { toast, Toaster } from "sonner"
 
 type TabType = "profile" | "preferences" | "security"
 
 
 export function SettingsTabs() {
   const [activeTab, setActiveTab] = useState<TabType>("profile")
+  const resetStore = useStore((state) => state.resetStore);
 
   // Profile state
   const { user } = useAuth();
@@ -69,6 +72,11 @@ export function SettingsTabs() {
     setUserDetail((pre) => ({ ...pre, [id]: value }))
 
   }
+  const handleData = () => {
+    resetStore();
+    toast.success("Data has been removed")
+
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4">
@@ -91,7 +99,7 @@ export function SettingsTabs() {
 
       {/* === PROFILE TAB === */}
       {activeTab === "profile" && (
-        <div className="space-y-8 p-5 ">  
+        <div className="space-y-8 p-5 ">
           <div className="space-y-6">
             {/* Profile Picture */}
             <div className="mt-5">
@@ -121,7 +129,7 @@ export function SettingsTabs() {
 
             {/* Full Name */}
             <div>
-              <label htmlFor="fullName" className="text-base font-medium text-gray-900">
+              <label htmlFor="fullName" className="text-base font-medium text-gray-900 dark:text-[#c9c9c9] ">
                 Full Name
               </label>
               <input
@@ -135,7 +143,7 @@ export function SettingsTabs() {
 
             {/* Phone Number */}
             <div>
-              <label htmlFor="Email" className="text-base font-medium text-gray-900">
+              <label htmlFor="Email" className="text-base font-medium text-gray-900 dark:text-[#c9c9c9]">
                 Email
               </label>
               <input
@@ -144,11 +152,11 @@ export function SettingsTabs() {
                 value={userDetail.email}
                 onChange={handleChanges}
                 disabled
-                className="mt-2 w-full px-4 py-2 bg-[#f2f2f2] border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
+                className="mt-2 w-full px-4 py-2 bg-[#f2f2f2] dark:bg-zinc-900 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
               />
             </div>
             <div>
-              <label htmlFor="phoneNumber" className="text-base font-medium text-gray-900">
+              <label htmlFor="phoneNumber" className="text-base font-medium text-gray-900 dark:text-[#c9c9c9]">
                 Phone Number
               </label>
               <input
@@ -176,11 +184,11 @@ export function SettingsTabs() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Currency */}
             <div className="">
-              <label className="text-base font-medium text-gray-900 ">Currency</label>
+              <label className="text-base font-medium text-gray-900 dark:text-[#c9c9c9]">Currency</label>
               <select
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
-                className="mt-2 w-full px-4 py-2 border rounded-md focus:outline-none"
+                className="mt-2 w-full px-4 py-2 border rounded-md focus:outline-none dark:bg-zinc-900"
               >
                 <option value="INR">INR</option>
                 <option value="USD">USD</option>
@@ -190,18 +198,18 @@ export function SettingsTabs() {
 
           {/* Notifications */}
           <div>
-            <label className="text-base font-medium text-gray-900 mb-4 block">Notifications</label>
-            <div className="space-y-4">
+            <label className="text-base font-medium text-gray-900 mb-4 block dark:text-[#c9c9c9]">Notifications</label>
+            <div className="space-y-4  ">
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">I send or receive meal payments</span>
+                <span className="text-gray-700 dark:text-[#c9c9c9]">I send or receive meal payments</span>
                 <Switch checked={mealNotifications} onCheckedChange={setMealNotifications} />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">I receive vendor updates</span>
+                <span className="text-gray-700 dark:text-[#c9c9c9]">I receive vendor updates</span>
                 <Switch checked={vendorUpdates} onCheckedChange={setVendorUpdates} />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">There are recommendations for my meal plan</span>
+                <span className="text-gray-700 dark:text-[#c9c9c9]">There are recommendations for my meal plan</span>
                 <Switch checked={recommendations} onCheckedChange={setRecommendations} />
               </div>
             </div>
@@ -220,19 +228,23 @@ export function SettingsTabs() {
         <div className="space-y-8">
           {/* Two-factor Auth */}
           <div>
-            <label className="text-base font-medium text-gray-900 mb-4 block">Two-factor Authentication</label>
+            <label className="text-base font-medium text-gray-900 mb-4 block dark:text-[#c9c9c9]">Two-factor Authentication</label>
             <div className="flex items-center justify-between">
-              <span className="text-gray-700">Enable or disable two-factor authentication</span>
+              <span className="text-gray-700 dark:text-[#c9c9c9]">Enable or disable two-factor authentication</span>
               <Switch checked={twoFactorAuth} onCheckedChange={setTwoFactorAuth} />
+            </div>
+            <div className="flex items-center justify-between mt-6">
+              <span className="text-gray-700 dark:text-[#c9c9c9]">Delet you data</span>
+              <Button variant={"default"} onClick={handleData} >Clear All Data</Button>
             </div>
           </div>
 
           {/* Password Change */}
           <div>
-            <label className="text-base font-medium text-gray-900 mb-4 block">Change Password</label>
+            <label className="text-base font-medium text-gray-900 mb-4 block dark:text-[#c9c9c9]">Change Password</label>
             <div className="space-y-4 max-w-md">
               <div>
-                <label htmlFor="currentPassword" className="text-sm text-gray-700">
+                <label htmlFor="currentPassword" className="text-sm text-gray-700 dark:text-[#c9c9c9]">
                   Current Password
                 </label>
                 <input
@@ -245,7 +257,7 @@ export function SettingsTabs() {
                 />
               </div>
               <div>
-                <label htmlFor="newPassword" className="text-sm text-gray-700">
+                <label htmlFor="newPassword" className="text-sm text-gray-700 dark:text-[#c9c9c9]">
                   New Password
                 </label>
                 <input
@@ -267,6 +279,8 @@ export function SettingsTabs() {
           </div>
         </div>
       )}
+
+      <Toaster position="top-right" />
     </div>
   )
 }

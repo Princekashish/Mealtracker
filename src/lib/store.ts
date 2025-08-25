@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { Vendor, MealLog, Activity } from "./types";
-import {startOfMonth } from "date-fns";
+import { startOfMonth } from "date-fns";
 
 interface StoreState {
   vendors: Vendor[];
@@ -21,6 +21,7 @@ interface StoreState {
   setHydrated: (hydrated: boolean) => void;
   canLogMeal: (isLoggedIn: boolean) => boolean;
   getRemainingMeals: (isLoggedIn: boolean) => number;
+  resetStore: () => void;
 }
 
 export const useStore = create<StoreState>()(
@@ -151,6 +152,17 @@ export const useStore = create<StoreState>()(
       getRemainingMeals: (isLoggedIn: boolean) => {
         if (isLoggedIn) return Infinity;
         return Math.max(0, 5 - get().mealLogs.length);
+      },
+      resetStore: () => {
+        set({
+          vendors: [],
+          mealLogs: [],
+          activities: [],
+          onboardingCompleted: false,
+          currentMonth: startOfMonth(new Date()),
+          _hydrated: true,
+        });
+        localStorage.removeItem('MealTracker');
       },
     }),
     {

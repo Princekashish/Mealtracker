@@ -26,7 +26,7 @@ export default function OnboardingDialog({ isOpen, onOpenChange,initialVendorCou
         name: ``,
         status: 'active',
         meals: {
-          breakfast: { offered: false, price: 0 },
+          breakfast: { offered: false, price: 0},
           lunch: { offered: false, price: 0 },
           dinner: { offered: false, price: 0 },
         },
@@ -168,7 +168,7 @@ export default function OnboardingDialog({ isOpen, onOpenChange,initialVendorCou
                                   <label htmlFor={`${vendor.id}-${mealType}-price`} className="sr-only">{mealType} Price</label>
                                   <input
                                     id={`${vendor.id}-${mealType}-price`}
-                                    type="number"
+                                    type="text"
                                     value={vendor.meals[mealType].price}
                                     onChange={(e) => updateLocalVendorMeal(vendor.id, mealType, { price: Number(e.target.value) })}
                                     placeholder="Price (₹)"

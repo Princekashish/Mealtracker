@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import { useStore } from "@/lib/store";
 import { motion, AnimatePresence } from "framer-motion";
 import { Filter } from "lucide-react";
+import { format, parseISO } from 'date-fns';
 
 interface Vendor {
     id: string;
@@ -45,11 +46,11 @@ export default function MealDetails() {
     );
 
     return (
-        <div className="p-6 space-y-4 relative">
-            <h2 className="text-2xl font-bold">Meal History</h2>
+        <div className="md:p-6 space-y-4 relative">
+            <h2 className="text-2xl font-bold p-3 md:p-0">Meal History</h2>
 
             {/* Desktop Filters */}
-            <div className="hidden md:flex flex-wrap gap-4 items-center">
+            <div className="hidden md:flex flex-wrap gap-4 items-center ">
                 <FilterControls
                     selectedMonth={selectedMonth}
                     setSelectedMonth={setSelectedMonth}
@@ -95,7 +96,8 @@ export default function MealDetails() {
                             const vendor = vendors.find((v) => v.id === log.vendorId);
                             return (
                                 <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800">
-                                    <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{log.date}</td>
+                                    <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200 md:hidden">{format(parseISO(log.date), 'dd-MMM')}</td>
+                                    <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200 hidden md:block">{format(parseISO(log.date), 'dd-MMM-yyyy')}</td>
                                     <td className="px-4 py-3 text-sm capitalize">{log.mealType}</td>
                                     <td className="px-4 py-3 text-sm">{vendor ? vendor.name : "Unknown"}</td>
                                     <td className="px-4 py-3 text-sm">{log.price ? `₹${log.price}` : "-"}</td>

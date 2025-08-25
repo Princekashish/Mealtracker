@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   Utensils,
-  Calendar,
   BarChart2,
   Settings,
+  Users,
 } from "lucide-react";
 
 export function MobileSidebar() {
@@ -25,9 +25,9 @@ export function MobileSidebar() {
       href: "/dashboard/meals",
     },
     {
-      label: "Calendar",
-      icon: Calendar,
-      href: "/dashboard/calendar",
+      label: "Vendors",
+      icon: Users,
+      href: "/dashboard/vendors",
     },
     {
       label: "Analysis",
