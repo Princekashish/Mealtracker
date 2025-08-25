@@ -45,7 +45,7 @@ export function MobileSidebar() {
   if (!pathname.startsWith("/dashboard")) return null;
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full z-50 bg-white dark:bg-zinc-900 border-t flex justify-around items-center py-2 md:hidden">
+    <nav className="fixed bottom-0 left-0 w-full z-50 bg-white dark:bg-zinc-900 border-t flex justify-around items-center py-2 md:hidden  p-2">
       {routes.map((route) => {
         const isActive = pathname === route.href;
 
@@ -53,11 +53,11 @@ export function MobileSidebar() {
           <Link
             key={route.href}
             href={route.href}
-            className="flex flex-col items-center text-xs group "
+            className="flex flex-col items-center text-xs group p-1"
           >
             <route.icon
-              className={`h-6 w-6 mb-1 transition-colors ${
-                isActive ? "text-amber-600" : "text-black dark:text-white group-hover:text-amber-500"
+              className={`h-5 w-5 mb-1 transition-colors ${
+                isActive ? "text-amber-600 " : "text-black dark:text-white group-hover:text-amber-500"
               }`}
             />
             <span

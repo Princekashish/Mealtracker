@@ -87,7 +87,7 @@ export function SettingsTabs() {
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              "px-6 py-3 text-sm font-medium border-b-2 transition-colors",
+              "px-6 py-3 text-sm font-medium border-b-2 tracking-tighter transition-colors",
               activeTab === tab.id
                 ? "border-[#F59E0B] text-[#F59E0B] " : "border-transparent text-gray-500 hover:text-gray-700"
             )}
@@ -99,7 +99,7 @@ export function SettingsTabs() {
 
       {/* === PROFILE TAB === */}
       {activeTab === "profile" && (
-        <div className="space-y-8 p-5 ">
+        <div className="space-y-8 ">
           <div className="space-y-6">
             {/* Profile Picture */}
             <div className="mt-5">
