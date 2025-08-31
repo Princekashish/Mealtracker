@@ -1,22 +1,51 @@
 "use client";
 
 import { AreaChart, Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
-import { format, isSameMonth, parseISO } from 'date-fns';
+import { format, isSameMonth, parseISO, addMonths, subMonths } from 'date-fns';
 import { useStore } from "@/lib/store";
 import { useMemo } from "react";
-import { FileDown } from "lucide-react";
+import { ChevronLeft, ChevronRight, FileDown } from "lucide-react";
+import { Button } from "../ui/Button";
+
 
 const COLORS = ['#10B981', '#F97316', '#3B82F6', '#6366f1', '#ec4899', '#f59e0b', '#F4F4F5'];
 
+
+const NavigationControls = ({
+  onMonthChange
+}: {
+  onMonthChange: (direction: 'prev' | 'next') => void;
+}) => (
+  <div className="flex justify-center items-center gap-3">
+    <Button
+      variant="outline"
+      size="icon"
+      className="h-8 w-8"
+      onClick={() => onMonthChange('prev')}
+    >
+      <ChevronLeft className="h-4 w-4" />
+    </Button>
+    <Button
+      variant="outline"
+      size="icon"
+      className="h-8 w-8"
+      onClick={() => onMonthChange('next')}
+    >
+      <ChevronRight className="h-4 w-4" />
+    </Button>
+  </div>
+);
+
 export default function ExpenseBreakdown() {
+
 
   const mealLogs = useStore((state) => state.mealLogs)
   const currentMonth = useStore((state) => state.currentMonth)
   const vendors = useStore((state) => state.vendors)
+  const setCurrentMonth = useStore((state) => state.setCurrentMonth);
+
 
   const formattedMonth = format(new Date(), 'MMMM yyyy')
-
-
 
   const expenseBreakdownByVendor = useMemo(() => {
     if (!mealLogs || !vendors) {
@@ -54,16 +83,27 @@ export default function ExpenseBreakdown() {
       averagePerMeal
     };
   }, [mealLogs, currentMonth]);
-
+  const handleMonthChange = (direction: 'prev' | 'next') => {
+    const newMonth = direction === 'prev'
+      ? subMonths(currentMonth, 1)
+      : addMonths(currentMonth, 1);
+    setCurrentMonth(newMonth);
+  };
   return (
     <div className="col-span-3 p-5 md:border md:border-gray-200 bg-[#F5F5F5] rounded-3xl h-full dark:bg-[#161616] dark:border-none">
-      <div>
-        <h1 className="lg:text-2xl text-lg font-bold tracking-tight ">
-          Expense Breakdown
-        </h1>
-        <p className="md:text-sm text-xs tracking-tight text-[#8C97A9] ">
-          Total spending for {formattedMonth}
-        </p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="lg:text-2xl text-lg font-bold tracking-tight ">
+            Expense Breakdown
+          </h1>
+          <p className="md:text-sm text-xs tracking-tight text-[#8C97A9] ">
+            Total spending for {formattedMonth}
+          </p>
+        </div>
+        <div className="bg-white/10 px-3 py-2 rounded-full ">
+          <NavigationControls onMonthChange={handleMonthChange} />
+        </div>
+
       </div>
       <div>
         <div className="grid lg:h-[200px] grid-cols-1 items-center justify-center gap-4 sm:grid-cols-2 sm:gap-8 mt-3">
@@ -122,7 +162,7 @@ export default function ExpenseBreakdown() {
           </div>
         </div>
       </div>
-      <div className="mt-3 lg:mt-0 flex justify-center items-center rounded-full py-3 md:bg-black md:hover:bg-black/80 cursor-pointer  gap-3 bg-zinc-900 text-[#efefef] ] font-medium hover:bg-black/50 shadow duration-300 hover:text-white">
+      <div className="mt-3 lg:mt-0 flex justify-center items-center rounded-full py-3 md:bg-black md:hover:bg-black/80 cursor-pointer  gap-3 bg-white/10 text-[#efefef] ] font-medium  shadow duration-300 hover:text-white">
         <button>
           Downlode file
         </button>
