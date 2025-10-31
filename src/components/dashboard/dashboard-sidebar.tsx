@@ -3,8 +3,6 @@
 import type React from "react";
 import { usePathname } from "next/navigation";
 import {
-  Calendar,
-  CreditCard,
   Home,
   LineChart,
   Settings,
@@ -35,18 +33,18 @@ export function DashboardSidebar() {
       href: "/dashboard/vendors",
       active: pathname === "/dashboard/vendors",
     },
-    {
-      label: "Calendar",
-      icon: Calendar,
-      href: "/dashboard/calendar",
-      active: pathname === "/dashboard/calendar",
-    },
-    {
-      label: "Expenses",
-      icon: CreditCard,
-      href: "/dashboard/expenses",
-      active: pathname === "/dashboard/expenses",
-    },
+    // {
+    //   label: "Calendar",
+    //   icon: Calendar,
+    //   href: "/dashboard/calendar",
+    //   active: pathname === "/dashboard/calendar",
+    // },
+    // {
+    //   label: "Expenses",
+    //   icon: CreditCard,
+    //   href: "/dashboard/expenses",
+    //   active: pathname === "/dashboard/expenses",
+    // },
     {
       label: "Analytics",
       icon: LineChart,

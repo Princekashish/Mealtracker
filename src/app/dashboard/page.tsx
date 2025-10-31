@@ -3,18 +3,10 @@
 import dynamic from 'next/dynamic';
 
 // Dynamic imports with SSR disabled and loading fallback
-const Aianalysis = dynamic(() => import('@/components/dashboard/aianalysis'), {
+const SpendingAnalysisDialog = dynamic(() => import('@/components/dashboard/spend-alalysis'), {
   ssr: false,
-  loading: () => <div className="w-full mt-5">
-    <div className="">
-      {Array(1).fill(0).map((_, index) => (
-        <div key={index}>
-          <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Skeleton className="h-10 w-full" />
-          </div>
-        </div>
-      ))}
-    </div>
+  loading: () => <div className="w-full">
+    <Skeleton className="h-10 w-32" />
   </div>,
 });
 
@@ -50,17 +42,15 @@ const OnboardingDialog = dynamic(() => import('@/components/dashboard/on-boardin
 
 const RecentActivity = dynamic(() => import('@/components/dashboard/recent-activity'), {
   ssr: false,
-  loading: () => <RecentActivitySkeleton/>,
+  loading: () => <RecentActivitySkeleton />,
 });
 
 const VendorOverview = dynamic(() => import('@/components/dashboard/vendor-overview'), {
   ssr: false,
   loading: () => <VendorOverviewSkeleton />,
 });
-
 import { Button } from "@/components/ui/Button";
 import { useStore } from "@/lib/store";
-import { useAuth } from "@/utils/Auth/AuthProvider";
 import { isSameDay, parseISO } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -72,15 +62,16 @@ import ExpenseBreakdownSkeleton from '@/components/ui/ExpenseBreakdownSkeleton';
 import MealCalendarSkeleton from '@/components/ui/MealCalendarSkeleton';
 import VendorOverviewSkeleton from '@/components/ui/VendorOverviewSkeleton';
 import RecentActivitySkeleton from '@/components/ui/RecentActivitySkeleton';
+import { authClient } from '@/lib/auth-client';
 
 
 export default function DashboardPage() {
   const { vendors, mealLogs, canLogMeal, onboardingCompleted } = useStore();
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const { data: session } = authClient.useSession()
+  const user = session?.user
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [showAnalysis, setShowAnalysis] = useState(true);
-  const [isHiding, setIsHiding] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [dateForDialog, setDateForDialog] = useState<Date | undefined>();
   const [isMealTrackerOpen, setIsMealTrackerOpen] = useState(false);
@@ -89,10 +80,13 @@ export default function DashboardPage() {
 
 
   useEffect(() => {
-    try {
-      if (!onboardingCompleted) {
 
+    try {
+
+      if (vendors.length <= 0) {
         setIsOnboardingOpen(true);
+      } else {
+        setIsOnboardingOpen(false)
       }
 
       if (hasMealLimitReached) {
@@ -103,16 +97,6 @@ export default function DashboardPage() {
     }
   }, [onboardingCompleted, hasMealLimitReached]);
 
-
-
-  const handelclose = () => {
-    setIsHiding(true);
-    setTimeout(() => {
-      setShowAnalysis(false);
-
-    }, 300);
-
-  }
   const handleAddMealClick = (date: Date) => {
     try {
       if (vendors.filter(v => v.status === 'active').length === 0) {
@@ -134,7 +118,6 @@ export default function DashboardPage() {
 
 
 
-
   return (
     <>
       <Toaster position="top-right" />
@@ -149,7 +132,11 @@ export default function DashboardPage() {
             </p>
           </div>
 
-
+          {mealLogs.length > 0 && (
+            <div className="flex items-center gap-2">
+              <SpendingAnalysisDialog mealLogs={mealLogs} />
+            </div>
+          )}
         </div>
 
         {error ? (
@@ -161,13 +148,7 @@ export default function DashboardPage() {
           </div>
         ) : (
           <>
-
             <div className="flex flex-col gap-5">
-
-              {
-                showAnalysis && <Aianalysis onClose={handelclose} isHiding={isHiding} />
-              }
-
               <div className="grid gap-6 mt-2 md:mt-6 md:grid-cols-2 lg:grid-cols-5 ">
                 <div className="lg:col-span-3 flex gap-10">
                   <MealMetrics />
@@ -238,7 +219,7 @@ export default function DashboardPage() {
               toast.error("Meal limit reached. Please log in to continue tracking meals.", {
                 action: {
                   label: "Log In",
-                  onClick: () => router.push("/auth/login")
+                  onClick: () => router.push("/login")
                 }
               });
             }

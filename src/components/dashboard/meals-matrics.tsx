@@ -52,8 +52,8 @@ export default function MealMetrics() {
   const monthlySummary = useMemo(() => {
 
     const logsThisMonth = mealLogs.filter(log => isSameMonth(parseISO(log.date), currentMonth));
-    const totalCost = logsThisMonth.reduce((acc, log) => acc + log.price, 0);
-    const totalMeals = logsThisMonth.length;
+    const totalCost = logsThisMonth.reduce((acc, log) => acc + (Number(log.price) * log.quantity), 0);
+    const totalMeals = logsThisMonth.reduce((acc, log) => acc + log.quantity, 0);
 
     // Calculate remaining meals
     const today = new Date();
@@ -66,11 +66,10 @@ export default function MealMetrics() {
     // Get active vendors and their meal offerings
     const activeVendors = vendors.filter(v => v.status === 'active');
     const totalMealsPerDay = activeVendors.reduce((total, vendor) => {
-      let vendorMeals = 0;
-      if (vendor.meals.breakfast.offered) vendorMeals++;
-      if (vendor.meals.lunch.offered) vendorMeals++;
-      if (vendor.meals.dinner.offered) vendorMeals++;
-      return total + vendorMeals;
+      if (!vendor.meals) return total;
+
+      const offeredMeals = vendor.meals.filter(m => m.offered).length;
+      return total + offeredMeals;
     }, 0);
 
     // Calculate total meals available for remaining days (only for current month)
@@ -84,7 +83,7 @@ export default function MealMetrics() {
         logDate <= endOfCurrentMonth;
     }) : [];
 
-    const mealsAlreadyLogged = remainingDaysLogs.length;
+    const mealsAlreadyLogged = remainingDaysLogs.reduce((acc, log) => acc + log.quantity, 0);
     const remainingMeals = Math.max(0, totalMealsAvailable - mealsAlreadyLogged);
 
     return {
@@ -128,7 +127,7 @@ export default function MealMetrics() {
       change: "+2 from last month",
       description: "Antu anty",
       short: "Vendors",
-      link:"/dashboard/vendors"
+      link: "/dashboard/vendors"
     },
     {
       title: "Meals Remaining",

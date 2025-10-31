@@ -6,16 +6,18 @@ import { Skeleton } from "../ui/Skeleton"
 import { useStore } from "@/lib/store"
 import { Progress } from "../ui/process"
 import { isSameMonth, parseISO } from "date-fns"
+import { authClient } from "@/lib/auth-client"
 
 export default function VendorOverview() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-
-  const vendors = useStore((state) => state.vendors);
   const mealLogs = useStore((state) => state.mealLogs);
   const currentMonth = useStore((state) => state.currentMonth);
   const hydrated = useStore((state) => state._hydrated);
+  const { vendors, fetchVendors, fetchMealLogs } = useStore()
 
+  const { data: session } = authClient.useSession();
+  const setUserId = useStore((state) => state.setUserId);
 
   useEffect(() => {
     async function loadVendors() {
@@ -32,11 +34,22 @@ export default function VendorOverview() {
 
     loadVendors()
 
+    if (session?.user?.id) {
+      setUserId(session.user.id);
+    } else {
+      setUserId(undefined);
+    }
+
+    fetchVendors()
+    fetchMealLogs()
+
     if (hydrated) {
       setLoading(false);
     }
 
-  }, [hydrated])
+
+
+  }, [hydrated, session?.user?.id, setUserId])
 
   const vendorMealCounts = useMemo(() => {
     if (!hydrated) return {};
@@ -98,7 +111,7 @@ export default function VendorOverview() {
                   </div>
                 </div>
               ))
-            : vendors && vendors.map((vendor, index) => {
+            : vendors.length > 0 && vendors.map((vendor, index) => {
               const mealsTaken = vendorMealCounts[vendor.id] || 0;
               const totalMeals = 34;
               return (
@@ -111,7 +124,8 @@ export default function VendorOverview() {
                       <div className="flex justify-between items-center">
                         <div className="flex justify-center items-center">
                           <div className="h-9 w-9 mr-3">
-                            <img src={`https://avatar.iran.liara.run/public`} />
+                            <img src={`https://avatar.iran.liara.run/public/${Math.floor(Math.random() * 100) + 1}`
+                            } />
                           </div>
                           <div>
                             <p className="md:text-sm text-xs font-medium leading-none">{vendor.name}</p>

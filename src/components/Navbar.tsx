@@ -5,20 +5,26 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { Button } from "./ui/Button";
-import { useAuth } from "@/utils/Auth/AuthProvider";
 import Image from "next/image";
 import { HiArrowLongRight } from "react-icons/hi2";
+import { authClient } from "@/lib/auth-client";
+
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
   const [userdropdown, setUserDropDown] = useState(false);
   const pathname = usePathname();
+  const {data:session}=authClient.useSession() 
+  const user = session?.user
+
+
 
   const handlesignout = () => {
-    signOut();
+    // signOut();
     setUserDropDown(false)
   }
+
+
 
   // if (loading) {
   //   return (
@@ -111,11 +117,11 @@ export default function Navbar() {
                 className={`flex justify-center items-center gap-2 cursor-pointer md:border py-1 md:border-gray-200 rounded-3xl  p-2`}
               >
                 <h1 className="hidden md:block font-medium text-gray-600 dark:text-[#f2f2f2]">
-                  {user.displayName}
+                  {user.name}
                 </h1>
                 <Image
                   src={
-                    user.photoURL ||
+                    user.image ||
                     "https://avatar.iran.liara.run/public/boy"
                   }
                   alt="User avatar"
@@ -126,7 +132,7 @@ export default function Navbar() {
               </div>
             ) : (
               <div className=" md:flex items-center gap-4 ">
-                <Link href="/auth/login" className={`${pathname.startsWith("/dashboard") ? "" : "hidden"}`}>
+                <Link href="/login" className={`${pathname.startsWith("/dashboard") ? "" : "hidden"}`}>
                   <Button variant="link" size="sm" className="rounded-full dark:bg-zinc-800">
                     Log in
                   </Button>
@@ -211,10 +217,10 @@ export default function Navbar() {
                     onClick={() => setUserDropDown((pre) => !pre)}
                     className="flex items-center gap-2 cursor-pointer border py-1 border-gray-200 rounded-3xl p-2 w-fit"
                   >
-                    <h1 className="font-medium text-gray-600 ">{user.displayName}</h1>
+                    <h1 className="font-medium text-gray-600 ">{user.name}</h1>
                     <Image
                       src={
-                        user.photoURL ||
+                        user.image ||
                         "https://avatar.iran.liara.run/public/boy"
                       }
                       alt="User avatar"
@@ -228,7 +234,7 @@ export default function Navbar() {
                       onClick={() => {
                         setUserDropDown(false);
                         setMobileMenuOpen(false);
-                        signOut();
+                        // signOut();
                       }}
                       className="flex flex-col justify-start items-start p-1 bg-[#f6f6f6] rounded-full cursor-pointer mt-2"
                     >
@@ -243,7 +249,7 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/Elogin" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" size="sm" className="rounded-full w-full">
                       Log in
                     </Button>

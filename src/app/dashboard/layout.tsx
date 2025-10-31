@@ -4,16 +4,18 @@ import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
 import { MobileSidebar } from "@/components/mobilenavbar";
 import ThemeToggleButton from "@/components/themeToggle";
 import { Button } from "@/components/ui/Button";
-import { useAuth } from "@/utils/Auth/AuthProvider";
-import { Bell, LoaderCircle, LogOut } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { Bell, LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
 
+
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const [userdropdown, setUserDropDown] = useState(false);
-  const { user, loading, signOut } = useAuth();
+  const { data: session } = authClient.useSession()
+  const user = session?.user
 
   // useEffect(() => {
   //   if (!loading && !user) {
@@ -22,23 +24,28 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   //   }
   // }, [user, loading, router]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-[80vh]">
-        <div className=""><LoaderCircle className="animate-spin" /></div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center h-[80vh]">
+  //       <div className=""><LoaderCircle className="animate-spin" /></div>
+  //     </div>
+  //   );
+  // }
 
   // if (!user) {
   //   return null;
   // }
 
 
-  const handlesignout = () => {
-    signOut();
+
+
+  const handlesignout = async() => {
+    await authClient.signOut();
     setUserDropDown(false)
   }
+
+
+
 
   return (
     <div className="min-h-screen">
@@ -62,7 +69,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   >
                     <Image
                       src={
-                        user.photoURL ||
+                        user.image ||
                         "https://avatar.iran.liara.run/public/boy"
                       }
                       alt="User avatar"
@@ -73,7 +80,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   </div>
                 ) : (
                   <div className="hidden md:flex items-center gap-4 ">
-                    <Link href="/auth/login" className=" cursor-pointer ">
+                    <Link href="/login" className=" cursor-pointer ">
                       <Button variant="outline" size="sm" className="rounded-full">
                         Log in
                       </Button>

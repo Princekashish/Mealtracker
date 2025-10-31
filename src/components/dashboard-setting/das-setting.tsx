@@ -4,11 +4,11 @@ import { useRef, useState } from "react"
 import { ImageIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/Button"
-import { useAuth } from "@/utils/Auth/AuthProvider"
 import Image from "next/image"
 import { Switch } from "../ui/switch"
 import { useStore } from "@/lib/store"
 import { toast, Toaster } from "sonner"
+import { authClient } from "@/lib/auth-client"
 
 type TabType = "profile" | "preferences" | "security"
 
@@ -18,10 +18,11 @@ export function SettingsTabs() {
   const resetStore = useStore((state) => state.resetStore);
 
   // Profile state
-  const { user } = useAuth();
+  const { data:session } = authClient.useSession()
+  const user = session?.user 
   const [userDetail, setUserDetail] = useState({
-    profile: user?.photoURL || "",
-    name: user?.displayName || "",
+    profile: user?.image || "",
+    name: user?.name || "",
     email: user?.email || "",
     phone: "",
   })

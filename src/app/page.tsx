@@ -1,4 +1,5 @@
 "use client"
+import { authClient } from "@/lib/auth-client";
 import { LoaderCircle } from "lucide-react";
 
 import dynamic from "next/dynamic";
@@ -8,9 +9,11 @@ const Section = dynamic(() => import("@/components/section-0"), {
     <div className=""><LoaderCircle className="animate-spin" /></div>
   </div>,
 })
+
 function HomePage() {
-
-
+  const { data: session} = authClient.useSession() 
+  console.log(session?.user.email);
+  
   return (
     <div>
       <Section />

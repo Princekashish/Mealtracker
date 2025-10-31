@@ -58,7 +58,7 @@ export default function ExpenseBreakdown() {
       if (!breakdown[vendorName]) {
         breakdown[vendorName] = 0;
       }
-      breakdown[vendorName] += log.price;
+      breakdown[vendorName] += log.price * log.quantity;
     });
     return Object.entries(breakdown).map(([name, value]) => ({ name, value })).filter(item => item.value > 0);
   }, [mealLogs, vendors, currentMonth]);
@@ -73,8 +73,8 @@ export default function ExpenseBreakdown() {
       };
     }
     const logsThisMonth = mealLogs.filter(log => isSameMonth(parseISO(log.date), new Date()));
-    const totalCost = logsThisMonth.reduce((acc, log) => acc + log.price, 0);
-    const totalMeals = logsThisMonth.length;
+    const totalCost = logsThisMonth.reduce((acc, log) => acc + (Number(log.price || 0) * log.quantity), 0);
+    const totalMeals = logsThisMonth.reduce((acc, log) => acc + log.quantity, 0);
     const averagePerMeal = totalMeals > 0 ? totalCost / totalMeals : 0;
 
     return {

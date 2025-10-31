@@ -1,11 +1,12 @@
 "use client"
 import { Button } from '@/components/ui/Button';
 import { useStore } from '@/lib/store';
-import { Meal, MealType, Vendor } from '@/lib/types';
+import { Meal, Vendor } from '@/lib/types';
 import { PlusCircle, Trash2, X } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Toaster } from 'sonner';
 import { Switch } from '../ui/switch';
+import { authClient } from '@/lib/auth-client';
 
 interface OnboardingDialogProps {
     isOpen?: boolean;
@@ -15,10 +16,31 @@ interface OnboardingDialogProps {
 
 export default function VendorAdding({ isOpen, onOpenChange, vendorToEdit }: OnboardingDialogProps) {
     const [addvendors, setAddvendors] = useState<Vendor[]>([]);
-    const { addVendor, vendors } = useStore();
+    const { addVendor, fetchVendors } = useStore();
+
+    const { data: session } = authClient.useSession();
+    const setUserId = useStore((state) => state.setUserId);
+
+    useEffect(() => {
+        if (session?.user?.id) {
+            setUserId(session.user.id);
+        } else {
+            setUserId(undefined);
+        }
+
+        fetchVendors()
+    }, [session?.user?.id, setUserId]);
 
 
-    const defaultMeal: Meal = { offered: false, price: 0 };
+
+
+
+    /*const defaultMeal: Meal = { offered: false, price: 0 }; */
+    const defaultMeals: Vendor["meals"] = [
+        { mealType: "breakfast", offered: false, price: 0 },
+        { mealType: "lunch", offered: false, price: 0 },
+        { mealType: "dinner", offered: false, price: 0 },
+    ];
 
     useEffect(() => {
         if (isOpen) {
@@ -34,14 +56,10 @@ export default function VendorAdding({ isOpen, onOpenChange, vendorToEdit }: Onb
     const handleAddLocalVendor = () => {
 
         const newVendor: Vendor = {
-            id: `vendor_${Date.now()}`,
+            id: `${Date.now()}`,
             name: ``,
             status: 'active',
-            meals: {
-                breakfast: { ...defaultMeal },
-                lunch: { ...defaultMeal },
-                dinner: { ...defaultMeal },
-            },
+            meals: [...defaultMeals],
         };
         setAddvendors([...addvendors, newVendor]);
     };
@@ -50,25 +68,32 @@ export default function VendorAdding({ isOpen, onOpenChange, vendorToEdit }: Onb
         setAddvendors(addvendors.map(v => (v.id === vendorId ? { ...v, ...updatedVendor } : v)));
     };
 
-    const updateLocalVendorMeal = (vendorId: string, mealType: MealType, updatedMeal: Partial<Meal>) => {
-        setAddvendors(addvendors.map(v => v.id === vendorId ? { ...v, meals: { ...v.meals, [mealType]: { ...v.meals[mealType], ...updatedMeal } } } : v));
+    const updateLocalVendorMeal = (vendorId: string, mealType: string, updatedMeal: Partial<Meal>) => {
+        setAddvendors(addvendors.map((v) => v.id === vendorId ? { ...v, meals: v.meals?.map((m) => m.mealType === mealType ? { ...m, ...updatedMeal } : m), } : v));
     };
-
 
     const removeLocalVendor = (vendorId: string) => {
         setAddvendors((prev) => prev.filter((v) => v.id !== vendorId));
     };
 
 
-    const handleFinish = () => {
+    const handleFinish = async () => {
+
+
+        console.log(addvendors);
+
         const finalvendors = addvendors.filter(v => v.name.trim() !== '');
-        finalvendors.forEach((vendor) => {
+        for (const vendor of finalvendors) {
+
+
             if (vendorToEdit) {
                 useStore.getState().updateVendor(vendor.id, vendor);
             } else {
-                addVendor(vendor);
+                await addVendor(vendor);
             }
-        });
+        }
+
+
         if (onOpenChange) {
             onOpenChange(false);
         }
@@ -94,20 +119,18 @@ export default function VendorAdding({ isOpen, onOpenChange, vendorToEdit }: Onb
 
                             <div className='mt-3 '>
                                 {addvendors.length === 0 && (
-                                    <div className="flex h-full flex-col items-center justify-center p-8 text-center">
+                                    <div className="flex h-[40vh]  flex-col items-center justify-center p-8 text-center">
                                         <p className="text-muted-foreground">No vendors yet. Add your first one to get started!</p>
                                     </div>
                                 )}
                                 <div className=" md:mt-5  space-y-5">
-                                    {addvendors.map((vendor,) => (
+                                    {addvendors.map((vendor) => (
                                         <div key={vendor.id} className="space-y-4 rounded-3xl border p-4 ">
-                                            <div className="flex items-center justify-between relative">
+                                            <div className="flex items-center justify-between relative ">
                                                 <label className='text-base  font-medium'>Vendor Name</label>
-                                                {vendors.length > 0 &&
-                                                    <Button variant="ghost" className='absolute right-0 top-0' size="icon" onClick={() => removeLocalVendor(vendor.id)}>
-                                                        <Trash2 className="h-4 w-4 text-destructive" />
-                                                    </Button>
-                                                }
+                                                <Button variant="ghost" className='absolute  right-0 top-0' size="icon" onClick={() => removeLocalVendor(vendor.id)}>
+                                                    <Trash2 className="h-4 w-4 text-destructive" />
+                                                </Button>
                                             </div>
                                             <div className='flex flex-col gap-2'>
 
@@ -120,31 +143,31 @@ export default function VendorAdding({ isOpen, onOpenChange, vendorToEdit }: Onb
                                                 />
                                             </div>
                                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 ">
-                                                {(['breakfast', 'lunch', 'dinner'] as MealType[]).map(mealType => (
-                                                    <div key={mealType} className="space-y-2 rounded-md border bg-muted/20 p-2 py-3">
+                                                {vendor.meals?.map((meal) => (
+                                                    <div key={meal.mealType} className="space-y-2 rounded-md border bg-muted/20 p-2 py-3">
                                                         <div className="flex items-center space-x-2">
                                                             <input type='checkbox'
-                                                                id={`${vendor.id}-${mealType}`}
-                                                                checked={vendor.meals[mealType].offered}
+                                                                id={`${vendor.id}-${meal.mealType}`}
+                                                                checked={meal.offered}
                                                                 className=''
                                                                 onChange={(e) =>
-                                                                    updateLocalVendorMeal(vendor.id, mealType, {
+                                                                    updateLocalVendorMeal(vendor.id, meal.mealType, {
                                                                         offered: e.target.checked,
                                                                     })
                                                                 }
                                                             />
-                                                            <label htmlFor={`${vendor.id}-${mealType}`} className=" peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium capitalize leading-none">
-                                                                {mealType}
+                                                            <label htmlFor={`${vendor.id}-${meal.mealType}`} className=" peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium capitalize leading-none">
+                                                                {meal.mealType}
                                                             </label>
                                                         </div>
-                                                        {vendor.meals[mealType].offered && (
+                                                        {meal.offered && (
                                                             <div >
-                                                                <label htmlFor={`${vendor.id}-${mealType}-price`} className="sr-only">{mealType} Price</label>
+                                                                <label htmlFor={`${vendor.id}-${meal.mealType}-price`} className="sr-only">{meal.mealType} Price</label>
                                                                 <input
-                                                                    id={`${vendor.id}-${mealType}-price`}
+                                                                    id={`${vendor.id}-${meal.mealType}-price`}
                                                                     type="text"
-                                                                    value={vendor.meals[mealType].price}
-                                                                    onChange={(e) => updateLocalVendorMeal(vendor.id, mealType, { price: Number(e.target.value) })}
+                                                                    value={meal.price}
+                                                                    onChange={(e) => updateLocalVendorMeal(vendor.id, meal.mealType, { price: Number(e.target.value) })}
                                                                     placeholder="Price (₹)"
                                                                     className="h-8 w-full overflow-hidden rounded-lg px-2 py-5 md:py-0 border-gray-200 border "
                                                                 />
@@ -192,7 +215,7 @@ export default function VendorAdding({ isOpen, onOpenChange, vendorToEdit }: Onb
                     </div>
                 </div>
 
-                <Button type="button" variant={"default"} onClick={handleFinish} disabled={vendors.length === 0 || addvendors.every(v => v.name.trim() === '')}>Save</Button>
+                <Button type="button" variant={"default"} onClick={handleFinish} disabled={addvendors.every(v => v.name.trim() === '')}>Save</Button>
 
 
             </div>

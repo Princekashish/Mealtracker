@@ -1,41 +1,61 @@
 import { Button } from '@/components/ui/Button';
 import { useStore } from '@/lib/store';
 import { Meal, MealType, Vendor } from '@/lib/types';
-import { PartyPopper, PlusCircle, Trash2, X } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { PartyPopper, PlusCircle, Trash2, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { toast, Toaster } from 'sonner';
+import { authClient } from '@/lib/auth-client';
 
 interface OnboardingDialogProps {
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
-  initialVendorCount?: number;
 }
 
-export default function OnboardingDialog({ isOpen, onOpenChange,initialVendorCount }: OnboardingDialogProps) {
+export default function OnboardingDialog({ isOpen, onOpenChange }: OnboardingDialogProps) {
   const [step, setStep] = useState(1);
   const [localVendors, setLocalVendors] = useState<Vendor[]>([]);
-  const { addVendor, setOnboardingCompleted } = useStore();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
-
+  const { addVendor, setOnboardingCompleted, vendors: storeVendors, setUserId } = useStore();
+  const { data: session } = authClient.useSession();
+  const isLoggedIn = !!session?.user;
 
   useEffect(() => {
-    if (isOpen && localVendors.length === 0) {
+    async function checkVendors() {
+      if (isLoggedIn) {
+        try {
+          setUserId(session.user.id)
+        } catch (err) {
+          console.error('Failed to fetch vendors from DB', err);
+        }
+      }
 
-      setLocalVendors([{
-        id: `vendor_${Date.now()}`,
-        name: ``,
-        status: 'active',
-        meals: {
-          breakfast: { offered: false, price: 0},
-          lunch: { offered: false, price: 0 },
-          dinner: { offered: false, price: 0 },
-        },
-      }]);
+      // Check if onboarding is needed
+      if ((isLoggedIn && storeVendors.length === 0) || (!isLoggedIn && storeVendors.length === 0)) {
+        setShowOnboarding(true);
+
+        // Initialize local vendors if empty
+        if (localVendors.length === 0) {
+          setLocalVendors([{
+            id: `vendor_${Date.now()}`,
+            name: '',
+            status: 'active',
+            meals: [
+              { mealType: 'breakfast', offered: false, price: 0 },
+              { mealType: 'lunch', offered: false, price: 0 },
+              { mealType: 'dinner', offered: false, price: 0 },
+            ],
+          }]);
+        }
+      } else {
+        setShowOnboarding(false);
+      }
     }
-  }, [isOpen, localVendors.length,initialVendorCount]);
 
-
-  const defaultMeal: Meal = { offered: false, price: 0 };
+    if (isOpen) {
+      checkVendors();
+    }
+  }, [isOpen, isLoggedIn, storeVendors]);
 
 
   const handleAddLocalVendor = () => {
@@ -43,11 +63,11 @@ export default function OnboardingDialog({ isOpen, onOpenChange,initialVendorCou
       id: `vendor_${Date.now()}`,
       name: `${localVendors.length + 1}`,
       status: 'active',
-      meals: {
-        breakfast: { ...defaultMeal },
-        lunch: { ...defaultMeal },
-        dinner: { ...defaultMeal },
-      },
+      meals: [
+        { mealType: 'breakfast', offered: false, price: 0 },
+        { mealType: 'lunch', offered: false, price: 0 },
+        { mealType: 'dinner', offered: false, price: 0 },
+      ],
     };
     setLocalVendors([...localVendors, newVendor]);
   };
@@ -59,15 +79,9 @@ export default function OnboardingDialog({ isOpen, onOpenChange,initialVendorCou
   const updateLocalVendorMeal = (vendorId: string, mealType: MealType, updatedMeal: Partial<Meal>) => {
     setLocalVendors(localVendors.map(v => v.id === vendorId ? {
       ...v,
-      meals: {
-        ...v.meals,
-        [mealType]: { ...v.meals[mealType], ...updatedMeal }
-      }
+      meals: v.meals?.map(m => m.mealType === mealType ? { ...m, ...updatedMeal } : m)
     } : v));
   };
-
-
-
 
   const removeLocalVendor = (vendorId: string) => {
     setLocalVendors(localVendors.filter(v => v.id !== vendorId));
@@ -76,7 +90,7 @@ export default function OnboardingDialog({ isOpen, onOpenChange,initialVendorCou
   const handleNextStep = () => {
     const validVendors = localVendors.filter(v => v.name.trim() !== '');
     if (validVendors.length === 0) {
-      toast.success('No')
+      toast.error('Please add at least one vendor');
       return;
     }
     setLocalVendors(validVendors);
@@ -87,142 +101,96 @@ export default function OnboardingDialog({ isOpen, onOpenChange,initialVendorCou
     const finalVendors = localVendors.filter(v => v.name.trim() !== '');
     finalVendors.forEach(vendor => addVendor(vendor));
     setOnboardingCompleted(true);
-    setStep(1); // Reset for next time
+    setStep(1);
     setLocalVendors([]);
-    if (onOpenChange) {
-      onOpenChange(false);
-    }
+    if (onOpenChange) onOpenChange(false);
   };
 
+  if (!isOpen || !showOnboarding) return null;
 
-  if (!isOpen) return null;
   return (
-    <div className='fixed inset-0  z-50 bg-black/80 flex justify-center items-center p-3 '>
-      <div className=' relative  grid w-full max-w-lg gap-4 border bg-background p-6 shadow-lg  sm:rounded-lg rounded-xl'>
-        <div className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-          <X onClick={() => onOpenChange?.(false)} className='cursor-pointer' />
+    <div className="fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-3">
+      <div className="relative grid w-full max-w-lg gap-4 border bg-background p-6 shadow-lg sm:rounded-lg rounded-xl">
+        <div className="absolute right-4 top-4">
+          <X onClick={() => onOpenChange?.(false)} className="cursor-pointer" />
         </div>
 
-        <div className='' >
+        {/* Step 1: Add Vendors */}
+        {step === 1 && (
+          <div className="flex flex-col gap-2">
+            <h1 className="md:text-2xl text-lg font-bold tracking-tight">Welcome to MealTrack!</h1>
+            <p className="md:text-sm text-xs text-[#8C97A9] tracking-tighter">
+              Let's get you set up. Add the tiffin services you use.
+            </p>
 
-          {step === 1 && (
-            <div className='flex flex-col gap-2'>
-              <div className='flex flex-col justify-center gap-2'>
-                <h1 className="md:text-2xl text-lg font-bold tracking-tight ">Welcome to MealTrack!</h1>
-                <p className="md:text-sm text-xs text-[#8C97A9] tracking-tighter"> Let's get you set up. Add the tiffin services you use. You can manage them later from the settings.</p>
-              </div>
+            <Button variant="outline" onClick={handleAddLocalVendor} className="mt-4 flex items-center">
+              <PlusCircle className="mr-2 h-4 w-4" /> Add Vendor
+            </Button>
 
-              <div className=' relative '>
-                <div className='hidden md:block'>
-                  <Button variant="outline" onClick={handleAddLocalVendor} className="mt-4 flex justify-center items-center   right-0 rounded-xl border border-gray-200" >
-                    <PlusCircle className="mr-2 h-4 w-4" /> Add Vendor
+            {localVendors.map((vendor, index) => (
+              <div key={vendor.id} className="space-y-2 rounded-3xl border p-4">
+                <div className="flex justify-between items-center">
+                  <label className="text-base font-medium">Vendor {index + 1}</label>
+                  <Button variant="ghost" size="icon" onClick={() => removeLocalVendor(vendor.id)}>
+                    <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
                 </div>
-                <div className='mt-3'>
-                  {localVendors.length === 0 && (
-                    <div className="flex h-full flex-col items-center justify-center p-8 text-center">
-                      <p className="text-muted-foreground">No vendors yet. Add your first one to get started!</p>
-                    </div>
-                  )}
-                  <div className=" md:mt-5  space-y-5">
-                    {localVendors.map((vendor, index) => (
-                      <div key={vendor.id} className="space-y-4 rounded-3xl border p-4 ">
-                        <div className="flex items-center justify-between relative">
-                          {/* <label htmlFor={`vendor-name-${vendor.id}`} className="text-lg font-medium">Vendor {index + 1}</label> */}
-                          {localVendors.length > 0 &&
-                            <Button variant="ghost" className='absolute right-0 top-0' size="icon" onClick={() => removeLocalVendor(vendor.id)}>
-                              <Trash2 className="h-4 w-4 text-destructive" />
-                            </Button>
+                <input
+                  type="text"
+                  value={vendor.name}
+                  placeholder="e.g., Aunty's Kitchen"
+                  className="w-full rounded-xl border px-3 py-2"
+                  onChange={(e) => updateLocalVendor(vendor.id, { name: e.target.value })}
+                />
+                <div className="grid grid-cols-3 gap-2 mt-2">
+                  {(['breakfast', 'lunch', 'dinner'] as MealType[]).map(mealType => (
+                    <div key={mealType}>
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={vendor.meals?.find(m => m.mealType === mealType)?.offered || false}
+                          onChange={(e) =>
+                            updateLocalVendorMeal(vendor.id, mealType, { offered: e.target.checked })
                           }
-                        </div>
-                        <div className='flex flex-col gap-2'>
-                          <label htmlFor={`vendor-name-${vendor.id} `} className='text-base font-medium'>Vendor {index + 1}</label>
-                          <input
-                            id={`vendor-name-${vendor.id}`}
-                            value={vendor.name}
-                            onChange={(e) => updateLocalVendor(vendor.id, { name: e.target.value })}
-                            placeholder="e.g., Aunty's Kitchen"
-                            className='py-3 px-3 rounded-xl outline-gray-200 border-gray-100 border-2 duration-500'
-                          />
-                        </div>
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 ">
-                          {(['breakfast', 'lunch', 'dinner'] as MealType[]).map(mealType => (
-                            <div key={mealType} className="space-y-2 rounded-md border bg-muted/20 p-2 py-3">
-                              <div className="flex items-center space-x-2">
-                                <input type='checkbox'
-                                  id={`${vendor.id}-${mealType}`}
-                                  checked={vendor.meals[mealType].offered}
-                                  className=''
-                                  onChange={(e) =>
-                                    updateLocalVendorMeal(vendor.id, mealType, {
-                                      offered: e.target.checked,
-                                    })
-                                  }
-                                />
-                                <label htmlFor={`${vendor.id}-${mealType}`} className=" peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium capitalize leading-none">
-                                  {mealType}
-                                </label>
-                              </div>
-                              {vendor.meals[mealType].offered && (
-                                <div >
-                                  <label htmlFor={`${vendor.id}-${mealType}-price`} className="sr-only">{mealType} Price</label>
-                                  <input
-                                    id={`${vendor.id}-${mealType}-price`}
-                                    type="text"
-                                    value={vendor.meals[mealType].price}
-                                    onChange={(e) => updateLocalVendorMeal(vendor.id, mealType, { price: Number(e.target.value) })}
-                                    placeholder="Price (₹)"
-                                    className="h-8 w-full overflow-hidden rounded-lg px-2 py-5 md:py-0 border-gray-200 border "
-                                  />
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                        />
+                        {mealType}
+                      </label>
+                      {vendor.meals?.find(m => m.mealType === mealType)?.offered && (
+                        <input
+                          type="number"
+                          value={vendor.meals?.find(m => m.mealType === mealType)?.price || 0}
+                          onChange={(e) =>
+                            updateLocalVendorMeal(vendor.id, mealType, { price: Number(e.target.value) })
+                          }
+                          placeholder="Price"
+                          className="w-full rounded-lg border px-2 py-1 mt-1"
+                        />
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
+            ))}
 
-              <div className='mt-2 flex justify-end items-center'>
-                <Button type="button" variant={"default"} onClick={handleNextStep} disabled={localVendors.length === 0 || localVendors.every(v => v.name.trim() === '')}>Save & Continue</Button>
-              </div>
-
+            <div className="mt-4 flex justify-end">
+              <Button onClick={handleNextStep}>Save & Continue</Button>
             </div>
-          )
-          }
+          </div>
+        )}
 
-          {step === 2 && (
-            <>
-              <div className="items-center text-center flex flex-col justify-center  gap-3">
-
-                <div className='flex flex-col   justify-center items-center'>
-                  <div className="w-fit rounded-full bg-green-100 p-4">
-                    <PartyPopper className="h-12 w-12 text-green-600" />
-                  </div>
-                  <div>
-                    <h1 className="mt-4 font-bold text-2xl">All Set!</h1>
-                    <p className="max-w-sm text-sm tracking-tight">
-                      You're ready to start tracking your meals and taking control of your spending. Happy tracking!
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-center">
-                  <Button type="button" onClick={handleFinish}>Go to Dashboard</Button>
-                </div>
-              </div>
-
-            </>
-          )}
-
-
-
-        </div>
-
+        {/* Step 2: Success */}
+        {step === 2 && (
+          <div className="flex flex-col items-center gap-4 text-center">
+            <div className="w-fit rounded-full bg-green-100 p-4">
+              <PartyPopper className="h-12 w-12 text-green-600" />
+            </div>
+            <h1 className="font-bold text-2xl">All Set!</h1>
+            <p className="text-sm max-w-sm">You're ready to start tracking your meals!</p>
+            <Button onClick={handleFinish}>Go to Dashboard</Button>
+          </div>
+        )}
       </div>
       <Toaster />
     </div>
-  )
+  );
 }

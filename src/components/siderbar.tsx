@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "./ui/Button";
 import { LogOut } from "lucide-react";
-import { useAuth } from "@/utils/Auth/AuthProvider";
+import { authClient } from "@/lib/auth-client";
 
 interface SidebarRoutesProps {
   routes: {
@@ -13,7 +13,8 @@ interface SidebarRoutesProps {
 }
 
 export function DesktopSidebar({ routes }: SidebarRoutesProps) {
-  const { user } = useAuth();
+  const { data:session } =authClient.useSession() 
+  const user = session?.user
 
   return (
     <>

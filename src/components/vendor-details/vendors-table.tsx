@@ -51,32 +51,52 @@ export default function VendorsTable() {
               </tr>
             </thead>
             <tbody className="divide-y dark:divide-zinc-700 divide-gray-100">
-              {vendors.map((vendor) => (
-                <tr key={vendor.id} className="hover:bg-gray-50 dark:hover:bg-[#303030] duration-300">
-                  <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300 capitalize">{vendor.name}</td>
-                  <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300 capitalize">{
-                    Object.entries(vendor.meals).filter(([, details]) => details.offered).map(([meals]) => meals).join(', ')
-                  }</td>
-                  <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300">{
-                    Object.entries(vendor.meals).filter(([, details]) => details.price > 0).map(([, meals]) => meals.price).join(', ')
-                  }</td>
-                  {/* <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300">{vendor.contact}</td> */}
-                  <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${vendor.status === "active" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
-                      {vendor.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap flex gap-2">
-                    <button className="text-gray-500 hover:text-amber-500">
-                      <Pencil onClick={() => handleUpdateVendor(vendor)} className="w-4 h-4" />
-                    </button>
-                    <button className="text-gray-500 hover:text-red-500">
-                      <Trash2 onClick={() => handleDeleteVendor(vendor.id)} className="w-4 h-4" />
-                    </button>
+              {vendors.length > 0 ? (
+                vendors.map((vendor) => {
+                  const mealType = vendor.meals?.map((m) => m.mealType).join(", ") || "—";
+                  const mealPrice = vendor.meals?.map((m) => m.price).join(", ") || "—";
+
+                  return (
+                    <tr key={vendor.id} className="hover:bg-gray-50 dark:hover:bg-[#303030] duration-300">
+                      <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300 capitalize">
+                        {vendor.name}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300 capitalize">
+                        {mealType}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300">
+                        {mealPrice}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300">
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${vendor.status === "active"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-100 text-gray-500"
+                            }`}
+                        >
+                          {vendor.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap flex gap-2">
+                        <button className="text-gray-500 hover:text-amber-500">
+                          <Pencil onClick={() => handleUpdateVendor(vendor)} className="w-4 h-4" />
+                        </button>
+                        <button className="text-gray-500 hover:text-red-500">
+                          <Trash2 onClick={() => handleDeleteVendor(vendor.id)} className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={5} className="text-center py-4 text-gray-400 dark:text-gray-500">
+                    No vendors found.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
+
           </table>
         </div>
       </div>

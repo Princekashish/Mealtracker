@@ -3,9 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import FooterWrapper from "@/components/FooterWrapper";
-import AuthProvider from "@/utils/Auth/AuthProvider";
 import { ThemeProvider } from "@/utils/Themes/ThemeProvider";
-import { AuthGuard } from "@/utils/Auth/AuthGard";
 import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
@@ -39,13 +37,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider>
-          <AuthProvider>
-            <AuthGuard>
-              <NavbarWrapper />
-              <main>{children}</main>
-              <FooterWrapper />
-            </AuthGuard>
-          </AuthProvider>
+          <NavbarWrapper />
+          <main>{children}</main>
+          <FooterWrapper />
         </ThemeProvider>
 
         <Analytics />

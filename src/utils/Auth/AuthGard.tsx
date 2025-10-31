@@ -2,23 +2,24 @@
 
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useAuth } from "@/utils/Auth/AuthProvider";
 import { LoaderCircle } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-    const { user, loading } = useAuth();
+    const {data:session , isPending} =authClient.useSession()
+    const user = session?.user 
     const pathname = usePathname();
     const router = useRouter();
 
     useEffect(() => {
         const isPublic = pathname === "/dashboard" || pathname == "/" || pathname.startsWith("/auth");
 
-        if (!loading && !user && !isPublic) {
-            router.replace("/auth/login");
+        if (!isPending && !user && !isPublic) {
+            router.replace("/login");
         }
-    }, [user, loading, pathname, router]);
+    }, [user, isPending, pathname, router]);
 
-    if (loading) {
+    if (isPending) {
         return (
             <div className="flex justify-center items-center min-h-screen ">
                 <div className=""><LoaderCircle className="animate-spin" /></div>

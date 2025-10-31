@@ -277,7 +277,7 @@ export default function MealTrends() {
           isSameDay(parseISO(log.date), day)
         );
         const meals = logsForDay.length;
-        const expense = logsForDay.reduce((sum, log) => sum + log.price, 0);
+        const expense = logsForDay.reduce((sum, log) => sum + (Number(log.price) * log.quantity), 0);
 
         return {
           name: format(day, 'd'),
@@ -301,7 +301,7 @@ export default function MealTrends() {
           return logDate >= weekStart && logDate <= weekEnd;
         });
         const meals = logsForWeek.length;
-        const expense = logsForWeek.reduce((sum, log) => sum + log.price, 0);
+        const expense = logsForWeek.reduce((sum, log) => sum + (Number(log.price) * log.quantity), 0);
 
         return {
           name: `Week ${index + 1}`,
