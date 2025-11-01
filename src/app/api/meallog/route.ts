@@ -1,4 +1,5 @@
-import { db } from "@/db/drizzle";
+
+import db from "@/db/drizzle";
 import { meal_logs, vendors, type MealLogInsert } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { eq } from "drizzle-orm";

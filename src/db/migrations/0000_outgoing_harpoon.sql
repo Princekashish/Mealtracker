@@ -1,0 +1,89 @@
+CREATE TYPE "public"."vendor_status" AS ENUM('active', 'inactive');--> statement-breakpoint
+CREATE TABLE "account" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"account_id" text NOT NULL,
+	"provider_id" text NOT NULL,
+	"user_id" uuid NOT NULL,
+	"access_token" text,
+	"refresh_token" text,
+	"id_token" text,
+	"access_token_expires_at" timestamp,
+	"refresh_token_expires_at" timestamp,
+	"scope" text,
+	"password" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "meal_logs" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"vendor_id" uuid NOT NULL,
+	"user_id" uuid NOT NULL,
+	"meal_type" text NOT NULL,
+	"date" date NOT NULL,
+	"price" numeric NOT NULL,
+	"quantity" integer NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "session" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"expires_at" timestamp NOT NULL,
+	"token" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp NOT NULL,
+	"ip_address" text,
+	"user_agent" text,
+	"user_id" uuid NOT NULL,
+	"impersonated_by" text,
+	CONSTRAINT "session_token_unique" UNIQUE("token")
+);
+--> statement-breakpoint
+CREATE TABLE "user" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	"email" text NOT NULL,
+	"email_verified" boolean DEFAULT false NOT NULL,
+	"image" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"role" text DEFAULT 'user',
+	"banned" boolean DEFAULT false,
+	"ban_reason" text,
+	"ban_expires" timestamp,
+	CONSTRAINT "user_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
+CREATE TABLE "vendor_meals" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"vendor_id" uuid NOT NULL,
+	"meal_type" text NOT NULL,
+	"offered" boolean DEFAULT false NOT NULL,
+	"price" numeric NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "vendors" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"user_id" uuid NOT NULL,
+	"name" text NOT NULL,
+	"status" "vendor_status" DEFAULT 'active' NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "verification" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"identifier" text NOT NULL,
+	"value" text NOT NULL,
+	"expires_at" timestamp NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "meal_logs" ADD CONSTRAINT "meal_logs_vendor_id_vendors_id_fk" FOREIGN KEY ("vendor_id") REFERENCES "public"."vendors"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "meal_logs" ADD CONSTRAINT "meal_logs_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "vendor_meals" ADD CONSTRAINT "vendor_meals_vendor_id_vendors_id_fk" FOREIGN KEY ("vendor_id") REFERENCES "public"."vendors"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "vendors" ADD CONSTRAINT "vendors_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;

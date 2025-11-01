@@ -1,4 +1,4 @@
-import { db } from "@/db/drizzle";
+import db  from "@/db/drizzle";
 import { vendor_meals, VendorMealInsert, vendors } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { and, eq } from "drizzle-orm";
