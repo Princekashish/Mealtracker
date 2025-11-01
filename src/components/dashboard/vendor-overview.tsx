@@ -41,7 +41,6 @@ export default function VendorOverview() {
     }
 
     fetchVendors()
-    fetchMealLogs()
 
     if (hydrated) {
       setLoading(false);

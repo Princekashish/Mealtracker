@@ -284,7 +284,6 @@ export default function MealTracker({
     if (user?.id) {
       setUserId(user.id)
     }
-    fetchMealLogs()
   }, [user, setUserId, fetchMealLogs])
 
   const handleMealToggle = useCallback((checked: boolean, vendor: Vendor, mealType: MealType) => {
@@ -387,7 +386,7 @@ export default function MealTracker({
       toast.error("Failed to log meals. Please try again.");
     } finally {
       setIsSaving(false); // 🔴 stop spinner whether success or fail
-      fetchMealLogs();
+      fetchMealLogs() 
     }
   }, [hasSelectedMeals, localSelections, date, upsertMeal, onOpenChange, fetchMealLogs]);
 

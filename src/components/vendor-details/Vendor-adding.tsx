@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/Button';
 import { useStore } from '@/lib/store';
 import { Meal, Vendor } from '@/lib/types';
-import { PlusCircle, Trash2, X } from 'lucide-react'
+import { Loader2, PlusCircle, Trash2, X } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Toaster } from 'sonner';
 import { Switch } from '../ui/switch';
@@ -17,6 +17,8 @@ interface OnboardingDialogProps {
 export default function VendorAdding({ isOpen, onOpenChange, vendorToEdit }: OnboardingDialogProps) {
     const [addvendors, setAddvendors] = useState<Vendor[]>([]);
     const { addVendor, fetchVendors } = useStore();
+    const [loading, setLoading] = useState(false);
+
 
     const { data: session } = authClient.useSession();
     const setUserId = useStore((state) => state.setUserId);
@@ -78,26 +80,28 @@ export default function VendorAdding({ isOpen, onOpenChange, vendorToEdit }: Onb
 
 
     const handleFinish = async () => {
+        setLoading(true);
 
-
-        console.log(addvendors);
-
-        const finalvendors = addvendors.filter(v => v.name.trim() !== '');
-        for (const vendor of finalvendors) {
-
-
-            if (vendorToEdit) {
-                useStore.getState().updateVendor(vendor.id, vendor);
-            } else {
-                await addVendor(vendor);
+        try {
+            const finalvendors = addvendors.filter(v => v.name.trim() !== '');
+            for (const vendor of finalvendors) {
+                if (vendorToEdit) {
+                    useStore.getState().updateVendor(vendor.id, vendor);
+                } else {
+                    await addVendor(vendor);
+                }
             }
-        }
 
-
-        if (onOpenChange) {
-            onOpenChange(false);
+            if (onOpenChange) {
+                onOpenChange(false);
+            }
+        } catch (error) {
+            console.error("Error saving vendors:", error);
+        } finally {
+            setLoading(false);
         }
     };
+
 
 
     if (!isOpen) return null;
@@ -215,7 +219,22 @@ export default function VendorAdding({ isOpen, onOpenChange, vendorToEdit }: Onb
                     </div>
                 </div>
 
-                <Button type="button" variant={"default"} onClick={handleFinish} disabled={addvendors.every(v => v.name.trim() === '')}>Save</Button>
+                <Button
+                    type="button"
+                    variant="default"
+                    onClick={handleFinish}
+                    disabled={addvendors.every(v => v.name.trim() === '') || loading}
+                >
+                    {loading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Saving...
+                        </>
+                    ) : (
+                        "Save"
+                    )}
+                </Button>
+
 
 
             </div>

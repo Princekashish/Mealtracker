@@ -39,8 +39,10 @@ export default function MealDetails() {
       setUserId(undefined);
     }
 
-    fetchMealLogs();
-  }, [session?.user?.id, setUserId, fetchMealLogs]);
+    if (vendors.length > 0) {
+      fetchMealLogs()
+    }
+  }, [session?.user?.id, setUserId]);
 
   // Filtered logs
   const filteredLogs = useMemo(() => {

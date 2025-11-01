@@ -152,8 +152,15 @@ export const useStore = create<StoreState>()(
               type: "vendor_delete",
               description: `Deleted vendor: "${vendor.name}"`,
             });
+
+            set((state) => ({
+              vendors: state.vendors.filter((v) => v.id !== vendorId),
+              mealLogs: state.mealLogs.filter((log) => log.vendorId !== vendorId),
+            }));
+        
             await get().fetchVendors();
-            await get().fetchMealLogs();
+            // await get().fetchMealLogs();
+
           } catch (err) {
             console.error("Delete vendor failed:", err);
             throw err;
