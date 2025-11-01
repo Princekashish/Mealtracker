@@ -14,7 +14,7 @@ export default function VendorOverview() {
   const mealLogs = useStore((state) => state.mealLogs);
   const currentMonth = useStore((state) => state.currentMonth);
   const hydrated = useStore((state) => state._hydrated);
-  const { vendors, fetchVendors, fetchMealLogs } = useStore()
+  const { vendors, fetchVendors } = useStore()
 
   const { data: session } = authClient.useSession();
   const setUserId = useStore((state) => state.setUserId);
