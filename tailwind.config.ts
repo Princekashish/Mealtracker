@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config = {
-  darkMode: "class",
+  // darkMode: "class",
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -22,10 +22,19 @@ const config = {
         "sharp-groteskb20": ["Sharp Grotesk Book 20", "sans-serif"],
         "user-medium": ["User Medium", "sans-serif"],
       },
-       colors: {
+      colors: {
         // Define your custom themes
         "custom-dark": "#18181b", // zinc-900 or your own
         "custom-light": "#ffffff",
+      },
+      animation: {
+        gradient: "gradient-move 4s ease infinite",
+      },
+      keyframes: {
+        "gradient-move": {
+          "0%,100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
       },
     },
   },

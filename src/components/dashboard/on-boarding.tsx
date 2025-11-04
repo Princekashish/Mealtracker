@@ -142,7 +142,7 @@ export default function OnboardingDialog({ isOpen, onOpenChange }: OnboardingDia
                   className="w-full rounded-xl border px-3 py-2"
                   onChange={(e) => updateLocalVendor(vendor.id, { name: e.target.value })}
                 />
-                <div className="grid grid-cols-3 gap-2 mt-2">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-2 mt-2">
                   {(['breakfast', 'lunch', 'dinner'] as MealType[]).map(mealType => (
                     <div key={mealType}>
                       <label className="flex items-center gap-2">

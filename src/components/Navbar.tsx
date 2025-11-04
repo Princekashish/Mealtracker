@@ -6,15 +6,14 @@ import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { Button } from "./ui/Button";
 import Image from "next/image";
-import { HiArrowLongRight } from "react-icons/hi2";
 import { authClient } from "@/lib/auth-client";
 
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userdropdown, setUserDropDown] = useState(false);
   const pathname = usePathname();
-  const {data:session}=authClient.useSession() 
+  const { data: session } = authClient.useSession()
   const user = session?.user
 
 
@@ -46,37 +45,18 @@ export default function Navbar() {
   // }
 
   return (
-    <header className={`border-gray-100  bg-white/80 dark:bg-[#0A0A0A] backdrop-blur-md sticky  top-0 z-50 p-2 duration-500 transition ease-in-out ${pathname === "/dashboard" ? "md:hidden  " : ""}`}>
-      <div className="container mx-auto px-4  ">
+    <header className={`   flex justify-center items-center   ${pathname === "/dashboard" ? "md:hidden  " : ""}`}>
+      <div className="w-full   px-3 bg-black md:bg-[#F1F1F1] mx-3 my-3 rounded-full md:w-1/2">
         <div className="flex h-16 items-center justify-between  ">
 
           {/* Logo - Center */}
-          <div className="flex items-center ">
-            <Link href="/" className="flex items-center gap-2 font-semibold">
-              <div  >
-                <div className=" flex items-center justify-center w-8 h-8 bg-amber-500 rounded-lg">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="text-white"
-                  >
-                    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-                    <path d="M7 2v20" />
-                    <path d="M21 15V2" />
-                    <path d="M18 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-                    <path d="M18 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-                  </svg>
-                </div>
-              </div>
-              <span>Mealtracker</span>
-            </Link>
+          <div className="flex justify-center items-center  gap-1">
+            <div className="bg-black rounded-md w-[40px]  flex justify-center items-center p-2" >
+              <img src="./logoMT.png" alt="" className=" w-[40px] " />
+            </div>
+            <div className="font-Grift md:text-lg font-medium">
+              <h1 className="hidden md:block md:text-black">MealTracker</h1>
+            </div>
           </div>
 
           {/* Desktop Navigation - Hidden on dashboard */}
@@ -133,17 +113,17 @@ export default function Navbar() {
             ) : (
               <div className=" md:flex items-center gap-4 ">
                 <Link href="/login" className={`${pathname.startsWith("/dashboard") ? "" : "hidden"}`}>
-                  <Button variant="link" size="sm" className="rounded-full dark:bg-zinc-800">
-                    Log in
+                  <Button variant="link" size="sm" className=" hover:text-gray-500 text-white md:text-[#303030] text-lg md:text-lg rounded-full flex justify-center items-center gap-2">
+                    Login
                   </Button>
                 </Link>
-                <Link href={"/dashboard"} className={`${pathname == "/" ? " block" : "hidden"}`}>
+                <Link href={"/login"} className={`${pathname == "/" ? " block" : "hidden"}`}>
                   <Button
                     size="sm"
                     variant="link"
-                    className="bg-black hover:bg-gray-800 text-white rounded-full flex justify-center items-center gap-2 dark:bg-zinc-800"
+                    className=" hover:text-gray-500 text-white md:text-[#303030] text-lg md:text-lg rounded-full flex justify-center items-center gap-2 "
                   >
-                    Get start  <HiArrowLongRight size={15} />
+                    Login
                   </Button>
                 </Link>
               </div>
@@ -172,9 +152,14 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+    </header>
+  );
+}
 
-      {/* Mobile menu - only show on home page */}
-      {mobileMenuOpen && pathname === "/" && (
+
+
+{/* Mobile menu - only show on home page */ }
+{/* {mobileMenuOpen && pathname === "/" && (
         <div
           id="mobile-menu"
           className="md:hidden py-4 px-4 border-t border-gray-100 "
@@ -254,18 +239,9 @@ export default function Navbar() {
                       Log in
                     </Button>
                   </Link>
-                  <Link href="/auth/signup" onClick={() => setMobileMenuOpen(false)}>
-                    <Button size="sm" className="bg-black hover:bg-gray-800 text-white rounded-full w-full">
-                      Sign up
-                    </Button>
-                  </Link>
                 </>
               )}
             </div>
           </nav>
         </div>
-      )}
-
-    </header>
-  );
-}
+      )} */}

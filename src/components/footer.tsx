@@ -1,35 +1,13 @@
-import Link from "next/link";
-
 export default function Footer() {
   return (
-    <footer className="flex flex-col md:flex-row justify-around items-center p-4 mb-4 gap-4 md:gap-0 ">
+    <footer className="flex md:flex-row justify-around items-center p-4   gap-4 md:gap-0 ">
       <div className="flex items-center">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
-          <div className="flex items-center justify-center w-8 h-8 bg-amber-500 rounded-lg">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-white"
-            >
-              <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-              <path d="M7 2v20" />
-              <path d="M21 15V2" />
-              <path d="M18 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-              <path d="M18 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-            </svg>
-          </div>
-          <span>Mealtracker</span>
-        </Link>
+        <div className="bg-black rounded-md w-[40px]  flex justify-center items-center p-2" >
+          <img src="./logoMT.png" alt="" className=" w-[40px] " />
+        </div>
       </div>
-      <p className="text-center font-user-medium text-xs md:text-sm order-3 md:order-2">
-        © 2025 Prince kashish. All rights reserved.
+      <p className="text-center font-light  text-xs md:text-sm order-3 md:order-2">
+        © 2025 Meal Tracker. All rights reserved.
       </p>
       <div className=" order-2 md:order-3 hidden md:block">
         <div className="flex gap-5 items-center">

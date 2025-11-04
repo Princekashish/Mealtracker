@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button } from './ui/Button'
 import { useRouter } from "next/navigation";
-import { HiArrowLongRight } from "react-icons/hi2";
 
 export default function Hero() {
   const router = useRouter();
@@ -9,54 +8,40 @@ export default function Hero() {
     router.push("/dashboard");
   };
   return (
-    <div className=' '>
-      <section className="container mx-auto px-4 pt-16 pb-16 md:pt-32 md:pb-24 ">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="flex flex-col justify-center items-center mb-6 hero-icon">
-            <div className="flex items-center justify-center w-12 h-12 bg-amber-500 rounded-xl">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-white"
-              >
-                <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-                <path d="M7 2v20" />
-                <path d="M21 15V2" />
-                <path d="M18 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-                <path d="M18 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-              </svg>
-            </div>
-            <div className="mt-6 hero-badge">
-              <button className="bg-green-50 text-green-700 border-green-200 text-sm px-2 py-1 border-dashed border-[1px] rounded-full">
-                {" "}
-                ✓ Free for students!
-              </button>
-            </div>
+    <div className='font-Grift '>
+      <section className=" flex justify-center items-center p-10 md:min-h-[70vh]">
+        <div className=" flex justify-center items-center flex-col ">
+          <div className="flex justify-center items-center gap-1 bg-[#F2F2F2] px-2 py-1 border-dashed border-[1px] rounded-full">
+            <div className='w-2 h-2 bg-[#00A63E] rounded-full' />
+            <h1 className="text-sm ">Free to use</h1>
           </div>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight md:mb-6 mb-3 hero-title">
-            Track your meals with real-time insights.
-          </h1>
-          <p className="md:text-xl text-sm  text-gray-600 mb-8 max-w-lg mx-auto tracking-tighter md:tracking-tight hero-description">
-            Never overpay for your tiffin services again. Track, manage, and
-            optimize your meal expenses.
-          </p>
-          <div className="flex flex-col  items-center sm:flex-row gap-4 justify-center hero-buttons">
-            <Button
-              size={"lg"}
-              onClick={handlecheck}
-              className="bg-black dark:bg-zinc-800 dark:hover:bg-zinc-900 hover:bg-gray-800 text-white rounded-full px-8 md:w-1/2  w-3/4 flex justify-center items-center gap-1"
-            >
-              Get started <HiArrowLongRight size={25} />
-            </Button>
+          <div className='mt-3 text-center'>
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-medium  md:font-semibold tracking-tight md:mb-6 mb-3 hero-title">
+              Track your meals with <br /> real-time insights
+            </h1>
+            <p className="md:text-xl text-sm font-medium  text-gray-600 mb-8 max-w-lg mx-auto tracking-tighter md:tracking-tight hero-description">
+              Never overpay for your tiffin services again. Track, manage, and optimize your meal expenses.
+            </p>
+          </div>
+          <Button
+            size="lg"
+            onClick={handlecheck}
+            className="relative overflow-hidden text-white font-bold rounded-full md:w-1/3 flex justify-center items-center gap-1 px-6 py-3"
+          >
+            {/* Animated gradient border */}
+            <span className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-full blur opacity-75 animate-gradient-border"></span>
 
-          </div>
+            {/* Background image with low opacity */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-full"
+              style={{ backgroundImage: "url('/bgback.jpg')", opacity: 0.3 }}
+            ></div>
+
+            {/* Button text */}
+            <span className="relative z-10">Track to Save</span>
+          </Button>
+
+
 
         </div>
       </section>

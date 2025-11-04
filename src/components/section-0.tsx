@@ -1,5 +1,5 @@
 "use client";
-import { Testimonials } from "./testimonials";
+// import { Testimonials } from "./testimonials";
 import { UserJourneys } from "./user-journeys";
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
@@ -232,7 +232,7 @@ export default function Section() {
   }, []);
   // bg-[#F9FAFB]
   return (
-    <div ref={mainRef} className="flex min-h-screen flex-col ">
+    <div ref={mainRef} className="flex min-h-screen flex-col font-Grift ">
       <main className="">
         <Hero />
         {/* Floating Icons with Counter */}
@@ -247,25 +247,30 @@ export default function Section() {
           <AppShowcase />
         </div>
 
-        {/* Features */}
-        <div className="feature-section animate-on-scroll gsap-animated">
-          <FeatureSection />
+
+        <div className="flex flex-col md:flex-col-reverse">
+          {/* Creation Section */}
+          <div className="animate-on-scroll gsap-animated ">
+            <CreationSection />
+          </div>
+
+          {/* Features */}
+          <div className="feature-section animate-on-scroll gsap-animated md:mt-16">
+            <FeatureSection />
+          </div>
         </div>
 
-        {/* Creation Section */}
-        <div className="animate-on-scroll gsap-animated">
-          <CreationSection />
-        </div>
+
 
         {/* User Journeys */}
-        <div className="animate-on-scroll gsap-animated">
+        <div className="animate-on-scroll gsap-animated md:hidden">
           <UserJourneys />
         </div>
 
         {/* Testimonials */}
-        <div className="testimonials animate-on-scroll gsap-animated">
+        {/* <div className="testimonials animate-on-scroll gsap-animated">
           <Testimonials />
-        </div>
+        </div> */}
       </main>
     </div>
   );

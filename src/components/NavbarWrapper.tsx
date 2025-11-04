@@ -6,11 +6,11 @@ import Navbar from "./Navbar";
 
 const NavbarWrapper: React.FC = () => {
   const pathname = usePathname();
-  const [, setHideCompletely] = useState(false);
+  const [hideComletely, setHideCompletely] = useState(false);
   const [hideOnDesktopOnly, setHideOnDesktopOnly] = useState(false);
 
   useEffect(() => {
-    const isAuthRoute = pathname.startsWith("/auth");
+    const isAuthRoute = pathname.startsWith("/login");
     const isDashboardRoot = pathname.startsWith("/dashboard");
 
     // Hide completely on /auth routes
@@ -23,7 +23,7 @@ const NavbarWrapper: React.FC = () => {
   // if (loading || hideCompletely) return null;
 
   return (
-    <div className={hideOnDesktopOnly ? "md:hidden" : ""}>
+    <div className={`${hideOnDesktopOnly ? "md:hidden" : ""} ${hideComletely ? "hidden" : ""}`}>
       <Navbar />
     </div>
   );

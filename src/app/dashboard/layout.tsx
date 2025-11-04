@@ -81,16 +81,10 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                 ) : (
                   <div className="hidden md:flex items-center gap-4 ">
                     <Link href="/login" className=" cursor-pointer ">
-                      <Button variant="outline" size="sm" className="rounded-full">
+                      <Button variant="outline" size="sm" className="rounded-full md:border-gray-200 md:h-9 border md:px-6 hover:border-accent duration-200">
                         Log in
                       </Button>
                     </Link>
-                    <Button
-                      size="sm"
-                      className="bg-black hover:bg-gray-800 text-white rounded-full"
-                    >
-                      Sign up
-                    </Button>
                   </div>
                 )}
 
