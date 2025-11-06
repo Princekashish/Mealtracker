@@ -1,5 +1,5 @@
 {
-  "name": "Meal Tracker",
+  "name": "Mealtracker",
   "short_name": "Meal Track",
   "icons": [
     {
@@ -15,7 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ffffff",        
-  "background_color": "#000000",  
+  "theme_color": "#ffffff",
+  "background_color": "#000000",
   "display": "standalone"
 }
