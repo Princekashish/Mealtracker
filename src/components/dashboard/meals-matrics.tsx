@@ -7,11 +7,12 @@ import {
 import { HiOutlineUsers } from "react-icons/hi2";
 import { FcMoneyTransfer } from "react-icons/fc";
 import { FaUtensils } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useMemo } from "react";
 import { useStore } from "@/lib/store";
 import { isSameMonth, parseISO, endOfMonth, differenceInDays, format, } from "date-fns";
 import Link from "next/link";
+import gsap from "gsap";
 
 type Metric = {
   title: string;
@@ -26,7 +27,6 @@ type Metric = {
   link?: string;
 };
 
-
 export default function MealMetrics() {
   const [error, setError] = useState<string | null>(null);
   const mealLogs = useStore((state) => state.mealLogs)
@@ -35,6 +35,12 @@ export default function MealMetrics() {
   const currentMonthName = format(new Date(), 'MMMM');
   const currentDayName = format(new Date(), 'dd');
 
+  // selected index for mobile (default 0 => Expenses)
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+
+  // animated numeric value state (kept as number)
+  const [animatedValue, setAnimatedValue] = useState<number>(0);
+  const animRef = useRef<{ val: number }>({ val: 0 });
 
   useEffect(() => {
     async function loadMetrics() {
@@ -47,6 +53,13 @@ export default function MealMetrics() {
     }
 
     loadMetrics();
+  }, []);
+
+  // ensure we kill any tweens on unmount
+  useEffect(() => {
+    return () => {
+      gsap.killTweensOf(animRef.current);
+    };
   }, []);
 
   const monthlySummary = useMemo(() => {
@@ -129,15 +142,39 @@ export default function MealMetrics() {
       short: "Vendors",
       link: "/dashboard/vendors"
     },
+
+  ], [monthlySummary]);
+
+  const Mobilemetrics = useMemo(() => [
     {
-      title: "Meals Remaining",
-      value: monthlySummary.remainingMeals.toString(),
-      icon: "Calendar",
+      title: "Expenses",
+      value: `${monthlySummary.totalCost.toString()}`,
+      icon: "FcMoneyTransfer",
+      trend: "up",
+      change: "+8% from last month",
+      currentDay: currentDayName,
+      currentMonth: currentMonthName,
+      short: "pay"
+    },
+    {
+      title: "Meals",
+      value: monthlySummary.totalMeals.toString(),
+      icon: "FaUtensils",
+      trend: "up",
+      change: "+12% from last month",
+      description: "Lunch",
+      short: "Tiffins taken",
+      link: "/dashboard/meals"
+    },
+    {
+      title: "Vendors",
+      value: monthlySummary.activeVendors.toString(),
+      icon: "HiOutlineUsers",
       trend: "up",
       change: "+2 from last month",
       description: "Antu anty",
-      short: "you will get"
-
+      short: "Vendors",
+      link: "/dashboard/vendors"
     },
 
   ], [monthlySummary]);
@@ -205,6 +242,32 @@ export default function MealMetrics() {
     );
   };
 
+  // start animation from current animatedValue to target (number)
+  const startNumberAnimation = (toNumber: number) => {
+    gsap.killTweensOf(animRef.current);
+    const from = animRef.current.val ?? animatedValue ?? 0;
+    animRef.current.val = from;
+    gsap.to(animRef.current, {
+      val: toNumber,
+      duration: 0.8,
+      ease: "power2.out",
+      onUpdate: () => {
+        setAnimatedValue(animRef.current.val);
+      },
+    });
+  };
+
+  // when selectedIndex changes animate the displayed number
+  useEffect(() => {
+    const targetRaw = Number(Mobilemetrics[selectedIndex]?.value ?? 0);
+    // For expenses we want one decimal place in display; keep numeric value precise for animation
+    const targetForAnimation = Mobilemetrics[selectedIndex]?.title === "Expenses"
+      ? Number((targetRaw / 1).toFixed(1)) // keep decimal (e.g., 1.0)
+      : Math.round(targetRaw);
+    startNumberAnimation(targetForAnimation);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedIndex, Mobilemetrics]);
+
   if (error) {
     return (
       <div className="col-span-4">
@@ -215,19 +278,64 @@ export default function MealMetrics() {
     );
   }
   return (
-    <div className="w-full transition-colors duration-300">
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-        {metrics.map((metric, index) => (
-          metric.link ? (
-            <Link href={metric.link} key={index}>
+    <>
+      <div className="w-full transition-colors duration-300 hidden md:block">
+        <div className="grid  md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+          {metrics.map((metric, index) => (
+            metric.link ? (
+              <Link href={metric.link} key={index}>
+                <MetricCard key={index} metric={metric} index={index} />
+              </Link>
+            ) : (
               <MetricCard key={index} metric={metric} index={index} />
-            </Link>
-          ) : (
-            <MetricCard key={index} metric={metric} index={index} />
-          )
-        ))}
+            )
+          ))}
+        </div>
       </div>
-    </div>
+
+      <div className="sm:hidden w-full flex flex-col items-center justify-center font-Grift px-4 py-4">
+        <div className="w-full flex justify-center items-center">
+          <h1 className="text-[5em] font-extrabold flex justify-center items-center gap-1">
+            {Mobilemetrics[selectedIndex]?.title === "Expenses" ? (() => {
+              const value = Number(animatedValue).toFixed(1);
+              const [intPart, decimalPart] = value.split(".");
+              return (
+                <>
+                  <span className="text-[0.6em] align-top">₹</span>
+                  {intPart}
+                  <span className="opacity-30">.{decimalPart}</span>
+                </>
+              );
+            })() : (
+              `${Math.round(animatedValue).toLocaleString()}`
+            )}
+          </h1>
+
+
+        </div>
+
+        <div className="w-full mt-4 flex items-center justify-start gap-3">
+          {Mobilemetrics.map((items, index) => {
+            const Icon = getIcon(items.icon);
+            const isSelected = index === selectedIndex;
+            return (
+              <button
+                key={index}
+                onClick={() => setSelectedIndex(index)}
+                className={`flex items-center gap-3 transition-opacity ${isSelected ? 'px-4 py-2 rounded-full bg-gray-200 opacity-100' : 'p-2 rounded-full bg-transparent opacity-60'}`}
+              >
+                <div className={`${isSelected ? 'w-10 h-10 rounded-full flex items-center justify-center bg-white' : 'w-10 h-10 rounded-full flex items-center justify-center bg-gray-100'}`}>
+                  {Icon ? <Icon size={20} /> : null}
+                </div>
+
+                {/* title only visible for selected */}
+                {isSelected && <span className="text-sm font-medium">{items.title}</span>}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </>
 
   );
 }

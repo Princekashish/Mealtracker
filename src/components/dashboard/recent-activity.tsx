@@ -34,7 +34,7 @@ export default function RecentActivity() {
   };
 
   return (
-    <div className="p-5 border border-gray-200 rounded-3xl dark:bg-[#161616] dark:border-none">
+    <div className="p-5 border border-gray-200 rounded-3xl  dark:border-none">
       <div>
         <h1 className="md:text-2xl text-lg font-bold tracking-tight">Recent Activity</h1>
         <p className="text-xs tracking-tight text-[#8C97A9]">

@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ImageIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/Button"
@@ -9,6 +9,7 @@ import { Switch } from "../ui/switch"
 import { useStore } from "@/lib/store"
 import { toast, Toaster } from "sonner"
 import { authClient } from "@/lib/auth-client"
+import { useRouter } from "next/navigation";
 
 type TabType = "profile" | "preferences" | "security"
 
@@ -16,10 +17,11 @@ type TabType = "profile" | "preferences" | "security"
 export function SettingsTabs() {
   const [activeTab, setActiveTab] = useState<TabType>("profile")
   const resetStore = useStore((state) => state.resetStore);
+  const router = useRouter()
 
   // Profile state
-  const { data:session } = authClient.useSession()
-  const user = session?.user 
+  const { data: session } = authClient.useSession()
+  const user = session?.user
   const [userDetail, setUserDetail] = useState({
     profile: user?.image || "",
     name: user?.name || "",
@@ -39,6 +41,11 @@ export function SettingsTabs() {
   const [twoFactorAuth, setTwoFactorAuth] = useState(true)
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
+
+  useEffect(() => {
+    if (session === undefined) return; // loading
+    if (!session) router.replace("/login");
+  }, [session, router]);
 
 
   const tabs = [

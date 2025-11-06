@@ -80,7 +80,7 @@ export default function VendorOverview() {
   }
 
   return (
-    <div className="col-span-3 p-5 rounded-3xl md:border md:border-gray-200 bg-[#FBFBFB] dark:bg-[#161616] dark:md:border-none md:bg-transparent ">
+    <div className="col-span-3 p-5 rounded-3xl md:border md:border-gray-200 bg-[#FBFBFB] dark:md:border-none md:bg-transparent ">
       <div>
         <h1 className="md:text-2xl text-lg font-bold tracking-tight ">Vendor Overview</h1>
         <p className="md:text-sm text-xs tracking-tight text-[#8C97A9] ">Track your active meal vendors.</p>

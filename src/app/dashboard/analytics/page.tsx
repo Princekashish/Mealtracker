@@ -87,7 +87,7 @@ export default function Analytics() {
 
         // </div>
         <div className='flex justify-center items-center h-[80vh]'>
-            <div className="relative grid w-full max-w-lg gap-4  bg-background p-6 shadow-lg sm:rounded-lg rounded-xl">
+            <div className="relative grid w-full max-w-lg gap-4  bg-background p-6 sm:rounded-lg rounded-xl">
                 {/* Header */}
                 <div className="space-y-2">
                     <h2 className="text-lg font-semibold flex items-center gap-2">

@@ -62,7 +62,7 @@ export default function MealCalendar({ onAddMeal }: MealCalendarProps) {
   };
 
   return (
-    <div className='p-3 sm:p-5 border border-gray-200 rounded-3xl h-full dark:bg-zinc-900 dark:border-none'>
+    <div className='p-3 sm:p-5 border border-gray-200 rounded-3xl h-full  dark:border-none'>
       <div>
         <div className="flex items-center justify-between">
           <div>
@@ -73,9 +73,9 @@ export default function MealCalendar({ onAddMeal }: MealCalendarProps) {
               <p className="text-xs sm:text-sm tracking-tight text-black font-medium">{format(currentDate, 'MMMM yyyy')}</p>
             </div>
 
-            <Button size="sm" className='rounded-full h-10 w-10 flex justify-center items-center sm:h-10 sm:w-10 bg-zinc-900' onClick={() => onAddMeal(new Date())}>
+            {/* <Button size="sm" className='rounded-full h-10 w-10 flex justify-center items-center sm:h-10 sm:w-10 bg-zinc-900' onClick={() => onAddMeal(new Date())}>
               <Plus className="" color='white' />
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

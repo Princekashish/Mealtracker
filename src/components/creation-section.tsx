@@ -9,7 +9,7 @@ export default function CreationSection() {
         <h1 className="text-2xl   md:text-[2.2em] font-medium mb-4 text-center">From tracking to <br /> savings</h1>
         <p className="text-gray-600 text-sm tracking-tight">See how Mealtracker helps you save money on your daily meals.</p>
       </div>
-      <div className="flex flex-col justify-start items-start gap-5">
+      <div className="flex flex-col justify-start items-start gap-5 md:flex-row md:justify-center md:gap-10 ">
         <div className="flex justify-center items-center gap-2">
           <div className="border rounded-full p-3">
             <TbMoneybag size={30} />

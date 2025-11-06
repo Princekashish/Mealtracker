@@ -101,7 +101,7 @@ export default function DashboardPage() {
     try {
       if (vendors.filter(v => v.status === 'active').length === 0) {
         toast.message('No Active Vendors', {
-          description: "Please add or activate a vendor in Settings before adding a meal."
+          description: "Please add or activate a vendor in Setting before adding a meal."
         })
         return;
       }
@@ -133,7 +133,7 @@ export default function DashboardPage() {
           </div>
 
           {mealLogs.length > 0 && (
-            <div className="flex items-center gap-2">
+            <div className="gap-2 sm:block hidden">
               <SpendingAnalysisDialog mealLogs={mealLogs} />
             </div>
           )}
@@ -158,18 +158,17 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="grid gap-6 md:mt-6 md:grid-cols-2 lg:grid-cols-7 md:hidden">
-                  <div className="md:col-span-2 lg:col-span-3">
+                  <div className="md:col-span-2 lg:col-span-3 hidden sm:block">
                     <ExpenseBreakdown />
                   </div>
                   <div className="md:col-span-2 lg:col-span-4   ">
                     <MealCalendar onAddMeal={handleAddMealClick} />
-
                   </div>
                 </div>
               </div>
 
               <div className="grid gap-6 mt-6 md:grid-cols-2 lg:grid-cols-7 ">
-                <div className="md:col-span-2 lg:col-span-5  md:block">
+                <div className="md:col-span-2 lg:col-span-5 hidden sm:block  md:block">
 
                   <MealTrends />
                   {/* <VendorOverview /> */}
