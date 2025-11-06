@@ -200,7 +200,7 @@ const ViewToggle = ({
       <button
         onClick={() => onViewChange('daily')}
         className={`p-1 px-2 py-1 rounded-full duration-500 ${trendView === "daily"
-          ? "bg-white text-black shadow dark:bg-zinc-700 dark:shadow-md dark:text-white"
+          ? "bg-white text-black shadow   "
           : "bg-[#f2f2f2]  dark:bg-transparent"
           }`}
       >
@@ -209,7 +209,7 @@ const ViewToggle = ({
       <button
         onClick={() => onViewChange('weekly')}
         className={`p-1 px-2 py-1 rounded-full duration-500 ${trendView === "weekly"
-          ? "bg-white text-black shadow dark:bg-zinc-700 dark:shadow-md dark:text-white"
+          ? "bg-white text-black shadow   "
           : "bg-[#f2f2f2] dark:bg-transparent "
           }`}
       >
@@ -313,7 +313,7 @@ export default function MealTrends() {
   }, [mealLogs, currentMonth, trendView]);
 
   return (
-    <div className="col-span-4 md:border md:border-gray-200 bg-[#FBFBFB] dark:bg-zinc-900 dark:border-none rounded-3xl p-5">
+    <div className="col-span-4 md:border md:border-gray-200 bg-[#FBFBFB]  dark:border-none rounded-3xl p-5">
       <div className="flex md:flex-row justify-between md:items-center">
         <div>
           <h1 className="md:text-2xl text-lg font-bold tracking-tight ">
@@ -324,7 +324,7 @@ export default function MealTrends() {
           </p>
         </div>
 
-        <div className="mb-4 flex justify-start items-center gap-2 p-2 bg-[#f2f2f2] dark:md:bg-zinc-900 dark:shadow-md w-fit rounded-full">
+        <div className="mb-4 flex justify-start items-center gap-2 p-2 bg-[#f2f2f2]  w-fit rounded-full">
           <ViewToggle
             trendView={trendView}
             onViewChange={setTrendView}

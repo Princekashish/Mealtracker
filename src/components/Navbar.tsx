@@ -37,7 +37,7 @@ export default function Navbar() {
     >
       <div
         className={`w-full px-3 ${
-          isDashboard ? "bg-white" : ""
+          isDashboard ? "bg-black" : ""
         } bg-black md:bg-[#F1F1F1] mx-3 my-3 rounded-full md:w-1/2`}
       >
         <div className="flex h-16 items-center justify-between">
@@ -49,7 +49,7 @@ export default function Navbar() {
             <div
               className={`${
                 isDashboard
-                  ? "font-Grift block text-black"
+                  ? "font-Grift block text-white"
                   : "hidden md:block"
               } font-Grift md:text-lg font-medium`}
             >
@@ -99,7 +99,7 @@ export default function Navbar() {
                     variant="link"
                     size="sm"
                     className={`hover:text-gray-500 ${
-                      isDashboard ? "text-black" : "text-white"
+                      isDashboard ? "text-white" : "text-white"
                     } md:text-[#303030] text-lg rounded-full flex justify-center items-center gap-2`}
                   >
                     Login

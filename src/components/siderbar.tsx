@@ -13,7 +13,7 @@ interface SidebarRoutesProps {
 }
 
 export function DesktopSidebar({ routes }: SidebarRoutesProps) {
-  const { data:session } =authClient.useSession() 
+  const { data: session } = authClient.useSession()
   const user = session?.user
 
   return (
@@ -53,7 +53,7 @@ export function DesktopSidebar({ routes }: SidebarRoutesProps) {
                     }`}
                 >
                   <route.icon
-                    className={`mr-2 h-4 w-4 text-lg flex justify-center items-center  ${route.active ? "text-amber-700 dark:text-white" : ""
+                    className={`mr-2 h-4 w-4 text-lg flex justify-center items-center  ${route.active ? "text-amber-700 dark:text-white" : "text-[#c9c9c9]"
                       }`}
                   />
                   <span className={` ${route.active ? "text-amber-700 dark:text-white" : "dark:text-[#c9c9c9]"}`}>
