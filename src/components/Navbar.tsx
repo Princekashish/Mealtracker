@@ -37,7 +37,7 @@ export default function Navbar() {
     >
       <div
         className={`w-full px-3 ${
-          isDashboard ? "bg-black" : ""
+          isDashboard ? "bg-zinc-400" : ""
         } bg-black md:bg-[#F1F1F1] mx-3 my-3 rounded-full md:w-1/2`}
       >
         <div className="flex h-16 items-center justify-between">
