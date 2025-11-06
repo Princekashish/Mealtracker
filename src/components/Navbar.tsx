@@ -21,9 +21,7 @@ export default function Navbar() {
       await authClient.signOut();
     } catch (error) {
       console.error("Sign out failed:", error);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   // ✅ Treat everything under /dashboard/* as "dashboard"
@@ -31,14 +29,12 @@ export default function Navbar() {
 
   return (
     <header
-      className={`flex justify-center items-center ${
-        isDashboard ? "md:hidden" : ""
-      }`}
+      className={`flex justify-center items-center ${isDashboard ? "md:hidden" : ""
+        }`}
     >
       <div
-        className={`w-full px-3 ${
-          isDashboard ? "bg-zinc-400" : ""
-        } bg-black md:bg-[#F1F1F1] mx-3 my-3 rounded-full md:w-1/2`}
+        className={`w-full px-3 ${isDashboard ? "bg-neutral-200" : ""
+          } bg-black md:bg-[#F1F1F1] mx-3 my-3 rounded-full md:w-1/2`}
       >
         <div className="flex h-16 items-center justify-between">
           {/* Logo - Left */}
@@ -47,11 +43,10 @@ export default function Navbar() {
               <img src="/logoMT.png" alt="" className="w-[40px]" />
             </Link>
             <div
-              className={`${
-                isDashboard
-                  ? "font-Grift block text-white"
-                  : "hidden md:block"
-              } font-Grift md:text-lg font-medium`}
+              className={`${isDashboard
+                ? "font-Grift block text-black"
+                : "hidden md:block"
+                } font-Grift md:text-lg font-medium`}
             >
               <h1 className="md:text-black">MealTracker</h1>
             </div>
@@ -62,9 +57,8 @@ export default function Navbar() {
             {user ? (
               <div
                 onClick={() => setUserDropDown((pre) => !pre)}
-                className={`flex justify-center items-center gap-2 cursor-pointer p-1 ${
-                  userdropdown ? "border rounded-full" : ""
-                }`}
+                className={`flex justify-center items-center gap-2 cursor-pointer p-1 ${userdropdown ? "border rounded-full" : ""
+                  }`}
               >
                 <Image
                   src={
@@ -86,7 +80,7 @@ export default function Navbar() {
                       {loading ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       ) : (
-                        <LogOut className="md:text-black text-white hover:text-red-600" />
+                        <LogOut className={`md:text-black  hover:text-red-600 ${isDashboard ? "text-black" : "text-white"}`} />
                       )}
                     </Button>
                   </div>
@@ -98,9 +92,8 @@ export default function Navbar() {
                   <Button
                     variant="link"
                     size="sm"
-                    className={`hover:text-gray-500 ${
-                      isDashboard ? "text-white" : "text-white"
-                    } md:text-[#303030] text-lg rounded-full flex justify-center items-center gap-2`}
+                    className={`hover:text-gray-500 font-Grift ${isDashboard ? "text-black" : "text-[#303030]"
+                      } md:text-[#303030] text-lg rounded-full flex justify-center items-center gap-2`}
                   >
                     Login
                   </Button>
