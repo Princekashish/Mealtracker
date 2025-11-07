@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Button } from "./ui/Button";
-import { LogOut } from "lucide-react";
+import { Loader2, LogOut } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { useState } from "react";
 
 interface SidebarRoutesProps {
   routes: {
@@ -14,7 +15,17 @@ interface SidebarRoutesProps {
 
 export function DesktopSidebar({ routes }: SidebarRoutesProps) {
   const { data: session } = authClient.useSession()
+  const [loading, setLoading] = useState(false);
   const user = session?.user
+
+  const handlesignout = async () => {
+    try {
+      setLoading(true);
+      await authClient.signOut();
+    } catch (error) {
+      console.error("Sign out failed:", error);
+    }
+  }
 
   return (
     <>
@@ -71,13 +82,20 @@ export function DesktopSidebar({ routes }: SidebarRoutesProps) {
                 <Button
                   variant="ghost"
                   className="w-full justify-start "
+                  onClick={handlesignout}
                 >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Log out
+                  {
+                    loading ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <LogOut className="mr-2 h-4 w-4" />
+                    )
+                  }
+                  Logout
                 </Button>
               </div>
             ) : (
-              <div>
+              <div className="hidden">
                 <Button
                   variant="ghost"
                   className="w-full justify-start "

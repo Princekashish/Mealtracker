@@ -2,30 +2,29 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useStore } from "@/lib/store";
 import { motion, AnimatePresence } from "framer-motion";
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, differenceInCalendarDays } from "date-fns";
 import { authClient } from "@/lib/auth-client";
 
 interface Vendor {
   id: string;
   name: string;
-  // optional: avatarUrl?: string;
 }
 
 interface MealLog {
   id: string;
-  date: string;
+  date: string; // ISO string
   vendorId: string;
   mealType: string;
   price?: string | number;
   quantity?: number;
   vendorName?: string;
-  // optional: vendorAvatar?: string;
 }
 
 export default function MealDetails() {
   const { mealLogs, vendors, fetchMealLogs, setUserId } = useStore();
 
   // Filter states
+  // supports: "all", "YYYY-MM" (desktop), or mobile tokens "this_month", "last_30_days", "last_90_days"
   const [selectedMonth, setSelectedMonth] = useState<string>("all");
   const [selectedVendorId, setSelectedVendorId] = useState<string>("all");
   const [selectedMealType, setSelectedMealType] = useState<string>("all");
@@ -44,35 +43,49 @@ export default function MealDetails() {
     }
 
     if (vendors.length > 0) {
-      fetchMealLogs()
+      fetchMealLogs();
     }
-  }, [session?.user?.id, setUserId]);
+  }, [session?.user?.id, setUserId, vendors.length, fetchMealLogs]);
 
-  // Filtered logs
-  const filteredLogs = useMemo(() => {
-    return mealLogs.filter((log) => {
-      if (selectedMonth !== "all" && !log.date.startsWith(selectedMonth)) return false;
-      if (selectedVendorId !== "all" && log.vendorId !== selectedVendorId) return false;
-      if (selectedMealType !== "all" && log.mealType.toLowerCase() !== selectedMealType.toLowerCase()) return false;
-      return true;
-    });
-  }, [mealLogs, selectedMonth, selectedVendorId, selectedMealType]);
+  // mobile tokens set
+  const MOBILE_DATE_TOKENS = new Set(["this_month", "last_30_days", "last_90_days"]);
 
-  // Total price (used for sm and up)
-  const totalPrice = useMemo(
-    () => filteredLogs.reduce((sum, log) => sum + (Number(log.price || 0) * (log.quantity || 1)), 0),
-    [filteredLogs]
-  );
-
-  // Helpers for mobile popup interactions
+  // When opening mobile Date popup, if desktop had YYYY-MM, map to a sensible mobile token:
+  // -> "this_month" if the literal equals current month, otherwise "last_30_days"
   const openFilterPopup = (type: "vendors" | "date" | "mealType") => {
+    if (type === "date" && !MOBILE_DATE_TOKENS.has(selectedMonth)) {
+      // selectedMonth is likely a literal "YYYY-MM" (or "all"). Map it:
+      if (/^\d{4}-\d{2}$/.test(selectedMonth)) {
+        const today = new Date();
+        const currentToken = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`;
+        if (selectedMonth === currentToken) {
+          setSelectedMonth("this_month");
+        } else {
+          setSelectedMonth("last_30_days");
+        }
+      } else {
+        // fallback: default to this_month
+        setSelectedMonth("this_month");
+      }
+    }
     setFilterType(type);
     setFilterOpen(true);
   };
 
   const closeFilterPopup = () => {
     setFilterOpen(false);
-    // keep filterType set so closing returns to the same type next open if needed
+  };
+
+  // Clear only the currently open filter and close popup
+  const clearFilter = () => {
+    if (filterType === "vendors") {
+      setSelectedVendorId("all");
+    } else if (filterType === "date") {
+      setSelectedMonth("all");
+    } else if (filterType === "mealType") {
+      setSelectedMealType("all");
+    }
+    setFilterOpen(false);
   };
 
   const applyVendorFilter = (vendorId: string) => {
@@ -89,6 +102,55 @@ export default function MealDetails() {
     setSelectedMealType(mealType);
     closeFilterPopup();
   };
+
+  // Helper: does a single log match the date filter token or literal month?
+  const matchesDateFilter = (logDateISO: string, token: string) => {
+    if (!token || token === "all") return true;
+    let logDate: Date;
+    try {
+      logDate = parseISO(logDateISO);
+    } catch {
+      return false;
+    }
+    const today = new Date();
+
+    if (token === "this_month") {
+      return logDate.getFullYear() === today.getFullYear() && logDate.getMonth() === today.getMonth();
+    }
+
+    if (token === "last_30_days") {
+      const diff = differenceInCalendarDays(today, logDate);
+      return diff >= 0 && diff <= 30;
+    }
+
+    if (token === "last_90_days") {
+      const diff = differenceInCalendarDays(today, logDate);
+      return diff >= 0 && diff <= 90;
+    }
+
+    // fallback: literal month token like "2025-11" (YYYY-MM)
+    if (/^\d{4}-\d{2}$/.test(token)) {
+      return logDateISO.startsWith(token);
+    }
+
+    return true;
+  };
+
+  // Filtered logs (handles both literal month strings and the mobile tokens)
+  const filteredLogs = useMemo(() => {
+    return mealLogs.filter((log) => {
+      if (selectedVendorId !== "all" && log.vendorId !== selectedVendorId) return false;
+      if (selectedMealType !== "all" && log.mealType.toLowerCase() !== selectedMealType.toLowerCase()) return false;
+      if (!matchesDateFilter(log.date, selectedMonth)) return false;
+      return true;
+    });
+  }, [mealLogs, selectedMonth, selectedVendorId, selectedMealType]);
+
+  // Total price (used for sm and up)
+  const totalPrice = useMemo(
+    () => filteredLogs.reduce((sum, log) => sum + (Number(log.price || 0) * (log.quantity || 1)), 0),
+    [filteredLogs]
+  );
 
   return (
     <div className="md:p-6 space-y-4 relative font-Grift">
@@ -109,7 +171,7 @@ export default function MealDetails() {
         <div className="ml-auto font-semibold text-lg">Total Price: ₹{totalPrice}</div>
       </div>
 
-      {/* MOBILE: three pill buttons (Vendors / Date / MealType) replacing previous single filter */}
+      {/* MOBILE: three pill buttons (Vendors / Date / MealType) */}
       <div className="md:hidden flex items-center gap-3 px-4">
         <button
           onClick={() => openFilterPopup("vendors")}
@@ -131,8 +193,6 @@ export default function MealDetails() {
         >
           MealType
         </button>
-
-        {/* Total removed from mobile as requested */}
       </div>
 
       {/* TABLE: visible on sm and above */}
@@ -184,17 +244,14 @@ export default function MealDetails() {
         </table>
       </div>
 
-      {/* MOBILE LIST: visible under sm (compact layout matching your screenshot) */}
+      {/* MOBILE LIST: visible under sm */}
       <div className="sm:hidden">
         {filteredLogs.length > 0 ? (
           <ul className="space-y-4 px-4 pb-8">
             {filteredLogs.map((log) => (
               <li key={log.id} className="flex items-center justify-between bg-white rounded-md">
-                {/* left: avatar */}
                 <div className="flex items-center gap-4 py-4">
                   <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                    {/* if you have vendor avatar use it, otherwise show initial */}
-                    {/* <img src={log.vendorAvatar} alt={log.vendorName} className="w-full h-full object-cover" /> */}
                     <span className="text-sm font-semibold text-gray-700">
                       {log.vendorName ? log.vendorName.charAt(0).toUpperCase() : "U"}
                     </span>
@@ -205,7 +262,6 @@ export default function MealDetails() {
                   </div>
                 </div>
 
-                {/* right: amount + meal type */}
                 <div className="text-right pr-2">
                   <div className="text-2xl font-bold">{log.price ? `+ ₹${log.price}` : "-"}</div>
                   <div className="text-sm text-gray-500 mt-1">
@@ -293,16 +349,16 @@ export default function MealDetails() {
                       Apply
                     </button>
                     <button
-                      onClick={closeFilterPopup}
+                      onClick={clearFilter}
                       className="flex-1 border py-2 rounded-md"
                     >
-                      Close
+                      Clear
                     </button>
                   </div>
                 </div>
               )}
 
-              {/* Date options */}
+              {/* Date options (mobile tokens only) */}
               {filterType === "date" && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
@@ -349,10 +405,10 @@ export default function MealDetails() {
                       Apply
                     </button>
                     <button
-                      onClick={closeFilterPopup}
+                      onClick={clearFilter}
                       className="flex-1 border py-2 rounded-md"
                     >
-                      Close
+                      Clear
                     </button>
                   </div>
                 </div>
@@ -405,10 +461,10 @@ export default function MealDetails() {
                       Apply
                     </button>
                     <button
-                      onClick={closeFilterPopup}
+                      onClick={clearFilter}
                       className="flex-1 border py-2 rounded-md"
                     >
-                      Close
+                      Clear
                     </button>
                   </div>
                 </div>
@@ -421,7 +477,7 @@ export default function MealDetails() {
   );
 }
 
-// Filter Controls Component (unchanged — used for desktop and popup reuse)
+// Filter Controls Component (used on desktop)
 function FilterControls({
   selectedMonth,
   setSelectedMonth,
@@ -451,6 +507,7 @@ function FilterControls({
           onChange={(e) => setSelectedMonth(e.target.value)}
         >
           <option value="all">All</option>
+          {/* desktop literal months only */}
           {[...new Set(meallogss.map((log) => log.date.slice(0, 7)))].map((m) => (
             <option key={m} value={m}>{m}</option>
           ))}

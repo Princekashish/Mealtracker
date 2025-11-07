@@ -4,47 +4,15 @@ import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
 import { MobileSidebar } from "@/components/mobilenavbar";
 import { Button } from "@/components/ui/Button";
 import { authClient } from "@/lib/auth-client";
-import { Bell, LogOut } from "lucide-react";
+import { Bell } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
 
 
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
-  const [userdropdown, setUserDropDown] = useState(false);
   const { data: session } = authClient.useSession()
   const user = session?.user
-
-  // useEffect(() => {
-  //   if (!loading && !user) {
-  //     router.push("/dashboard");
-  //     router.push("/auth/login");
-  //   }
-  // }, [user, loading, router]);
-
-  // if (loading) {
-  //   return (
-  //     <div className="flex justify-center items-center h-[80vh]">
-  //       <div className=""><LoaderCircle className="animate-spin" /></div>
-  //     </div>
-  //   );
-  // }
-
-  // if (!user) {
-  //   return null;
-  // }
-
-
-
-
-  const handlesignout = async () => {
-    await authClient.signOut();
-    setUserDropDown(false)
-  }
-
-
-
 
   return (
     <div className="min-h-screen">
@@ -60,7 +28,6 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
 
                 {user ? (
                   <div
-                    onClick={() => setUserDropDown((pre) => !pre)}
                     className={`flex justify-center items-center gap-2 cursor-pointer border  border-gray-200 rounded-3xl  `}
                   >
                     <Image
@@ -84,20 +51,6 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   </div>
                 )}
 
-                <div className="absolute top-full w-full mt-3 flex justify-center items-center">
-                  {userdropdown && (
-
-                    <Button
-                      onClick={handlesignout}
-                      size="sm"
-                      className="flex justify-center text-red-600 items-center gap-2 bg-[#f2f2f2] p-5 hover:bg-black/80 rounded-2xl py-4   duration-500 ease-in-out cursor-pointer"
-                    >
-                      {" "}
-                      <LogOut /> Logout
-                    </Button>
-
-                  )}
-                </div>
               </div>
             </div>
 

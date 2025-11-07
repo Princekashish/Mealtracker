@@ -89,9 +89,10 @@ export default function DashboardPage() {
         setIsOnboardingOpen(false)
       }
 
-      if (hasMealLimitReached) {
+      if (!isLoggedIn && hasMealLimitReached) {
         toast.error("Meal limit reached. Please log in to continue tracking meals.");
       }
+
     } catch (err) {
       setError(`Something went wrong while loading your dashboard.${err}`);
     }
@@ -106,9 +107,11 @@ export default function DashboardPage() {
         return;
       }
       if (!canLogMeal(isLoggedIn)) {
-        toast.error("Meal limit reached. Please log in to continue tracking meals.");
+        if (!isLoggedIn) toast.error("Meal limit reached. Please log in to continue tracking meals.");
+        else toast.error("Meal limit reached.");
         return;
       }
+
       setDateForDialog(date);
       setIsMealTrackerOpen(true);
     } catch (err) {
