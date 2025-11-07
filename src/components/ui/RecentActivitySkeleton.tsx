@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/Skeleton";
 
 export default function RecentActivitySkeleton() {
   return (
-    <div className="p-5 border border-gray-200 rounded-3xl dark:md:bg-[#161616] dark:bg-zinc-900 dark:border-none">
+    <div className="p-5 border border-gray-200 rounded-3xl ">
       <div>
         <Skeleton className="h-6 w-40 mb-1" />
         <Skeleton className="h-4 w-52" />

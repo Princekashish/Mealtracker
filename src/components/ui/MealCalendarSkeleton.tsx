@@ -5,7 +5,7 @@ export default function MealCalendarSkeleton() {
   const days = Array(7).fill(null); // Representing 7 days of the week
 
   return (
-    <div className="p-3 sm:p-5 border border-gray-200 rounded-3xl h-full dark:bg-zinc-900 dark:border-none">
+    <div className="p-3 sm:p-5 border border-gray-200 rounded-3xl h-full  ">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

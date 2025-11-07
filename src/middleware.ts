@@ -1,28 +1,35 @@
-// middleware.ts (Edge-safe, cookie-only)
+// middleware.ts (auth-aware redirects)
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
   const cookieHeader = request.headers.get("cookie") || "";
 
-  // If no cookies at all -> not logged in
-  if (!cookieHeader) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  // Replace 'my_auth_cookie' with the exact cookie your auth sets if you know it.
-  // For NextAuth use: "next-auth.session-token" (or "next-auth.callback-url" depending on config).
+  // Detect if user has an auth cookie
   const hasAuthCookie =
     cookieHeader.includes("my_auth_cookie=") ||
-    /(?:next-auth\.session-token|next-auth.session-token|token|session|auth)=/.test(cookieHeader);
+    /(?:next-auth\.session-token|next-auth.session-token|token|session|auth)=/.test(
+      cookieHeader
+    );
 
-  if (!hasAuthCookie) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  // 1️⃣ PROTECT DASHBOARD SUBPATHS — if no auth, redirect to /login
+  if (pathname.startsWith("/dashboard/")) {
+    if (!hasAuthCookie) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    return NextResponse.next();
   }
 
-  // best-effort allow
+  const publicPages = ["/", "/login"];
+  if (publicPages.includes(pathname) && hasAuthCookie) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  // Default: allow access
   return NextResponse.next();
 }
 
+// Apply middleware to dashboard and root/public routes
 export const config = {
-  matcher: ["/dashboard/:path+"],
+  matcher: ["/", "/login", "/sign-in", "/dashboard/:path*"],
 };

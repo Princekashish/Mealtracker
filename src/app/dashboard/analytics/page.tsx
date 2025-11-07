@@ -121,7 +121,7 @@ export default function Analytics() {
                     {analysisState === 'success' && result && (
                         <div className={`rounded-lg border p-4 w-full ${result.isSuspicious
                             ? 'border-destructive bg-destructive/10'
-                            : 'border-green-200 bg-green-50 dark:bg-green-950/20'
+                            : '  '
                             }`}>
                             <div className="flex items-start gap-3">
                                 {result.isSuspicious ? (
@@ -131,7 +131,7 @@ export default function Analytics() {
                                 )}
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-2">
-                                        <h3 className={`font-medium ${result.isSuspicious ? 'text-destructive' : 'text-green-700 dark:text-green-500'
+                                        <h3 className={`font-medium ${result.isSuspicious ? 'text-destructive' : 'text-green-700 d'
                                             }`}>
                                             {result.isSuspicious ? 'High Spending Detected' : 'Spending Looks Normal'}
                                         </h3>

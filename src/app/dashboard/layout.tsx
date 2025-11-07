@@ -2,7 +2,6 @@
 
 import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
 import { MobileSidebar } from "@/components/mobilenavbar";
-import ThemeToggleButton from "@/components/themeToggle";
 import { Button } from "@/components/ui/Button";
 import { authClient } from "@/lib/auth-client";
 import { Bell, LogOut } from "lucide-react";
@@ -39,7 +38,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
 
 
 
-  const handlesignout = async() => {
+  const handlesignout = async () => {
     await authClient.signOut();
     setUserDropDown(false)
   }
@@ -55,9 +54,6 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
           <div className="hidden md:block sticky top-0 border-b-[1px] z-10 p-[16px] ">
             <div className="flex justify-end items-center gap-5  w-full ">
               <div className="flex justify-center items-center gap-4" >
-                <div>
-                  <ThemeToggleButton />
-                </div>
                 <div className="md:border md:border-gray-200 h-9 w-10 flex justify-center items-center rounded-xl ">
                   <Bell size={25} className="font-light" />
                 </div>

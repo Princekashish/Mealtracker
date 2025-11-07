@@ -30,7 +30,7 @@ export default function VendorsTable() {
           <h1 className="text-2xl sm:text-xl lg:text-2xl font-bold tracking-tight">Vendors</h1>
           <p className="text-muted-foreground tracking-tighter text-sm md:text-base hidden sm:block">Manage your tiffin vendors and their services.</p>
         </div>
-        <Button onClick={handleAddVendorClick} className="md:bg-amber-500 md:hover:bg-amber-600 md:text-white flex items-center md:gap-2 ">
+        <Button size="lg" onClick={handleAddVendorClick} className="md:bg-black md:hover:bg-gray-400  rounded-full md:text-white flex items-center md:gap-2 ">
           Add
         </Button>
       </div>
@@ -77,41 +77,41 @@ export default function VendorsTable() {
             })}
           </ul>
         ) : (
-          <div className="text-center py-8 text-gray-400 dark:text-gray-500">No vendors found.</div>
+          <div className="text-center py-8 text-gray-400 ">No vendors found.</div>
         )}
       </div>
 
       {/* DESKTOP / TABLE (visible on sm and above) */}
-      <div className="hidden sm:block bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 p-2 md:p-6 dark:border-none">
+      <div className="hidden sm:block bg-white  rounded-xl border border-gray-200 p-2 md:p-6 ">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
+          <table className="min-w-full divide-y divide-gray-200 ">
             <thead>
               <tr>
-                <th className="px-4 py-2 text-left font-medium text-gray-700 dark:text-[#f2f2f2]">Name</th>
-                <th className="px-4 py-2 text-left font-medium text-gray-700 dark:text-[#f2f2f2]">Meal Type</th>
-                <th className="px-4 py-2 text-left font-medium text-gray-700 dark:text-[#f2f2f2]">Price (₹)</th>
-                <th className="px-4 py-2 text-left font-medium text-gray-700 dark:text-[#f2f2f2]">Status</th>
-                <th className="px-4 py-2 text-left font-medium text-gray-700 dark:text-[#f2f2f2]">Actions</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-700 ">Name</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-700 ">Meal Type</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-700 ">Price (₹)</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-700 ">Status</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-700 ">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y dark:divide-zinc-700 divide-gray-100">
+            <tbody className="divide-y  divide-gray-100">
               {vendors.length > 0 ? (
                 vendors.map((vendor) => {
                   const mealType = vendor.meals?.map((m) => m.mealType).join(", ") || "—";
                   const mealPrice = vendor.meals?.map((m) => m.price).join(", ") || "—";
 
                   return (
-                    <tr key={vendor.id} className="hover:bg-gray-50 dark:hover:bg-[#303030] duration-300">
-                      <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300 capitalize">
+                    <tr key={vendor.id} className="hover:bg-gray-50  duration-300">
+                      <td className="px-4 py-3 whitespace-nowrap  capitalize">
                         {vendor.name}
                       </td>
-                      <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300 capitalize">
+                      <td className="px-4 py-3 whitespace-nowrap  capitalize">
                         {mealType}
                       </td>
-                      <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300">
+                      <td className="px-4 py-3 whitespace-nowrap ">
                         {mealPrice}
                       </td>
-                      <td className="px-4 py-3 whitespace-nowrap dark:text-gray-300">
+                      <td className="px-4 py-3 whitespace-nowrap ">
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-medium ${vendor.status === "active"
                             ? "bg-green-100 text-green-700"
@@ -134,7 +134,7 @@ export default function VendorsTable() {
                 })
               ) : (
                 <tr>
-                  <td colSpan={5} className="text-center py-4 text-gray-400 dark:text-gray-500">
+                  <td colSpan={5} className="text-center py-4 text-gray-400 ">
                     No vendors found.
                   </td>
                 </tr>

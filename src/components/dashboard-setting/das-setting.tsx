@@ -97,7 +97,7 @@ export function SettingsTabs() {
             className={cn(
               "px-6 py-3 text-sm  font-medium border-b-2 tracking-tighter transition-colors",
               activeTab === tab.id
-                ? " text-white " : "border-transparent text-gray-500 hover:text-gray-700"
+                ? " text-black " : "border-transparent text-gray-500 hover:text-gray-700"
             )}
           >
             {tab.label}

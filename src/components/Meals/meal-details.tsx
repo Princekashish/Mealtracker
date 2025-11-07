@@ -92,7 +92,7 @@ export default function MealDetails() {
 
   return (
     <div className="md:p-6 space-y-4 relative font-Grift">
-      <h2 className="text-2xl font-semibold sm:font-bold p-3 md:p-0">Meals <span className=" hidden sm:block">History</span></h2>
+      <h2 className="text-2xl font-semibold sm:font-bold p-3 md:p-0 sm:flex sm:gap-2">Meals <span className=" hidden sm:block">History</span></h2>
 
       {/* Desktop Filters */}
       <div className="hidden md:flex flex-wrap gap-4 items-center">
@@ -136,14 +136,14 @@ export default function MealDetails() {
       </div>
 
       {/* TABLE: visible on sm and above */}
-      <div className="overflow-x-auto rounded-xl border bg-white dark:bg-zinc-900 hidden sm:block">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
+      <div className="overflow-x-auto rounded-xl border bg-white  hidden sm:block">
+        <table className="min-w-full divide-y divide-gray-200 ">
           <thead>
             <tr>
               {["Date", "Meal Type", "Vendor", "Quantity", "Unit Price", "Total Price (₹)"].map((h) => (
                 <th
                   key={h}
-                  className="px-4 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
+                  className="px-4 py-3 text-left text-sm font-medium text-gray-600 "
                 >
                   {h}
                 </th>
@@ -153,8 +153,8 @@ export default function MealDetails() {
           <tbody className="divide-y divide-gray-100 dark:divide-zinc-800">
             {filteredLogs.length > 0 ? (
               filteredLogs.map((log) => (
-                <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800">
-                  <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">
+                <tr key={log.id} className="hover:bg-gray-50 ">
+                  <td className="px-4 py-3 text-sm text-gray-800 ">
                     {format(parseISO(log.date), "dd-MMM-yyyy")}
                   </td>
                   <td className="px-4 py-3 text-sm capitalize">{log.mealType}</td>
@@ -446,7 +446,7 @@ function FilterControls({
       <div>
         <label className="mr-2 font-medium">Month:</label>
         <select
-          className="dark:bg-zinc-900 px-3 py-1 rounded-md"
+          className=" px-3 py-1 rounded-md"
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(e.target.value)}
         >
@@ -460,7 +460,7 @@ function FilterControls({
       <div>
         <label className="mr-2 font-medium">Vendor:</label>
         <select
-          className="dark:bg-zinc-900 px-3 py-1 rounded-md"
+          className=" px-3 py-1 rounded-md"
           value={selectedVendorId}
           onChange={(e) => setSelectedVendorId(e.target.value)}
         >
@@ -474,7 +474,7 @@ function FilterControls({
       <div>
         <label className="mr-2 font-medium">Meal Type:</label>
         <select
-          className="dark:bg-zinc-900 px-3 py-1 rounded-md"
+          className=" px-3 py-1 rounded-md"
           value={selectedMealType}
           onChange={(e) => setSelectedMealType(e.target.value)}
         >

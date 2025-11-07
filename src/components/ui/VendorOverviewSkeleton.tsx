@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/Skeleton";
 
 export default function VendorOverviewSkeleton() {
   return (
-    <div className="col-span-3 p-5 rounded-3xl md:border md:border-gray-200 bg-[#FBFBFB] dark:bg-[#161616] dark:md:border-none md:bg-transparent">
+    <div className="col-span-3 p-5 rounded-3xl md:border md:border-gray-200 bg-[#FBFBFB] md:bg-transparent">
       <div>
         <Skeleton className="h-6 w-40 mb-1" />
         <Skeleton className="h-4 w-60" />

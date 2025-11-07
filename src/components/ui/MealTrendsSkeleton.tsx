@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 
 export default function MealTrendsSkeleton() {
   return (
-    <div className="col-span-4 md:border md:border-gray-200 bg-[#FBFBFB] dark:bg-zinc-900 dark:border-none rounded-3xl p-5 animate-pulse">
+    <div className="col-span-4 md:border md:border-gray-200 bg-[#FBFBFB]  rounded-3xl p-5 animate-pulse">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div className="space-y-2">
@@ -11,7 +11,7 @@ export default function MealTrendsSkeleton() {
         </div>
 
         {/* Buttons (View toggle + navigation) */}
-        <div className="flex gap-2 w-[150px] bg-[#171717] dark:md:bg-zinc-900 p-2 rounded-full">
+        <div className="flex gap-2 w-[150px] bg-[#171717]  p-2 rounded-full">
           <Skeleton className="h-8 w-16 rounded-full" />
           <Skeleton className="h-8 w-16 rounded-full" />
           <Skeleton className="h-8 w-10 rounded-full" />

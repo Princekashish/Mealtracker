@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/Skeleton";
 
 export default function ExpenseBreakdownSkeleton() {
   return (
-    <div className="col-span-3 p-5 md:border md:border-gray-200 bg-[#F5F5F5] rounded-3xl h-full dark:bg-[#161616] dark:border-none">
+    <div className="col-span-3 p-5 md:border md:border-gray-200 bg-[#F5F5F5] rounded-3xl h-full ">
       <div>
         <Skeleton className="h-6 w-40 mb-1" /> {/* Title */}
         <Skeleton className="h-4 w-64" /> {/* Subtitle */}
@@ -11,7 +11,7 @@ export default function ExpenseBreakdownSkeleton() {
       <div className="grid lg:h-[200px] grid-cols-1 items-center justify-center gap-4 sm:grid-cols-2 sm:gap-8 mt-5">
         {/* Pie chart placeholder */}
         <div className="flex items-center justify-center">
-          <div className="w-[150px] h-[150px] rounded-full bg-gray-300 dark:bg-zinc-700 animate-pulse" />
+          <div className="w-[150px] h-[150px] rounded-full bg-gray-300 -700 animate-pulse" />
         </div>
 
         {/* Monthly stats */}
