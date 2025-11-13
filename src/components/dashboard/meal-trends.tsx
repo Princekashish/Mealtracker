@@ -218,7 +218,6 @@ const ViewToggle = ({
     </div>
   </div>
 );
-
 // Navigation Controls Component
 const NavigationControls = ({
   onMonthChange
@@ -252,7 +251,6 @@ export default function MealTrends() {
   const currentMonth = useStore((state) => state.currentMonth);
   const setCurrentMonth = useStore((state) => state.setCurrentMonth);
   const { mealLogs } = useStore();
-
   const formattedMonth = format(currentMonth, 'MMMM yyyy');
 
   const handleMonthChange = (direction: 'prev' | 'next') => {

@@ -40,7 +40,11 @@ export default function VendorOverview() {
       setUserId(undefined);
     }
 
-    fetchVendors()
+   fetchVendors()
+    
+    // fetchMealLogs()
+
+
 
     if (hydrated) {
       setLoading(false);

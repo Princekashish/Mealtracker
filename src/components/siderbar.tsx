@@ -60,14 +60,14 @@ export function DesktopSidebar({ routes }: SidebarRoutesProps) {
               <button key={route.href}>
                 <Link
                   href={route.href}
-                  className={`flex  justify-start items-center w-full p-2 ${route.active ? "bg-[#FFFBEB] dark:bg-zinc-900  p-2 rounded-xl" : "hover:bg-accent ease-in-out duration-100 hover:rounded-xl "
+                  className={`flex  justify-start items-center w-full p-2 ${route.active ? "bg-[#FFFBEB] dark:bg-zinc-900  p-2 rounded-xl" : "hover:bg-black/20 group ease-in-out duration-300 hover:rounded-xl "
                     }`}
                 >
                   <route.icon
-                    className={`mr-2 h-4 w-4 text-lg flex justify-center items-center  ${route.active ? "text-amber-700 dark:text-white" : "text-[#c9c9c9]"
+                    className={`mr-2 h-4 w-4 text-lg flex justify-center items-center  ${route.active ? "text-white font-semibold " : "text-[#777777] group-hover:font-semibold"
                       }`}
                   />
-                  <span className={` ${route.active ? "text-amber-700 dark:text-white" : "dark:text-[#c9c9c9]"}`}>
+                  <span className={` ${route.active ? "text-white font-semibold" : "group-hover:font-semibold"}`}>
                     {route.label}
                   </span>
                 </Link>
